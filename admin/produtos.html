@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerenciar Produtos — Princeps Pacis</title>
+<link rel="icon" href="../assets/images/logo.png">
+<link rel="stylesheet" href="../css/admin/dashboard.css">
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-topo">
+      <img src="../assets/images/logo.png" alt="Princeps Pacis" class="sidebar-logo" style="border-radius:0;object-fit:contain;background:transparent">
+      <div class="sidebar-titulo">
+        <strong>Princeps Pacis</strong>
+        <span>Painel Admin</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="sidebar-rotulo">Principal</span>
+      <a href="dashboard.html" class="sidebar-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Visão geral
+      </a>
+      <a href="produtos.html" class="sidebar-link ativo">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
+        Produtos
+      </a>
+      <a href="conexao.html" class="sidebar-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Conexão (eventos)
+      </a>
+      <span class="sidebar-rotulo" style="margin-top:14px">Loja</span>
+      <a href="../index.html" class="sidebar-link" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Ver site público
+      </a>
+    </nav>
+    <div class="sidebar-rodape">
+      <a href="../login.html" class="sidebar-link sidebar-link-sair" id="btn-sair">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Sair
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <span class="topbar-titulo">Gerenciar Produtos</span>
+      <div class="topbar-acoes">
+        <a href="../index.html" target="_blank" class="topbar-voltar">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m18 13 3-3-3-3M21 10H9M15 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h10"/></svg>
+          Ver loja
+        </a>
+      </div>
+    </header>
+
+    <div class="admin-conteudo">
+      <div class="painel-card">
+        <div class="painel-card-topo">
+          <h3>Produtos cadastrados (<span id="contagem-produtos">0</span>)</h3>
+          <div class="painel-acoes">
+            <div class="campo-busca">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" id="busca-produto" placeholder="Buscar produto…" oninput="renderizarTabela()">
+            </div>
+            <select class="filtro-cat-select" id="filtro-cat" onchange="renderizarTabela()">
+              <option value="">Todas as categorias</option>
+              <option value="tercos">Terços</option>
+              <option value="imagens">Imagens Sacras</option>
+              <option value="camisetas">Camisetas</option>
+              <option value="joias">Joias</option>
+            </select>
+            <button class="btn btn-primario btn-sm" type="button" data-abrir-produto>
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              Novo produto
+            </button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="tabela-produtos">
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Categoria</th>
+                <th>Preço</th>
+                <th>Estoque</th>
+                <th>Destaque</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-produtos"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: criar / editar produto -->
+<div class="modal-overlay oculto" id="modal-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <div class="modal-topo">
+      <h3 id="modal-titulo">Novo produto</h3>
+      <button class="modal-fechar" type="button" data-fechar-produto aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-corpo">
+      <form class="modal-form" id="form-produto">
+        <input type="hidden" id="prod-id">
+        <div class="campo-grupo-modal">
+          <label for="prod-nome">Nome do produto *</label>
+          <input type="text" id="prod-nome" placeholder="Ex: Terço de Madeira de Oliveira" required>
+        </div>
+        <div class="campo-duplo">
+          <div class="campo-grupo-modal">
+            <label for="prod-categoria">Categoria *</label>
+            <select id="prod-categoria" required>
+              <option value="">Selecione…</option>
+              <option value="tercos">Terços</option>
+              <option value="imagens">Imagens Sacras</option>
+              <option value="camisetas">Camisetas</option>
+              <option value="joias">Joias</option>
+            </select>
+          </div>
+          <div class="campo-grupo-modal">
+            <label for="prod-estoque">Estoque *</label>
+            <input type="number" id="prod-estoque" min="0" placeholder="0" required>
+          </div>
+        </div>
+        <div class="campo-duplo">
+          <div class="campo-grupo-modal">
+            <label for="prod-preco">Preço atual (R$) *</label>
+            <input type="number" id="prod-preco" min="0" step="0.01" placeholder="99.90" required>
+          </div>
+          <div class="campo-grupo-modal">
+            <label for="prod-preco-antigo">Preço antigo (opcional)</label>
+            <input type="number" id="prod-preco-antigo" min="0" step="0.01" placeholder="(sem desconto)">
+          </div>
+        </div>
+        <div class="campo-grupo-modal">
+          <label for="prod-imagem">Imagem do produto</label>
+          <label class="campo-upload" for="prod-imagem">
+            <span class="campo-upload-titulo">Selecionar imagem</span>
+            <span class="campo-upload-hint">JPG, PNG ou WebP · até 5 MB</span>
+          </label>
+          <input class="input-arquivo" type="file" id="prod-imagem" accept="image/jpeg,image/png,image/webp">
+          <div class="preview-imagem-produto oculto" id="preview-imagem-produto">
+            <img id="preview-imagem-produto-img" alt="Pré-visualização da imagem do produto">
+            <button type="button" class="btn-remover-imagem" id="remover-imagem-produto">Remover imagem</button>
+          </div>
+        </div>
+        <div class="campo-grupo-modal">
+          <label for="prod-descricao">Descrição</label>
+          <textarea id="prod-descricao" placeholder="Descreva materiais, dimensões, origem…"></textarea>
+        </div>
+        <label style="display:flex;align-items:center;gap:10px;font-size:.9rem;cursor:pointer;">
+          <input type="checkbox" id="prod-destaque" style="width:16px;height:16px;accent-color:var(--terracota)">
+          Exibir este produto como destaque na home
+        </label>
+      </form>
+    </div>
+    <div class="modal-rodape">
+      <button type="button" class="btn btn-contorno" data-fechar-produto>Cancelar</button>
+      <button type="submit" form="form-produto" class="btn btn-primario">Salvar produto</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toggle mobile -->
+<button class="menu-toggle-admin" id="menu-toggle-admin" aria-label="Abrir menu">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+</button>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="../js/products-data.js"></script>
+<script src="../js/image-upload.js"></script>
+<script src="../js/admin/produtos.js"></script>
+</body>
+</html>

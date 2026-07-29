@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contato — Princeps Pacis</title>
+<link rel="icon" href="assets/images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pages/contato.css">
+</head>
+<body>
+
+<header class="cabecalho">
+  <div class="barra-topo">Frete grátis para todo o Brasil em compras acima de R$ 250</div>
+  <nav class="nav container">
+    <a href="index.html" class="marca">
+      <img src="assets/images/logo.png" alt="Princeps Pacis" style="width:52px;height:auto;border-radius:0;object-fit:contain;background:transparent;box-shadow:none;outline:none;">
+      <span class="marca-texto"><strong>Princeps Pacis</strong><span>Artigos Religiosos</span></span>
+    </a>
+        <ul class="nav-links" data-nav-links>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="produtos.html">Produtos</a></li>
+      <li><a href="sobre.html">Sobre nós</a></li>
+      <li><a href="conexao.html">Conexão</a></li>
+      <li><a href="contato.html">Contato</a></li>
+    </ul>
+    <div class="nav-acoes">
+      <a href="login.html" class="icone-btn" aria-label="Área do administrador">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+      </a>
+      <a href="carrinho.html" class="icone-btn" aria-label="Carrinho">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="contador-carrinho" data-contador-carrinho>0</span>
+      </a>
+      <button class="menu-toggle" data-menu-toggle aria-label="Abrir menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="cabecalho-pagina">
+    <div class="container">
+      <span class="rotulo">Fale conosco</span>
+      <h1>Contato</h1>
+      <p>Tem dúvidas sobre alguma peça, pedido ou envio? A gente responde com alegria.</p>
+    </div>
+  </section>
+
+  <div class="container contato-layout">
+    <div>
+      <div id="aviso-form" class="aviso-form"></div>
+      <form class="form-contato" id="form-contato">
+        <div class="campo-grupo">
+          <label for="nome">Seu nome</label>
+          <input type="text" id="nome" placeholder="Maria de Nazareth" required>
+        </div>
+        <div class="campo-grupo">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" placeholder="seu@email.com.br" required>
+        </div>
+        <div class="campo-grupo">
+          <label for="assunto">Assunto</label>
+          <select id="assunto">
+            <option value="">Selecione…</option>
+            <option>Dúvida sobre um produto</option>
+            <option>Acompanhar pedido</option>
+            <option>Troca ou devolução</option>
+            <option>Parceria ou revendas</option>
+            <option>Outro assunto</option>
+          </select>
+        </div>
+        <div class="campo-grupo">
+          <label for="mensagem">Mensagem</label>
+          <textarea id="mensagem" placeholder="Escreva aqui…" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primario" style="align-self:flex-start;padding:14px 36px">Enviar mensagem</button>
+      </form>
+    </div>
+
+    <div class="bloco-info">
+      <h3>Como chegar até nós</h3>
+      <p>Respondemos em até 1 dia útil. Para urgências, prefira o WhatsApp.</p>
+      <div class="contato-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.78a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 16.92Z"/></svg>
+        <div>
+          <strong>WhatsApp</strong>
+          <span>(45) 99999-0000</span>
+        </div>
+      </div>
+      <div class="contato-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        <div>
+          <strong>E-mail</strong>
+          <span>contato@princepspacis.com.br</span>
+        </div>
+      </div>
+      <div class="contato-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div>
+          <strong>Horário de atendimento</strong>
+          <span>Segunda a sexta, 9h às 18h</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="rodape">
+  <div class="container rodape-grade">
+    <div>
+      <div class="rodape-marca">
+        <img src="assets/images/logo.png" alt="Princeps Pacis">
+        <strong>Princeps Pacis</strong>
+      </div>
+      <p>Artigos religiosos católicos para viver a fé todos os dias.</p>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul class="rodape-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="produtos.html">Produtos</a></li>
+        <li><a href="carrinho.html">Carrinho</a></li>
+        <li><a href="sobre.html">Sobre nós</a></li>
+        <li><a href="conexao.html">Conexão</a></li>
+        <li><a href="contato.html">Contato</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Categorias</h4>
+      <ul class="rodape-links">
+        <li><a href="produtos.html?categoria=tercos">Terços</a></li>
+        <li><a href="produtos.html?categoria=imagens">Imagens Sacras</a></li>
+        <li><a href="produtos.html?categoria=camisetas">Camisetas</a></li>
+        <li><a href="produtos.html?categoria=joias">Joias</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Atendimento</h4>
+      <ul class="rodape-links">
+        <li>contato@princepspacis.com.br</li>
+        <li>(45) 99999-0000</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container rodape-baixo">
+    <span>© <span data-ano></span> Princeps Pacis. Todos os direitos reservados.</span>
+  </div>
+</footer>
+
+<script src="js/products-data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/pages/contato.js"></script>
+</body>
+</html>

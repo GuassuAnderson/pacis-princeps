@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Área do Administrador — Princeps Pacis</title>
+<link rel="icon" href="assets/images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pages/login.css">
+</head>
+<body>
+
+<div class="login-pagina">
+  <div class="login-card">
+    <div class="login-marca">
+      <img src="assets/images/logo.png" alt="Princeps Pacis">
+      <strong>Princeps Pacis</strong>
+      <span>Área do Administrador</span>
+    </div>
+    <div id="erro-login" class="erro-login">Usuário ou senha incorretos. Tente novamente.</div>
+    <form class="login-form" id="form-login">
+      <div class="campo-grupo">
+        <label for="usuario">Usuário</label>
+        <input type="text" id="usuario" placeholder="admin" autocomplete="username" required>
+      </div>
+      <div class="campo-grupo">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" placeholder="••••••••" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn-primario" style="margin-top:6px">Entrar no painel</button>
+    </form>
+    <p class="login-dica">Demo: usuário <code>admin</code> · senha <code>princeps123</code></p>
+    <div class="login-voltar"><a href="index.html">← Voltar à loja</a></div>
+  </div>
+</div>
+
+<p class="login-pagina-rodape">© <span data-ano></span> Princeps Pacis. Área restrita.</p>
+
+<script src="js/products-data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/pages/login.js"></script>
+</body>
+</html>

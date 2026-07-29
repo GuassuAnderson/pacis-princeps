@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todos os produtos — Princeps Pacis</title>
+<link rel="icon" href="assets/images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/produtos.css">
+</head>
+<body>
+
+<header class="cabecalho">
+  <div class="barra-topo">Frete grátis para todo o Brasil em compras acima de R$ 250</div>
+  <nav class="nav container">
+    <a href="index.html" class="marca">
+      <img src="assets/images/logo.png" alt="Princeps Pacis" style="width:52px;height:auto;border-radius:0;object-fit:contain;background:transparent;box-shadow:none;outline:none;">
+      <span class="marca-texto"><strong>Princeps Pacis</strong><span>Artigos Religiosos</span></span>
+    </a>
+        <ul class="nav-links" data-nav-links>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="produtos.html">Produtos</a></li>
+      <li><a href="sobre.html">Sobre nós</a></li>
+      <li><a href="conexao.html">Conexão</a></li>
+      <li><a href="contato.html">Contato</a></li>
+    </ul>
+    <div class="nav-acoes">
+      <a href="login.html" class="icone-btn" aria-label="Área do administrador" title="Área do administrador">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+      </a>
+      <a href="carrinho.html" class="icone-btn" aria-label="Carrinho de compras" title="Carrinho">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="contador-carrinho" data-contador-carrinho>0</span>
+      </a>
+      <button class="menu-toggle" data-menu-toggle aria-label="Abrir menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="cabecalho-pagina">
+    <div class="container">
+      <span class="rotulo">Catálogo</span>
+      <h1>Todos os produtos</h1>
+      <p>Terços, imagens sacras, camisetas e joias — filtre por categoria e encontre a peça certa para você.</p>
+    </div>
+  </section>
+
+  <section class="secao secao-catalogo">
+    <div class="container catalogo-layout">
+
+      <aside class="filtros" aria-label="Filtros de produtos">
+        <div class="filtro-bloco">
+          <h4>Categoria</h4>
+          <ul class="filtro-lista" data-filtro-categoria>
+            <li><button data-cat="todas" class="filtro-item ativo">Todas as categorias</button></li>
+            <li><button data-cat="tercos" class="filtro-item">Terços</button></li>
+            <li><button data-cat="imagens" class="filtro-item">Imagens Sacras</button></li>
+            <li><button data-cat="camisetas" class="filtro-item">Camisetas</button></li>
+            <li><button data-cat="joias" class="filtro-item">Joias</button></li>
+          </ul>
+        </div>
+        <div class="filtro-bloco">
+          <h4>Ordenar por</h4>
+          <select data-ordenar class="filtro-select">
+            <option value="relevancia">Relevância</option>
+            <option value="menor-preco">Menor preço</option>
+            <option value="maior-preco">Maior preço</option>
+            <option value="nome">Nome (A-Z)</option>
+          </select>
+        </div>
+      </aside>
+
+      <div class="catalogo-conteudo">
+        <div class="catalogo-topo">
+          <span class="catalogo-contagem" data-contagem-resultados></span>
+        </div>
+        <div class="grade-produtos" data-grade-catalogo></div>
+        <div class="catalogo-vazio" data-catalogo-vazio hidden>
+          <p>Nenhum produto encontrado nesta categoria.</p>
+          <button class="btn btn-contorno" type="button" data-limpar-filtros>Ver todos os produtos</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="container rodape-grade">
+    <div>
+      <div class="rodape-marca">
+        <img src="assets/images/logo.png" alt="Princeps Pacis">
+        <strong>Princeps Pacis</strong>
+      </div>
+      <p>Artigos religiosos escolhidos com cuidado: terços, imagens sacras, camisetas e joias para viver a fé todos os dias.</p>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul class="rodape-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="produtos.html">Produtos</a></li>
+        <li><a href="carrinho.html">Carrinho</a></li>
+        <li><a href="sobre.html">Sobre nós</a></li>
+        <li><a href="conexao.html">Conexão</a></li>
+        <li><a href="contato.html">Contato</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Categorias</h4>
+      <ul class="rodape-links">
+        <li><a href="produtos.html?categoria=tercos">Terços</a></li>
+        <li><a href="produtos.html?categoria=imagens">Imagens Sacras</a></li>
+        <li><a href="produtos.html?categoria=camisetas">Camisetas</a></li>
+        <li><a href="produtos.html?categoria=joias">Joias</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Atendimento</h4>
+      <ul class="rodape-links">
+        <li>contato@princepspacis.com.br</li>
+        <li>(45) 99999-0000</li>
+        <li>Seg. a sex., 9h às 18h</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container rodape-baixo">
+    <span>© <span data-ano></span> Princeps Pacis — Artigos Religiosos. Todos os direitos reservados.</span>
+    <span>Site em versão de demonstração (frontend)</span>
+  </div>
+</footer>
+
+<script src="js/products-data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/product-ui.js"></script>
+<script src="js/produtos.js"></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+/* =========================================================
+   SOBRE NÓS — estilos exclusivos
+   ========================================================= */
+
+/* Cabeçalho da página */
+.sobre-hero {
+  background: linear-gradient(160deg, var(--areia) 0%, var(--creme) 65%);
+  padding: 80px 0 70px;
+  position: relative;
+  overflow: hidden;
+}
+.sobre-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg, transparent, transparent 118px,
+    rgba(128,62,36,.05) 118px, rgba(128,62,36,.05) 120px
+  );
+}
+.sobre-hero-conteudo {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.sobre-hero-texto .rotulo { margin-bottom: 16px; display: block; }
+.sobre-hero-texto h1 { font-size: clamp(2.2rem, 4vw, 3.4rem); margin-bottom: 20px; }
+.sobre-hero-texto h1 em { font-style: italic; color: var(--terracota); }
+.sobre-hero-texto p {
+  color: var(--espresso-60);
+  font-size: 1.08rem;
+  max-width: 48ch;
+  line-height: 1.75;
+}
+
+/* Foto principal do hero — SUBSTITUIR PELO CAMINHO REAL */
+.foto-hero {
+  position: relative;
+}
+.foto-hero-moldura {
+  border-radius: 220px 220px 24px 24px;
+  overflow: hidden;
+  border: 10px solid var(--marfim);
+  outline: 2px solid var(--areia);
+  box-shadow: var(--sombra);
+  aspect-ratio: 3/4;
+  background: var(--areia-clara);
+  display: flex; align-items: center; justify-content: center;
+}
+.foto-hero-moldura img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+/* Placeholder visual enquanto não há foto real */
+.foto-placeholder {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 12px; color: var(--espresso-60);
+  font-size: .88rem; text-align: center; padding: 20px;
+  width: 100%; height: 100%;
+}
+.foto-placeholder svg { width: 48px; height: 48px; stroke: var(--areia); }
+.foto-placeholder strong { font-size: .75rem; text-transform: uppercase; letter-spacing: .14em; color: var(--terracota); }
+
+/* Linha separadora com ornamento */
+.ornamento-divisor {
+  display: flex; align-items: center; gap: 18px;
+  margin: 60px 0 50px;
+  color: var(--areia);
+}
+.ornamento-divisor::before,
+.ornamento-divisor::after {
+  content: ''; flex: 1; height: 1px; background: var(--areia-clara);
+}
+.ornamento-divisor svg { width: 28px; height: 28px; stroke: var(--ouro); flex-shrink: 0; }
+
+/* Seção de história — blocos alternados */
+.historia-bloco {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  margin-bottom: 80px;
+}
+.historia-bloco.invertido { direction: rtl; }
+.historia-bloco.invertido > * { direction: ltr; }
+
+.historia-texto .rotulo { margin-bottom: 12px; display: block; }
+.historia-texto h2 { font-size: clamp(1.7rem, 2.8vw, 2.3rem); margin-bottom: 18px; }
+.historia-texto p {
+  color: var(--espresso-60);
+  font-size: .98rem;
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+.historia-texto p:last-child { margin-bottom: 0; }
+
+/* Foto nos blocos — SUBSTITUIR SRC PELO CAMINHO REAL */
+.historia-foto {
+  border-radius: var(--raio);
+  overflow: hidden;
+  border: 1px solid var(--areia-clara);
+  box-shadow: var(--sombra-leve);
+  aspect-ratio: 4/3;
+  background: var(--areia-clara);
+  display: flex; align-items: center; justify-content: center;
+}
+.historia-foto img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Faixa de valores */
+.faixa-valores {
+  background: var(--terracota);
+  border-radius: 24px;
+  padding: 60px 50px;
+  margin: 60px 0;
+}
+.faixa-valores-topo { text-align: center; margin-bottom: 44px; }
+.faixa-valores-topo .rotulo { color: var(--ouro-suave); margin-bottom: 12px; display: block; }
+.faixa-valores-topo h2 { color: var(--marfim); font-size: clamp(1.8rem, 3vw, 2.4rem); }
+.grade-valores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.card-valor {
+  background: rgba(255,250,243,.08);
+  border: 1px solid rgba(231,218,198,.18);
+  border-radius: var(--raio);
+  padding: 28px 24px;
+  text-align: center;
+}
+.card-valor svg { width: 36px; height: 36px; stroke: var(--ouro-suave); margin: 0 auto 16px; }
+.card-valor h4 { color: var(--marfim); font-size: 1.1rem; margin-bottom: 8px; }
+.card-valor p { color: rgba(255,250,243,.68); font-size: .88rem; margin: 0; line-height: 1.6; }
+
+/* Equipe */
+.grade-equipe {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 40px;
+}
+.card-membro {
+  background: var(--marfim);
+  border: 1px solid var(--areia-clara);
+  border-radius: var(--raio);
+  overflow: hidden;
+  text-align: center;
+  transition: var(--transicao);
+}
+.card-membro:hover { box-shadow: var(--sombra); transform: translateY(-4px); }
+/* Foto do membro — SUBSTITUIR SRC PELO CAMINHO REAL */
+.membro-foto {
+  aspect-ratio: 1/1;
+  background: var(--areia-clara);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.membro-foto img { width: 100%; height: 100%; object-fit: cover; }
+.membro-info { padding: 20px 18px 22px; }
+.membro-info h4 { font-size: 1.1rem; margin-bottom: 4px; }
+.membro-info .rotulo { font-size: .65rem; }
+.membro-info p { font-size: .86rem; color: var(--espresso-60); margin-top: 10px; }
+
+/* Galeria de fotos (grade livre) */
+.galeria-sobre {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: 16px;
+  margin-top: 40px;
+}
+.galeria-sobre .foto-g { /* foto grande, ocupa 2 linhas */
+  grid-row: span 2;
+}
+/* Fotos da galeria — SUBSTITUIR SRC PELO CAMINHO REAL */
+.galeria-foto {
+  border-radius: var(--raio);
+  overflow: hidden;
+  background: var(--areia-clara);
+  display: flex; align-items: center; justify-content: center;
+  aspect-ratio: 4/3;
+}
+.galeria-foto.foto-g { aspect-ratio: auto; height: 100%; }
+.galeria-foto img { width: 100%; height: 100%; object-fit: cover; }
+
+/* CTA final */
+.cta-sobre {
+  background: var(--areia);
+  border-radius: 24px;
+  padding: 60px 50px;
+  text-align: center;
+  margin-top: 40px;
+}
+.cta-sobre h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); margin-bottom: 14px; }
+.cta-sobre p { color: var(--espresso-60); max-width: 52ch; margin: 0 auto 32px; font-size: 1.02rem; }
+.cta-sobre .acoes { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .sobre-hero-conteudo { grid-template-columns: 1fr; }
+  .foto-hero { order: -1; max-width: 360px; margin: 0 auto; }
+  .historia-bloco { grid-template-columns: 1fr; gap: 32px; }
+  .historia-bloco.invertido { direction: ltr; }
+  .grade-valores { grid-template-columns: 1fr; gap: 18px; }
+  .grade-equipe { grid-template-columns: 1fr 1fr; }
+  .galeria-sobre { grid-template-columns: 1fr 1fr; }
+  .galeria-sobre .foto-g { grid-row: span 1; aspect-ratio: 4/3; height: auto; }
+}
+@media (max-width: 600px) {
+  .faixa-valores { padding: 40px 22px; }
+  .cta-sobre { padding: 40px 22px; }
+  .grade-equipe { grid-template-columns: 1fr; }
+  .galeria-sobre { grid-template-columns: 1fr; }
+}

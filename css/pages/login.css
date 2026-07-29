@@ -1,0 +1,35 @@
+body{ background: var(--espresso); min-height:100vh; display:flex; flex-direction:column; }
+.login-pagina{
+  flex:1; display:flex; align-items:center; justify-content:center;
+  padding: 40px 24px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(207,154,68,.12) 0%, transparent 70%),
+    var(--espresso);
+}
+.login-card{
+  background: var(--marfim);
+  border-radius: 24px;
+  padding: 50px 44px;
+  width:100%; max-width:420px;
+  box-shadow: 0 32px 80px -20px rgba(0,0,0,.5);
+}
+.login-marca{ text-align:center; margin-bottom:34px; }
+.login-marca img{ width:72px; height:72px; border-radius:50%; margin:0 auto 14px; border:3px solid var(--areia-clara); }
+.login-marca strong{ font-family:var(--fonte-display); font-size:1.7rem; color:var(--terracota); display:block; }
+.login-marca span{ font-size:.75rem; letter-spacing:.2em; text-transform:uppercase; color:var(--espresso-60); }
+.login-form{ display:flex; flex-direction:column; gap:18px; }
+.campo-grupo{ display:flex; flex-direction:column; gap:7px; }
+.campo-grupo label{ font-size:.8rem; font-weight:600; color:var(--espresso-60); text-transform:uppercase; letter-spacing:.1em; }
+.campo-grupo input{
+  padding:14px 18px; border-radius:10px;
+  border:1.5px solid var(--areia-clara); background:var(--creme);
+  font-size:.96rem; color:var(--espresso); transition:border-color var(--transicao);
+}
+.campo-grupo input:focus{ outline:none; border-color:var(--terracota); }
+.erro-login{ background:rgba(128,62,36,.12); color:var(--terracota); padding:12px 16px; border-radius:8px; font-size:.88rem; display:none; }
+.erro-login.visivel{ display:block; }
+.login-dica{ text-align:center; font-size:.78rem; color:var(--espresso-60); margin-top:6px; }
+.login-dica code{ background:var(--areia-clara); padding:2px 7px; border-radius:4px; font-size:.78rem; }
+.login-voltar{ text-align:center; margin-top:18px; font-size:.86rem; }
+.login-voltar a{ color:var(--terracota); font-weight:500; }
+.login-pagina-rodape{ text-align:center; padding:18px; font-size:.76rem; color:rgba(231,218,198,.3); }

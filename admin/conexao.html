@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerenciar Conexão — Princeps Pacis</title>
+<link rel="icon" href="../assets/images/logo.png">
+<link rel="stylesheet" href="../css/admin/dashboard.css">
+<link rel="stylesheet" href="../css/admin/conexao.css">
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-topo">
+      <img src="../assets/images/logo.png" alt="Princeps Pacis" class="sidebar-logo" style="border-radius:0;object-fit:contain;background:transparent" style="border-radius:0;object-fit:contain;background:transparent;">
+      <div class="sidebar-titulo">
+        <strong>Princeps Pacis</strong>
+        <span>Painel Admin</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="sidebar-rotulo">Principal</span>
+      <a href="dashboard.html" class="sidebar-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Visão geral
+      </a>
+      <a href="produtos.html" class="sidebar-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
+        Produtos
+      </a>
+      <a href="conexao.html" class="sidebar-link ativo">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Conexão (eventos)
+      </a>
+      <span class="sidebar-rotulo" style="margin-top:14px">Loja</span>
+      <a href="../index.html" class="sidebar-link" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Ver site público
+      </a>
+    </nav>
+    <div class="sidebar-rodape">
+      <a href="../login.html" class="sidebar-link sidebar-link-sair" id="btn-sair">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Sair
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <span class="topbar-titulo">Conexão — Gerenciar Edições</span>
+      <div class="topbar-acoes">
+        <a href="../conexao.html" target="_blank" class="topbar-voltar">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m18 13 3-3-3-3M21 10H9M15 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h10"/></svg>
+          Ver página pública
+        </a>
+      </div>
+    </header>
+
+    <div class="admin-conteudo">
+
+      <div class="editor-topo">
+        <div>
+          <h2>Edições do Conexão</h2>
+          <p style="color:var(--espresso-60);font-size:.88rem;margin:4px 0 0">Crie, edite e publique cada edição do evento de pregação.</p>
+        </div>
+        <button class="btn btn-primario" type="button" data-acao-conexao="nova">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Nova edição
+        </button>
+      </div>
+
+      <!-- Lista de edições -->
+      <div id="lista-edicoes">
+        <!-- preenchido via JS -->
+      </div>
+
+      <div id="lista-vazia" hidden style="text-align:center;padding:60px 0;color:var(--espresso-60)">
+        <p>Nenhuma edição cadastrada ainda.</p>
+        <button class="btn btn-primario" style="margin-top:14px" type="button" data-acao-conexao="nova">Criar primeira edição</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: criar / editar edição -->
+<div class="modal-overlay oculto" id="modal-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <div class="modal-topo">
+      <h3 id="modal-titulo">Nova edição do Conexão</h3>
+      <button class="modal-fechar" type="button" data-acao-conexao="fechar" aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-corpo">
+      <form class="modal-form" id="form-edicao">
+        <input type="hidden" id="ed-id">
+
+        <!-- Informações básicas -->
+        <div class="campo-grupo-modal">
+          <label for="ed-titulo">Título da edição *</label>
+          <input type="text" id="ed-titulo" placeholder="Ex: Conexão #3 — A misericórdia de Deus" required>
+        </div>
+
+        <div class="campo-duplo">
+          <div class="campo-grupo-modal">
+            <label for="ed-tema">Tema *</label>
+            <input type="text" id="ed-tema" placeholder="Ex: A misericórdia de Deus" required>
+          </div>
+          <div class="campo-grupo-modal">
+            <label for="ed-data">Data do evento *</label>
+            <input type="date" id="ed-data" required>
+          </div>
+        </div>
+
+        <div class="campo-duplo">
+          <div class="campo-grupo-modal">
+            <label for="ed-pregador">Pregador convidado *</label>
+            <input type="text" id="ed-pregador" placeholder="Nome do pregador" required>
+          </div>
+          <div class="campo-grupo-modal">
+            <label for="ed-cargo">Cargo / título</label>
+            <input type="text" id="ed-cargo" placeholder="Ex: Padre, Diácono, Leigo…">
+          </div>
+        </div>
+
+        <!-- Resumo -->
+        <div class="campo-grupo-modal">
+          <label for="ed-resumo">Resumo (aparece nos cards) *</label>
+          <textarea id="ed-resumo" rows="3" placeholder="Breve descrição da edição, o que foi pregado…" required></textarea>
+          <p class="hint">Máximo ~200 caracteres para melhor exibição nos cards.</p>
+        </div>
+
+        <!-- Conteúdo completo -->
+        <div class="campo-grupo-modal">
+          <label>Conteúdo completo da pregação</label>
+          <div class="editor-toolbar">
+            <button type="button" data-editor-tag="p">§ Parágrafo</button>
+            <button type="button" data-editor-tag="strong"><b>Negrito</b></button>
+            <button type="button" data-editor-tag="em"><i>Itálico</i></button>
+            <button type="button" data-acao-conexao="citacao">❝ Citação</button>
+            <button type="button" data-acao-conexao="preview">👁 Preview</button>
+          </div>
+          <textarea class="editor-conteudo" id="ed-conteudo"
+            placeholder="Escreva o conteúdo completo usando HTML simples. Ex: <p>Texto da pregação...</p>&#10;<p>Segundo parágrafo...</p>"></textarea>
+          <p class="hint">Use &lt;p&gt;...&lt;/p&gt; para parágrafos. Clique em "Preview" para visualizar.</p>
+          <div class="preview-wrap" id="preview-conteudo" hidden></div>
+        </div>
+
+        <!-- Fotos do evento -->
+        <div class="campo-grupo-modal">
+          <label for="input-fotos-evento">Fotos do evento</label>
+          <p class="hint">Anexe até 8 imagens. A primeira foto será usada como capa do card.</p>
+          <div class="fotos-lista" id="fotos-lista"></div>
+          <label class="campo-upload campo-upload-evento" for="input-fotos-evento">
+            <span class="campo-upload-titulo">Selecionar fotos</span>
+            <span class="campo-upload-hint">JPG, PNG ou WebP · até 5 MB por imagem</span>
+          </label>
+          <input class="input-arquivo" type="file" id="input-fotos-evento"
+            accept="image/jpeg,image/png,image/webp" multiple>
+        </div>
+
+        <!-- Publicado -->
+        <label style="display:flex;align-items:center;gap:10px;font-size:.9rem;cursor:pointer;padding:12px 14px;background:var(--creme);border-radius:var(--raio);border:1.5px solid var(--areia-clara)">
+          <input type="checkbox" id="ed-publicado" style="width:16px;height:16px;accent-color:var(--terracota)">
+          <span>
+            <strong>Publicar esta edição</strong><br>
+            <span style="font-size:.78rem;color:var(--espresso-60)">Se desmarcado, a edição fica salva como rascunho e não aparece no site.</span>
+          </span>
+        </label>
+
+      </form>
+    </div>
+    <div class="modal-rodape">
+      <button type="button" class="btn btn-contorno" data-acao-conexao="fechar">Cancelar</button>
+      <button type="submit" form="form-edicao" class="btn btn-primario">Salvar edição</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toggle mobile -->
+<button class="menu-toggle-admin" id="menu-toggle-admin" aria-label="Abrir menu">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+</button>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="../js/products-data.js"></script>
+<script src="../js/image-upload.js"></script>
+<script src="../js/conexao.js"></script>
+<script src="../js/admin/conexao.js"></script>
+</body>
+</html>

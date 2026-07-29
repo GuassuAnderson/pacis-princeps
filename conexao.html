@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conexão — Princeps Pacis</title>
+<link rel="icon" href="assets/images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/pages/conexao.css">
+</head>
+<body>
+
+<header class="cabecalho">
+  <div class="barra-topo">Frete grátis para todo o Brasil em compras acima de R$ 250</div>
+  <nav class="nav container">
+    <a href="index.html" class="marca">
+      <img src="assets/images/logo.png" alt="Princeps Pacis" style="width:52px;height:auto;border-radius:0;object-fit:contain;background:transparent;">
+      <span class="marca-texto"><strong>Princeps Pacis</strong><span>Artigos Religiosos</span></span>
+    </a>
+    <ul class="nav-links" data-nav-links>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="produtos.html">Produtos</a></li>
+      <li><a href="sobre.html">Sobre nós</a></li>
+      <li><a href="conexao.html" class="ativo">Conexão</a></li>
+      <li><a href="contato.html">Contato</a></li>
+    </ul>
+    <div class="nav-acoes">
+      <a href="login.html" class="icone-btn" aria-label="Área do administrador">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+      </a>
+      <a href="carrinho.html" class="icone-btn" aria-label="Carrinho">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="contador-carrinho" data-contador-carrinho>0</span>
+      </a>
+      <button class="menu-toggle" data-menu-toggle aria-label="Abrir menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="conexao-hero">
+    <div class="container">
+      <div class="conexao-hero-inner">
+        <span class="rotulo">Evento de pregação</span>
+        <h1>Conexão Princeps Pacis — <em>fé que une</em></h1>
+        <p>Um encontro de pregação, adoração e comunhão que acontece periodicamente. Cada edição tem um tema especial, um pregador convidado e momentos que ficam gravados no coração.</p>
+        <div class="proxima-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Próxima edição em breve — acompanhe nossas redes
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDIÇÕES -->
+  <section class="secao">
+    <div class="container">
+
+      <div class="secao-cabecalho">
+        <div>
+          <span class="rotulo">Histórico de edições</span>
+          <h2>Todas as Conexões</h2>
+        </div>
+        <p>Reviva os momentos, leia os resumos e acesse as fotos de cada edição do evento.</p>
+      </div>
+
+      <!-- Filtro -->
+      <div class="filtro-edicoes" id="filtro-edicoes">
+        <span>Filtrar:</span>
+        <button class="btn-filtro ativo" data-filtro="todas">Todas</button>
+        <!-- gerado dinamicamente via JS se houver mais anos -->
+      </div>
+
+      <!-- Card destaque (edição mais recente) -->
+      <div id="card-destaque-wrap"></div>
+
+      <!-- Grade das demais edições -->
+      <div class="grade-conexoes" id="grade-conexoes"></div>
+
+      <!-- Estado vazio -->
+      <div id="conexoes-vazio" hidden style="text-align:center;padding:60px 0;color:var(--espresso-60)">
+        <p style="font-size:1.05rem">Nenhuma edição publicada ainda.</p>
+        <p>Acompanhe nossas redes sociais para saber quando a próxima Conexão acontece!</p>
+      </div>
+
+      <!-- CTA próxima edição -->
+      <div class="faixa-proxima">
+        <div class="faixa-proxima-texto">
+          <span class="rotulo">Não perca a próxima</span>
+          <h3>Conexão Princeps Pacis</h3>
+          <p>Cada edição é única: um tema, um pregador e muita graça. Siga-nos para receber o aviso da próxima.</p>
+        </div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap">
+          <a href="contato.html" class="btn btn-ouro btn-primario">Quero ser avisado</a>
+          <a href="produtos.html" class="btn" style="background:rgba(255,250,243,.12);color:var(--marfim);border:1.5px solid rgba(255,250,243,.25)">Ver produtos</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- MODAL: edição completa -->
+<div class="modal-conexao-overlay oculto" id="modal-conexao">
+  <div class="modal-conexao" id="modal-conexao-inner">
+    <!-- preenchido via JS -->
+  </div>
+</div>
+
+<footer class="rodape">
+  <div class="container rodape-grade">
+    <div>
+      <div class="rodape-marca">
+        <img src="assets/images/logo.png" alt="Princeps Pacis" style="width:44px;height:auto;border-radius:0;object-fit:contain;background:transparent;">
+        <strong>Princeps Pacis</strong>
+      </div>
+      <p>Artigos religiosos católicos para viver a fé todos os dias.</p>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul class="rodape-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="produtos.html">Produtos</a></li>
+        <li><a href="sobre.html">Sobre nós</a></li>
+        <li><a href="conexao.html">Conexão</a></li>
+        <li><a href="contato.html">Contato</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Categorias</h4>
+      <ul class="rodape-links">
+        <li><a href="produtos.html?categoria=tercos">Terços</a></li>
+        <li><a href="produtos.html?categoria=imagens">Imagens Sacras</a></li>
+        <li><a href="produtos.html?categoria=camisetas">Camisetas</a></li>
+        <li><a href="produtos.html?categoria=joias">Joias</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Atendimento</h4>
+      <ul class="rodape-links">
+        <li>contato@princepspacis.com.br</li>
+        <li>(45) 99999-0000</li>
+        <li>Seg. a sex., 9h às 18h</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container rodape-baixo">
+    <span>© <span data-ano></span> Princeps Pacis — Artigos Religiosos. Todos os direitos reservados.</span>
+  </div>
+</footer>
+
+<script src="js/products-data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/conexao.js"></script>
+</body>
+</html>

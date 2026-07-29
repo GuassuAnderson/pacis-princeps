@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Admin — Princeps Pacis</title>
+<link rel="icon" href="../assets/images/logo.png">
+<link rel="stylesheet" href="../css/admin/dashboard.css">
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar" aria-label="Navegação do painel">
+    <div class="sidebar-topo">
+      <img src="../assets/images/logo.png" alt="Princeps Pacis" class="sidebar-logo" style="border-radius:0;object-fit:contain;background:transparent">
+      <div class="sidebar-titulo">
+        <strong>Princeps Pacis</strong>
+        <span>Painel Admin</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <span class="sidebar-rotulo">Principal</span>
+      <a href="dashboard.html" class="sidebar-link ativo">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Visão geral
+      </a>
+      <a href="produtos.html" class="sidebar-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
+        Produtos
+      </a>
+      <a href="conexao.html" class="sidebar-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Conexão (eventos)
+      </a>
+      <span class="sidebar-rotulo" style="margin-top:14px">Loja</span>
+      <a href="../index.html" class="sidebar-link" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Ver site público
+      </a>
+    </nav>
+    <div class="sidebar-rodape">
+      <a href="../login.html" class="sidebar-link sidebar-link-sair" id="btn-sair">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Sair
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <span class="topbar-titulo">Visão geral</span>
+      <div class="topbar-acoes">
+        <a href="../index.html" target="_blank" class="topbar-voltar">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m18 13 3-3-3-3M21 10H9M15 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h10"/></svg>
+          Ver loja
+        </a>
+        <span class="topbar-badge" id="topbar-nome">admin</span>
+      </div>
+    </header>
+
+    <div class="admin-conteudo">
+
+      <!-- Métricas -->
+      <div class="grade-metricas" id="grade-metricas">
+        <!-- preenchido via JS -->
+      </div>
+
+      <!-- Produtos em destaque (acesso rápido) -->
+      <div class="painel-card" style="margin-bottom:28px">
+        <div class="painel-card-topo">
+          <h3>Acesso rápido — Produtos</h3>
+          <a href="produtos.html" class="btn btn-primario btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            Gerenciar todos
+          </a>
+        </div>
+        <table class="tabela-produtos" id="tabela-recentes">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Categoria</th>
+              <th>Preço</th>
+              <th>Estoque</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-recentes"></tbody>
+        </table>
+      </div>
+
+    </div><!-- /admin-conteudo -->
+  </div><!-- /admin-main -->
+
+</div><!-- /admin-layout -->
+
+<!-- Toggle mobile -->
+<button class="menu-toggle-admin" id="menu-toggle-admin" aria-label="Abrir menu">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+</button>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="../js/products-data.js"></script>
+<script src="../js/admin/dashboard.js"></script>
+</body>
+</html>

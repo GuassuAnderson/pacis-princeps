@@ -1,0 +1,37 @@
+.contato-layout{
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 60px;
+  align-items:start;
+  padding: 70px 0 90px;
+}
+.form-contato{ display:flex; flex-direction:column; gap:20px; }
+.campo-grupo{ display:flex; flex-direction:column; gap:7px; }
+.campo-grupo label{ font-size:.85rem; font-weight:600; color:var(--espresso-60); text-transform:uppercase; letter-spacing:.08em; }
+.campo-grupo input,
+.campo-grupo select,
+.campo-grupo textarea{
+  padding: 14px 18px; border-radius:10px;
+  border: 1.5px solid var(--areia-clara);
+  background: var(--marfim); color: var(--espresso);
+  font-size:.96rem; transition: border-color var(--transicao);
+}
+.campo-grupo input:focus,
+.campo-grupo select:focus,
+.campo-grupo textarea:focus{ outline:none; border-color:var(--terracota); }
+.campo-grupo textarea{ resize:vertical; min-height:140px; }
+
+.bloco-info{ background:var(--terracota); color:var(--marfim); border-radius:24px; padding:40px 36px; }
+.bloco-info h3{ color:var(--marfim); font-size:1.6rem; margin-bottom:8px; }
+.bloco-info p{ color:rgba(255,250,243,.78); margin-bottom:28px; }
+.contato-item{ display:flex; gap:14px; margin-bottom:20px; }
+.contato-item svg{ width:22px; height:22px; stroke:var(--ouro-suave); flex-shrink:0; margin-top:2px; }
+.contato-item span{ font-size:.96rem; }
+.contato-item strong{ display:block; color:var(--ouro-suave); font-size:.78rem; text-transform:uppercase; letter-spacing:.1em; margin-bottom:3px; }
+
+.aviso-form{ padding:14px 18px; border-radius:10px; background:var(--areia); color:var(--terracota-escuro); font-weight:600; font-size:.9rem; display:none; }
+.aviso-form.visivel{ display:block; }
+
+@media(max-width:840px){
+  .contato-layout{ grid-template-columns:1fr; }
+}
