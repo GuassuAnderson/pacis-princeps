@@ -10,15 +10,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggle = document.querySelector('[data-menu-toggle]');
   const links = document.querySelector('[data-nav-links]');
   if(toggle && links){
+    const fecharMenu = () => {
+      links.classList.remove('aberto');
+      document.body.classList.remove('menu-aberto');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Abrir menu');
+    };
+
     toggle.addEventListener('click', () => {
       links.classList.toggle('aberto');
       const aberto = links.classList.contains('aberto');
+      document.body.classList.toggle('menu-aberto', aberto);
       toggle.setAttribute('aria-expanded', aberto);
+      toggle.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
     });
-    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      links.classList.remove('aberto');
-      toggle.setAttribute('aria-expanded', 'false');
-    }));
+    links.querySelectorAll('a').forEach(a => a.addEventListener('click', fecharMenu));
+    document.addEventListener('keydown', e => {
+      if(e.key === 'Escape') fecharMenu();
+    });
+    window.addEventListener('resize', () => {
+      if(window.innerWidth > 860) fecharMenu();
+    });
   }
 
   // Ano dinâmico no rodapé
