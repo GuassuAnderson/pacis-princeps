@@ -1,5 +1,9 @@
 const PPApi = {
-  baseUrl: window.PP_API_URL || 'http://localhost:3333/api',
+  baseUrl: window.PP_API_URL || (
+    ['localhost', '127.0.0.1'].includes(window.location.hostname)
+      ? 'http://localhost:3333/api'
+      : '/api'
+  ),
   chaveToken: 'pp_api_token',
 
   token(){ return sessionStorage.getItem(this.chaveToken) || ''; },
