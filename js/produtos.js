@@ -33,7 +33,9 @@
     if(contagem) contagem.textContent = `${lista.length} produto${lista.length!==1?'s':''} encontrado${lista.length!==1?'s':''}`;
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', async () => {
+    try { await PPApi.sincronizarProdutosPublicos(); }
+    catch(erro) { console.error('Não foi possível atualizar o catálogo:', erro); }
     // Verifica parâmetro de URL ?categoria=...
     const params = new URLSearchParams(location.search);
     const cat = params.get('categoria');

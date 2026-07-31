@@ -63,7 +63,9 @@ function renderCarrinho(mensagem = ''){
     </aside>`;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  try { await PPApi.sincronizarProdutosPublicos(); }
+  catch(erro) { console.error('Não foi possível atualizar o carrinho:', erro); }
   const container = document.querySelector('[data-carrinho-container]');
   container.addEventListener('click', evento => {
     const botao = evento.target.closest('[data-acao]');

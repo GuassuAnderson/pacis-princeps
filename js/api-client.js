@@ -34,6 +34,11 @@ const PPApi = {
   },
 
   listarProdutos(){ return this.requisitar('/products'); },
+  async sincronizarProdutosPublicos(){
+    const produtos = (await this.listarProdutos()).map(produto => this.normalizarProduto(produto));
+    PPData.salvarProdutos(produtos);
+    return produtos;
+  },
   criarProduto(dados){ return this.requisitar('/products', { method:'POST', body:JSON.stringify(dados) }); },
   atualizarProduto(id, dados){ return this.requisitar(`/products/${encodeURIComponent(id)}`, { method:'PUT', body:JSON.stringify(dados) }); },
   excluirProduto(id){ return this.requisitar(`/products/${encodeURIComponent(id)}`, { method:'DELETE' }); },

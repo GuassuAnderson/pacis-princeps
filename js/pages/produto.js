@@ -1,4 +1,6 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  try { await PPApi.sincronizarProdutosPublicos(); }
+  catch(erro) { console.error('Não foi possível atualizar o produto:', erro); }
   const id = new URLSearchParams(location.search).get('id');
   const container = document.querySelector('[data-produto-detalhe]');
   const p = id ? PPData.obterProduto(id) : null;
