@@ -106,7 +106,12 @@ const PPData = {
     { id:'tercos', nome:'Terços', descricao:'Peças em madeira, cristal e prata' },
     { id:'imagens', nome:'Imagens Sacras', descricao:'Santos e devoções em resina e madeira' },
     { id:'camisetas', nome:'Camisetas', descricao:'Estampas autorais da marca' },
-    { id:'joias', nome:'Joias', descricao:'Prata, folheados e medalhas' }
+    { id:'joias', nome:'Joias', descricao:'Prata, folheados e medalhas' },
+    { id:'mandalas', nome:'Mandalas', descricao:'Arte, fé e espiritualidade para seus ambientes' },
+    { id:'crucifixos', nome:'Crucifixos', descricao:'Símbolos de fé para o lar e para presentear' },
+    { id:'velas', nome:'Velas', descricao:'Luz e devoção para seus momentos de oração' },
+    { id:'oficial-pacis', nome:'Oficial PACIS', descricao:'Produtos exclusivos da marca PACIS' },
+    { id:'diverso', nome:'Diverso', descricao:'Outros artigos religiosos e presentes' }
   ],
 
   garantirSeed(){

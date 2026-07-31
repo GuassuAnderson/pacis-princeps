@@ -1,4 +1,17 @@
-if(!PPData.adminAutenticado()) window.location.href = '../login.html';
+if(!PPApi.autenticado()) window.location.href = '../login.html';
+
+  let produtosBanco = [];
+
+  async function carregarProdutos(){
+    try{
+      produtosBanco = (await PPApi.listarProdutos()).map(produto => PPApi.normalizarProduto(produto));
+      PPData.salvarProdutos(produtosBanco);
+      renderizarTabela();
+    } catch(erro){
+      if(erro.status === 401 || erro.status === 403){ PPApi.sair(); window.location.href = '../login.html'; return; }
+      mostrarToast(erro.message, false);
+    }
+  }
 
   function mostrarToast(msg, ok=true){
     const t = document.getElementById('toast');
@@ -11,7 +24,7 @@ if(!PPData.adminAutenticado()) window.location.href = '../login.html';
   function renderizarTabela(){
     const busca = document.getElementById('busca-produto').value.toLowerCase();
     const cat = document.getElementById('filtro-cat').value;
-    let lista = PPData.listarProdutos();
+    let lista = [...produtosBanco];
     if(cat) lista = lista.filter(p=>p.categoria===cat);
     if(busca) lista = lista.filter(p=>p.nome.toLowerCase().includes(busca));
 
@@ -83,49 +96,72 @@ if(!PPData.adminAutenticado()) window.location.href = '../login.html';
   }
 
   function editarProduto(id){
-    const p = PPData.obterProduto(id);
+    const p = produtosBanco.find(produto => produto.id === id);
     if(p) abrirModal(p);
   }
 
-  function excluirProduto(id, nome){
+  async function excluirProduto(id, nome){
     if(!confirm(`Excluir "${nome}"? Esta ação não pode ser desfeita.`)) return;
-    PPData.excluirProduto(id);
-    renderizarTabela();
-    mostrarToast('Produto excluído com sucesso.');
+    try{
+      await PPApi.excluirProduto(id);
+      produtosBanco = produtosBanco.filter(produto => produto.id !== id);
+      PPData.salvarProdutos(produtosBanco);
+      renderizarTabela();
+      mostrarToast('Produto excluído com sucesso.');
+    } catch(erro){ mostrarToast(erro.message, false); }
   }
 
-  function salvarProduto(e){
+  function criarSlug(texto){
+    return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-' + Date.now().toString(36);
+  }
+
+  async function salvarProduto(e){
     e.preventDefault();
     const id = document.getElementById('prod-id').value;
+    const nome = document.getElementById('prod-nome').value.trim();
+    const categoria = document.getElementById('prod-categoria').value;
+    const preco = parseFloat(document.getElementById('prod-preco').value);
+    const precoAntigo = parseFloat(document.getElementById('prod-preco-antigo').value) || null;
+    const estoque = parseInt(document.getElementById('prod-estoque').value);
+    const descricao = document.getElementById('prod-descricao').value.trim();
     const dados = {
-      nome:        document.getElementById('prod-nome').value.trim(),
-      categoria:   document.getElementById('prod-categoria').value,
-      preco:       parseFloat(document.getElementById('prod-preco').value),
-      precoAntigo: parseFloat(document.getElementById('prod-preco-antigo').value) || null,
-      estoque:     parseInt(document.getElementById('prod-estoque').value),
-      imagem:      imagemProdutoAtiva,
-      descricao:   document.getElementById('prod-descricao').value.trim(),
-      destaque:    document.getElementById('prod-destaque').checked
+      name:nome, slug:id ? undefined : criarSlug(nome), categorySlug:categoria,
+      price:preco, compareAtPrice:precoAntigo, stock:estoque,
+      description:descricao, featured:document.getElementById('prod-destaque').checked,
+      active:true
     };
-    if(!dados.nome || !dados.categoria || !Number.isFinite(dados.preco) || dados.preco <= 0 || !Number.isInteger(dados.estoque) || dados.estoque < 0){
-      mostrarToast('Revise nome, categoria, preço e estoque.', false);
+    if(imagemProdutoAtiva.startsWith('data:image/')) dados.imageData = imagemProdutoAtiva;
+    else dados.imageUrl = imagemProdutoAtiva || null;
+    if(!nome || !categoria || !Number.isFinite(preco) || preco <= 0 || !Number.isInteger(estoque) || estoque < 0 || descricao.length < 10){
+      mostrarToast('Revise nome, categoria, preço, estoque e descrição.', false);
       return;
     }
-    if(dados.precoAntigo !== null && dados.precoAntigo <= dados.preco){
+    if(precoAntigo !== null && precoAntigo <= preco){
       mostrarToast('O preço anterior deve ser maior que o preço atual.', false);
       return;
     }
+    const botaoSalvar = document.querySelector('[form="form-produto"][type="submit"]');
+    botaoSalvar.disabled = true;
+    botaoSalvar.textContent = 'Salvando…';
     try{
+      let produtoSalvo;
       if(id){
-        PPData.atualizarProduto(id, dados);
+        produtoSalvo = PPApi.normalizarProduto(await PPApi.atualizarProduto(id, dados));
+        produtosBanco = produtosBanco.map(produto => produto.id === id ? produtoSalvo : produto);
         mostrarToast('Produto atualizado com sucesso!');
       } else {
-        PPData.criarProduto(dados);
+        produtoSalvo = PPApi.normalizarProduto(await PPApi.criarProduto(dados));
+        produtosBanco.unshift(produtoSalvo);
         mostrarToast('Produto cadastrado com sucesso!');
       }
+      PPData.salvarProdutos(produtosBanco);
     } catch(erro){
-      mostrarToast('Não há espaço no navegador para salvar esta imagem. Tente uma imagem menor.', false);
+      mostrarToast(erro.detalhes?.[0]?.message || erro.message, false);
       return;
+    } finally {
+      botaoSalvar.disabled = false;
+      botaoSalvar.textContent = 'Salvar produto';
     }
     fecharModal();
     renderizarTabela();
@@ -141,7 +177,7 @@ if(!PPData.adminAutenticado()) window.location.href = '../login.html';
     const excluir = e.target.closest('[data-excluir-produto]');
     if(editar) editarProduto(editar.dataset.editarProduto);
     if(excluir){
-      const produto = PPData.obterProduto(excluir.dataset.excluirProduto);
+      const produto = produtosBanco.find(item => item.id === excluir.dataset.excluirProduto);
       if(produto) excluirProduto(produto.id, produto.nome);
     }
   });
@@ -174,7 +210,7 @@ if(!PPData.adminAutenticado()) window.location.href = '../login.html';
 
   // Sair
   document.getElementById('btn-sair').addEventListener('click', e => {
-    e.preventDefault(); PPData.sairAdmin(); window.location.href = '../login.html';
+    e.preventDefault(); PPApi.sair(); window.location.href = '../login.html';
   });
 
   // Mobile sidebar
@@ -183,4 +219,4 @@ if(!PPData.adminAutenticado()) window.location.href = '../login.html';
   toggle.addEventListener('click', () => sidebar.classList.toggle('aberta'));
   document.addEventListener('click', e => { if(!sidebar.contains(e.target) && !toggle.contains(e.target)) sidebar.classList.remove('aberta'); });
 
-  renderizarTabela();
+  carregarProdutos();

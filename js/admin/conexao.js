@@ -1,4 +1,4 @@
-if (!PPData.adminAutenticado()) window.location.href = '../login.html';
+if (!PPApi.autenticado()) window.location.href = '../login.html';
 
 document.addEventListener('click', evento => {
   const tag = evento.target.closest('[data-editor-tag]')?.dataset.editorTag;
@@ -230,7 +230,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(
 
 /* ---- Sair ---- */
 document.getElementById('btn-sair').addEventListener('click', e => {
-  e.preventDefault(); PPData.sairAdmin(); window.location.href = '../login.html';
+  e.preventDefault(); PPApi.sair(); window.location.href = '../login.html';
 });
 document.getElementById('form-edicao').addEventListener('submit', salvarEdicao);
 

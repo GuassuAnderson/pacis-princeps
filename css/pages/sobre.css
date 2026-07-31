@@ -27,6 +27,8 @@
 .sobre-hero-texto .rotulo { margin-bottom: 16px; display: block; }
 .sobre-hero-texto h1 { font-size: clamp(2.2rem, 4vw, 3.4rem); margin-bottom: 20px; }
 .sobre-hero-texto h1 em { font-style: italic; color: var(--terracota); }
+
+.destaque-em { font-style: italic; color: var(--terracota); }
 .sobre-hero-texto p {
   color: var(--espresso-60);
   font-size: 1.08rem;

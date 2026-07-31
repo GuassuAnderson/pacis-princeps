@@ -75,6 +75,11 @@
               <option value="imagens">Imagens Sacras</option>
               <option value="camisetas">Camisetas</option>
               <option value="joias">Joias</option>
+              <option value="mandalas">Mandalas</option>
+              <option value="crucifixos">Crucifixos</option>
+              <option value="velas">Velas</option>
+              <option value="oficial-pacis">Oficial PACIS</option>
+              <option value="diverso">Diverso</option>
             </select>
             <button class="btn btn-primario btn-sm" type="button" data-abrir-produto>
               <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -127,6 +132,11 @@
               <option value="imagens">Imagens Sacras</option>
               <option value="camisetas">Camisetas</option>
               <option value="joias">Joias</option>
+              <option value="mandalas">Mandalas</option>
+              <option value="crucifixos">Crucifixos</option>
+              <option value="velas">Velas</option>
+              <option value="oficial-pacis">Oficial PACIS</option>
+              <option value="diverso">Diverso</option>
             </select>
           </div>
           <div class="campo-grupo-modal">
@@ -157,8 +167,8 @@
           </div>
         </div>
         <div class="campo-grupo-modal">
-          <label for="prod-descricao">Descrição</label>
-          <textarea id="prod-descricao" placeholder="Descreva materiais, dimensões, origem…"></textarea>
+          <label for="prod-descricao">Descrição *</label>
+          <textarea id="prod-descricao" minlength="10" placeholder="Descreva materiais, dimensões, origem…" required></textarea>
         </div>
         <label style="display:flex;align-items:center;gap:10px;font-size:.9rem;cursor:pointer;">
           <input type="checkbox" id="prod-destaque" style="width:16px;height:16px;accent-color:var(--terracota)">
@@ -182,6 +192,7 @@
 <div class="toast" id="toast"></div>
 
 <script src="../js/products-data.js"></script>
+<script src="../js/api-client.js"></script>
 <script src="../js/image-upload.js"></script>
 <script src="../js/admin/produtos.js"></script>
 </body>

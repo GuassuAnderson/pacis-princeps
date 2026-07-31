@@ -68,3 +68,33 @@ for each row execute function public.set_updated_at();
 alter table public.users enable row level security;
 alter table public.categories enable row level security;
 alter table public.products enable row level security;
+
+-- Categorias usadas pelo painel e pelo catálogo.
+insert into public.categories (name, slug, description) values
+  ('Terços', 'tercos', 'Peças em madeira, cristal e prata'),
+  ('Imagens Sacras', 'imagens', 'Santos e devoções em resina e madeira'),
+  ('Camisetas', 'camisetas', 'Estampas autorais da marca'),
+  ('Joias', 'joias', 'Prata, folheados e medalhas'),
+  ('Mandalas', 'mandalas', 'Arte, fé e espiritualidade'),
+  ('Crucifixos', 'crucifixos', 'Símbolos de fé'),
+  ('Velas', 'velas', 'Luz e devoção'),
+  ('Oficial PACIS', 'oficial-pacis', 'Produtos exclusivos da marca'),
+  ('Diverso', 'diverso', 'Outros artigos religiosos')
+on conflict (slug) do update set
+  name = excluded.name,
+  description = excluded.description,
+  active = true;
+
+-- As imagens ficam no Storage; o banco guarda a URL pública no produto.
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values (
+  'product-images',
+  'product-images',
+  true,
+  5242880,
+  array['image/jpeg', 'image/png', 'image/webp']
+)
+on conflict (id) do update set
+  public = excluded.public,
+  file_size_limit = excluded.file_size_limit,
+  allowed_mime_types = excluded.allowed_mime_types;

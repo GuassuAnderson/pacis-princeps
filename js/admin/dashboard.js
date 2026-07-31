@@ -1,5 +1,5 @@
 // Proteção: redireciona se não autenticado
-  if(!PPData.adminAutenticado()) window.location.href = '../login.html';
+  if(!PPApi.autenticado()) window.location.href = '../login.html';
 
   function mostrarToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('visivel'); setTimeout(()=>t.classList.remove('visivel'), 2800); }
 
@@ -67,7 +67,7 @@
   }
 
   document.getElementById('btn-sair').addEventListener('click', e => {
-    e.preventDefault(); PPData.sairAdmin(); window.location.href = '../login.html';
+    e.preventDefault(); PPApi.sair(); window.location.href = '../login.html';
   });
 
   const toggle = document.getElementById('menu-toggle-admin');

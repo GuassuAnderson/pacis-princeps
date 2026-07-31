@@ -9,7 +9,8 @@ const app = express();
 
 app.disable("x-powered-by");
 app.use(cors());
-app.use(express.json({ limit: "1mb" }));
+// A imagem é reduzida no navegador antes do envio. O limite comporta o WebP em base64.
+app.use(express.json({ limit: "8mb" }));
 
 app.get("/health", (_req, res) => {
   res.json({ status: "ok", service: "princeps-pacis-api" });
