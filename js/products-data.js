@@ -111,7 +111,7 @@ const PPData = {
     { id:'crucifixos', nome:'Crucifixos', descricao:'Símbolos de fé para o lar e para presentear' },
     { id:'velas', nome:'Velas', descricao:'Luz e devoção para seus momentos de oração' },
     { id:'oficial-pacis', nome:'Oficial PACIS', descricao:'Produtos exclusivos da marca PACIS' },
-    { id:'diverso', nome:'Diverso', descricao:'Outros artigos religiosos e presentes' }
+    { id:'diversos', nome:'Diversos', descricao:'Outros artigos religiosos e presentes' }
   ],
 
   garantirSeed(){
@@ -140,13 +140,14 @@ const PPData = {
   },
 
   normalizarProduto(produto = {}){
-    const categoriaValida = this.categorias.some(c => c.id === produto.categoria);
+    const categoriaRecebida = produto.categoria === 'diverso' ? 'diversos' : produto.categoria;
+    const categoriaValida = this.categorias.some(c => c.id === categoriaRecebida);
     const preco = Math.max(0, this.numeroSeguro(produto.preco));
     const precoAntigo = this.numeroSeguro(produto.precoAntigo, 0);
     return {
       ...produto,
       nome: String(produto.nome || '').trim(),
-      categoria: categoriaValida ? produto.categoria : this.categorias[0].id,
+      categoria: categoriaValida ? categoriaRecebida : this.categorias[0].id,
       preco,
       precoAntigo: precoAntigo > preco ? precoAntigo : null,
       estoque: Math.max(0, Math.trunc(this.numeroSeguro(produto.estoque))),

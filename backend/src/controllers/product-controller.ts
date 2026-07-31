@@ -149,7 +149,7 @@ async function resolveCategoryId(categoryId?: string, categorySlug?: string): Pr
   const categoryNames: Record<string, string> = {
     tercos: "Terços", imagens: "Imagens Sacras", camisetas: "Camisetas", joias: "Joias",
     mandalas: "Mandalas", crucifixos: "Crucifixos", velas: "Velas",
-    "oficial-pacis": "Oficial PACIS", diverso: "Diverso",
+    "oficial-pacis": "Oficial PACIS", diversos: "Diversos",
   };
   const name = categoryNames[categorySlug!];
   if (!name) throw new Error("Categoria inválida.");

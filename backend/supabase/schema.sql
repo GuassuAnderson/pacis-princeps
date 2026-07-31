@@ -79,7 +79,7 @@ insert into public.categories (name, slug, description) values
   ('Crucifixos', 'crucifixos', 'Símbolos de fé'),
   ('Velas', 'velas', 'Luz e devoção'),
   ('Oficial PACIS', 'oficial-pacis', 'Produtos exclusivos da marca'),
-  ('Diverso', 'diverso', 'Outros artigos religiosos')
+  ('Diversos', 'diversos', 'Outros artigos religiosos')
 on conflict (slug) do update set
   name = excluded.name,
   description = excluded.description,

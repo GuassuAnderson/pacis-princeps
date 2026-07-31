@@ -51,6 +51,29 @@ ul{ list-style:none; margin:0; padding:0; }
 button{ font-family: inherit; cursor:pointer; }
 input, select, textarea{ font-family: inherit; }
 
+/* Movimento global suave e consistente */
+:where(a, button, input, select, textarea, summary, [role="button"]){
+  transition:
+    color var(--transicao),
+    background-color var(--transicao),
+    border-color var(--transicao),
+    box-shadow var(--transicao),
+    opacity var(--transicao),
+    transform var(--transicao);
+}
+body{ animation: entrada-pagina .42s ease-out both; }
+main > section, body > section{ animation: entrada-conteudo .55s ease-out both; }
+main > section:nth-child(2), body > section:nth-child(2){ animation-delay: .06s; }
+main > section:nth-child(3), body > section:nth-child(3){ animation-delay: .12s; }
+@keyframes entrada-pagina{
+  from{ opacity:0; }
+  to{ opacity:1; }
+}
+@keyframes entrada-conteudo{
+  from{ opacity:0; transform:translateY(12px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
 h1,h2,h3,h4{
   font-family: var(--fonte-display);
   color: var(--espresso);
@@ -589,5 +612,11 @@ h1,h2,h3,h4{
   .whatsapp-flutuante-icone { width: 54px; height: 54px; }
 }
 @media (prefers-reduced-motion: reduce) {
+  html{ scroll-behavior:auto; }
+  *, *::before, *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
   .whatsapp-flutuante-icone { animation: none; }
 }
