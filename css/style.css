@@ -535,3 +535,59 @@ h1,h2,h3,h4{
   width: 48px;
   height: auto;
 }
+
+/* Botão flutuante de atendimento pelo WhatsApp */
+.whatsapp-flutuante {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  filter: drop-shadow(0 8px 16px rgba(20, 74, 42, .28));
+}
+.whatsapp-flutuante-texto {
+  padding: 9px 13px;
+  border-radius: 999px;
+  background: var(--espresso);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.whatsapp-flutuante-icone {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border: 2px solid rgba(255,255,255,.88);
+  border-radius: 50%;
+  background: #25d366;
+  transition: transform .2s ease, background .2s ease;
+  animation: whatsapp-pulso 2.8s ease-in-out infinite;
+}
+.whatsapp-flutuante svg { width: 32px; height: 32px; }
+.whatsapp-flutuante:hover .whatsapp-flutuante-texto,
+.whatsapp-flutuante:focus-visible .whatsapp-flutuante-texto {
+  opacity: 1;
+  transform: translateX(0);
+}
+.whatsapp-flutuante:hover .whatsapp-flutuante-icone { background: #1fbd59; transform: translateY(-3px); }
+.whatsapp-flutuante:focus-visible { outline: none; }
+.whatsapp-flutuante:focus-visible .whatsapp-flutuante-icone { outline: 3px solid var(--ouro); outline-offset: 3px; }
+@keyframes whatsapp-pulso {
+  0%, 70%, 100% { box-shadow: 0 0 0 0 rgba(37,211,102,.34); }
+  85% { box-shadow: 0 0 0 12px rgba(37,211,102,0); }
+}
+@media (max-width: 640px) {
+  .whatsapp-flutuante { right: 16px; bottom: 16px; }
+  .whatsapp-flutuante-texto { display: none; }
+  .whatsapp-flutuante-icone { width: 54px; height: 54px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-flutuante-icone { animation: none; }
+}
