@@ -3,8 +3,7 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { supabase } from "../lib/supabase";
 
-const productSchema = z
-  .object({
+const productFields = z.object({
     name: z.string().trim().min(2).max(160),
     slug: z.string().trim().min(2).max(180).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
     description: z.string().trim().min(10),
@@ -17,7 +16,9 @@ const productSchema = z
     categoryId: z.string().uuid().optional(),
     categorySlug: z.string().trim().min(2).max(100).optional(),
     imageData: z.string().max(7_000_000).optional(),
-  })
+  });
+
+const productSchema = productFields
   .refine((data) => Boolean(data.categoryId || data.categorySlug), {
     path: ["categorySlug"], message: "Informe a categoria do produto.",
   })
@@ -26,7 +27,11 @@ const productSchema = z
     { path: ["compareAtPrice"], message: "O preço anterior deve ser maior que o preço atual." },
   );
 
-const updateProductSchema = productSchema.partial();
+const updateProductSchema = productFields.partial()
+  .refine(
+    (data) => data.compareAtPrice == null || data.price == null || data.compareAtPrice > data.price,
+    { path: ["compareAtPrice"], message: "O preço anterior deve ser maior que o preço atual." },
+  );
 
 export async function listProducts(req: Request, res: Response): Promise<void> {
   const query = z
