@@ -43,6 +43,27 @@ const PPApi = {
   atualizarProduto(id, dados){ return this.requisitar(`/products/${encodeURIComponent(id)}`, { method:'PUT', body:JSON.stringify(dados) }); },
   excluirProduto(id){ return this.requisitar(`/products/${encodeURIComponent(id)}`, { method:'DELETE' }); },
 
+  listarConexoesPublicas(){ return this.requisitar('/connections'); },
+  listarConexoesAdmin(){ return this.requisitar('/connections/admin'); },
+  criarConexao(dados){ return this.requisitar('/connections', { method:'POST', body:JSON.stringify(dados) }); },
+  atualizarConexao(id, dados){ return this.requisitar(`/connections/${encodeURIComponent(id)}`, { method:'PUT', body:JSON.stringify(dados) }); },
+  excluirConexao(id){ return this.requisitar(`/connections/${encodeURIComponent(id)}`, { method:'DELETE' }); },
+
+  normalizarConexao(conexao){
+    return {
+      id:conexao.id,
+      titulo:conexao.title,
+      tema:conexao.theme,
+      data:conexao.event_date,
+      pregador:conexao.preacher,
+      cargo:conexao.preacher_title || '',
+      resumo:conexao.summary,
+      conteudo:conexao.content || '',
+      publicado:Boolean(conexao.published),
+      fotos:[...(conexao.photos || [])].sort((a,b) => a.position - b.position).map(foto => foto.image_url)
+    };
+  },
+
   normalizarProduto(produto){
     return PPData.normalizarProduto({
       id:produto.id,

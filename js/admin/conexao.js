@@ -1,5 +1,18 @@
 if (!PPApi.autenticado()) window.location.href = '../login.html';
 
+let conexoesBanco = [];
+
+async function carregarConexoes() {
+  try {
+    conexoesBanco = (await PPApi.listarConexoesAdmin()).map(item => PPApi.normalizarConexao(item));
+    PPConexao.salvarTodas(conexoesBanco);
+    renderLista();
+  } catch(erro) {
+    if(erro.status === 401 || erro.status === 403) { PPApi.sair(); window.location.href = '../login.html'; return; }
+    mostrarToast(erro.message);
+  }
+}
+
 document.addEventListener('click', evento => {
   const tag = evento.target.closest('[data-editor-tag]')?.dataset.editorTag;
   if(tag) inserirTag(tag);
@@ -96,7 +109,7 @@ function togglePreview() {
 
 /* ---- Renderizar lista ---- */
 function renderLista() {
-  const todas = PPConexao.listarTodas().sort((a, b) => new Date(b.data) - new Date(a.data));
+  const todas = [...conexoesBanco].sort((a, b) => new Date(b.data) - new Date(a.data));
   const lista = document.getElementById('lista-edicoes');
   const vazio = document.getElementById('lista-vazia');
 
@@ -159,7 +172,7 @@ function abrirModalNova() {
 }
 
 function editarEdicao(id) {
-  const c = PPConexao.obter(id);
+  const c = conexoesBanco.find(item => item.id === id);
   if (!c) return;
   document.getElementById('modal-titulo').textContent = 'Editar edição';
   document.getElementById('ed-id').value = c.id;
@@ -183,43 +196,62 @@ function fecharModal() {
   document.getElementById('modal-overlay').classList.add('oculto');
 }
 
-function salvarEdicao(e) {
+async function salvarEdicao(e) {
   e.preventDefault();
   const id = document.getElementById('ed-id').value;
   const dados = {
-    titulo:     document.getElementById('ed-titulo').value.trim(),
-    tema:       document.getElementById('ed-tema').value.trim(),
-    data:       document.getElementById('ed-data').value,
-    pregador:   document.getElementById('ed-pregador').value.trim(),
-    cargo:      document.getElementById('ed-cargo').value.trim(),
-    resumo:     document.getElementById('ed-resumo').value.trim(),
-    conteudo:   document.getElementById('ed-conteudo').value.trim(),
-    publicado:  document.getElementById('ed-publicado').checked,
-    fotos:      [...fotosAtivas]
+    title:document.getElementById('ed-titulo').value.trim(),
+    theme:document.getElementById('ed-tema').value.trim(),
+    eventDate:document.getElementById('ed-data').value,
+    preacher:document.getElementById('ed-pregador').value.trim(),
+    preacherTitle:document.getElementById('ed-cargo').value.trim() || null,
+    summary:document.getElementById('ed-resumo').value.trim(),
+    content:document.getElementById('ed-conteudo').value.trim() || null,
+    published:document.getElementById('ed-publicado').checked,
+    photos:[...fotosAtivas]
   };
+  const botao = document.querySelector('[form="form-edicao"][type="submit"]');
+  botao.disabled = true;
+  botao.textContent = 'Salvando…';
   try {
-    if (id) { PPConexao.atualizar(id, dados); mostrarToast('Edição atualizada com sucesso!'); }
-    else     { PPConexao.criar(dados);         mostrarToast('Edição criada com sucesso!'); }
+    const resposta = id ? await PPApi.atualizarConexao(id, dados) : await PPApi.criarConexao(dados);
+    const salva = PPApi.normalizarConexao(resposta);
+    if(id) conexoesBanco = conexoesBanco.map(item => item.id === id ? salva : item);
+    else conexoesBanco.unshift(salva);
+    PPConexao.salvarTodas(conexoesBanco);
+    mostrarToast(id ? 'Edição atualizada com sucesso!' : 'Edição criada com sucesso!');
   } catch(erro) {
-    mostrarToast('Não há espaço no navegador para salvar todas as fotos. Remova algumas imagens.');
+    mostrarToast(erro.detalhes?.[0]?.message || erro.message);
     return;
+  } finally {
+    botao.disabled = false;
+    botao.textContent = 'Salvar edição';
   }
   fecharModal();
   renderLista();
 }
 
-function togglePublicado(id, atual) {
-  PPConexao.atualizar(id, { publicado: !atual });
-  mostrarToast(atual ? 'Edição despublicada.' : 'Edição publicada no site!');
-  renderLista();
+async function togglePublicado(id, atual) {
+  try {
+    const resposta = await PPApi.atualizarConexao(id, { published: !atual });
+    const salva = PPApi.normalizarConexao(resposta);
+    conexoesBanco = conexoesBanco.map(item => item.id === id ? salva : item);
+    PPConexao.salvarTodas(conexoesBanco);
+    mostrarToast(atual ? 'Edição despublicada.' : 'Edição publicada no site!');
+    renderLista();
+  } catch(erro) { mostrarToast(erro.message); }
 }
 
-function excluirEdicao(id) {
-  const c = PPConexao.obter(id);
+async function excluirEdicao(id) {
+  const c = conexoesBanco.find(item => item.id === id);
   if (!confirm(`Excluir "${c?.titulo}"? Esta ação não pode ser desfeita.`)) return;
-  PPConexao.excluir(id);
-  mostrarToast('Edição excluída.');
-  renderLista();
+  try {
+    await PPApi.excluirConexao(id);
+    conexoesBanco = conexoesBanco.filter(item => item.id !== id);
+    PPConexao.salvarTodas(conexoesBanco);
+    mostrarToast('Edição excluída.');
+    renderLista();
+  } catch(erro) { mostrarToast(erro.message); }
 }
 
 /* ---- Fechar modal ---- */
@@ -242,5 +274,5 @@ document.addEventListener('click', e => {
   if (!sidebar.contains(e.target) && !toggle.contains(e.target)) sidebar.classList.remove('aberta');
 });
 
-renderLista();
 renderFotos();
+carregarConexoes();

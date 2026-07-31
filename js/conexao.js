@@ -77,6 +77,12 @@ const PPConexao = {
 
   salvarTodas(lista) { localStorage.setItem(PP_CHAVE_CONEXOES, JSON.stringify(lista)); },
 
+  async sincronizarPublicadas() {
+    const lista = (await PPApi.listarConexoesPublicas()).map(item => PPApi.normalizarConexao(item));
+    this.salvarTodas(lista);
+    return lista;
+  },
+
   criar(dados) {
     const lista = this.listarTodas();
     dados.id = 'c' + Date.now();
@@ -221,8 +227,11 @@ function fecharConexao() {
   document.body.style.overflow = '';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!document.getElementById('grade-conexoes')) return;
   PPConexao.garantirSeed();
+  try { await PPConexao.sincronizarPublicadas(); }
+  catch(erro) { console.error('Não foi possível atualizar as conexões:', erro); }
   const todas = PPConexao.listar();
   const vazio = document.getElementById('conexoes-vazio');
 
