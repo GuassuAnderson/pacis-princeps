@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PRINCEPS PACIS — Camada de dados de produtos
+   PACIS PRINCEPS — Camada de dados de produtos
    Front-end apenas: os produtos vivem no localStorage do navegador.
    O painel administrativo lê/escreve exatamente nesta mesma chave,
    então tudo que o admin cadastra aparece nas páginas da loja.
@@ -57,7 +57,7 @@ const PP_PRODUTOS_INICIAIS = [
   },
   {
     id: 'p005',
-    nome: 'Camiseta Princeps Pacis — Bom Pastor',
+    nome: 'Camiseta Pacis Princeps — Bom Pastor',
     categoria: 'camisetas',
     preco: 79.9,
     precoAntigo: 99.9,

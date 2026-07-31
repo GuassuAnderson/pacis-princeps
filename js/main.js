@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PRINCEPS PACIS — Comportamentos globais do site (todas as páginas)
+   PACIS PRINCEPS — Comportamentos globais do site (todas as páginas)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -20,5 +20,5 @@ app.use(notFound);
 app.use(errorHandler);
 
 app.listen(env.PORT, () => {
-  console.log(`Princeps Pacis API disponível em http://localhost:${env.PORT}`);
+  console.log(`Pacis Princeps API disponível em http://localhost:${env.PORT}`);
 });

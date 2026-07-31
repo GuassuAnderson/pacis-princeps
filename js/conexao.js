@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PRINCEPS PACIS — Conexão: camada de dados e renderização pública
+   PACIS PRINCEPS — Conexão: camada de dados e renderização pública
    Chave localStorage: pp_conexoes
    ========================================================================== */
 
@@ -14,7 +14,7 @@ const PP_CONEXOES_SEED = [
     cargo: 'Pároco da Comunidade São José',
     data: '2024-08-10',
     resumo: 'Uma noite marcada pela presença do Espírito Santo e pela Palavra de Deus sobre a paz verdadeira que só Cristo pode dar. O Pe. João nos conduziu por uma reflexão profunda sobre João 14:27, mostrando como a paz de Cristo difere de toda paz que o mundo oferece.',
-    conteudo: `<p>Ave Maria, cheia de graça — a primeira edição do Conexão Princeps Pacis ficou marcada pela sensação de que algo especial estava sendo inaugurado. Mais de cem pessoas se reuniram em oração, adoração e escuta da Palavra.</p>
+    conteudo: `<p>Ave Maria, cheia de graça — a primeira edição do Conexão Pacis Princeps ficou marcada pela sensação de que algo especial estava sendo inaugurado. Mais de cem pessoas se reuniram em oração, adoração e escuta da Palavra.</p>
 <p>O Pe. João da Silva abriu a noite com uma oração intensa e depois nos conduziu por uma reflexão sobre João 14:27: "Deixo-vos a paz, dou-vos a minha paz; não vo-la dou como o mundo a dá". Durante quase uma hora, ele desmontou a falsa paz que o mundo oferece — a paz do conforto, do silêncio do medo, da ausência de conflito — e mostrou como a paz de Cristo é algo completamente diferente: uma paz que convive com a cruz, que não depende das circunstâncias e que nasce da certeza de que somos amados por Deus.</p>
 <p>Santa Maria, Mãe de Deus, rogai por nós — muitos relataram que saíram da noite com o coração transformado, especialmente jovens que estavam passando por momentos difíceis e encontraram nessa pregação uma palavra de esperança concreta.</p>
 <p>Que venha a próxima edição!</p>`,

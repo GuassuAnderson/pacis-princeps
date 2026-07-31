@@ -2,7 +2,7 @@
   "name": "princeps-pacis-backend",
   "version": "1.0.0",
   "private": true,
-  "description": "API da loja de artigos católicos Princeps Pacis",
+  "description": "API da loja de artigos católicos Pacis Princeps",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",

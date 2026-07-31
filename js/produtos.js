@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PRINCEPS PACIS — Catálogo: filtro, ordenação e renderização
+   PACIS PRINCEPS — Catálogo: filtro, ordenação e renderização
    ========================================================================== */
 
 (function(){

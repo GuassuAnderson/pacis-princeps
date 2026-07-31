@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  document.title = `${p.nome} — Princeps Pacis`;
+  document.title = `${p.nome} — Pacis Princeps`;
 
   container.innerHTML = `
     <div class="produto-detalhe">
