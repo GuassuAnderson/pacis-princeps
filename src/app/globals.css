@@ -1,0 +1,44 @@
+@import "tailwindcss";
+@import "../styles/legacy-site.css";
+@import "../styles/legacy-products.css";
+@import "../styles/legacy-about.css";
+@import "../styles/legacy-connection.css";
+@import "../styles/legacy-contact.css";
+@import "../styles/legacy-login.css";
+
+/* Integra as fontes otimizadas pelo Next às variáveis originais da marca. */
+:root {
+  --fonte-display: var(--font-cormorant), "Cormorant Garamond", "Times New Roman", serif;
+  --fonte-corpo: var(--font-jost), "Jost", "Segoe UI", sans-serif;
+}
+
+/* Elementos React equivalentes aos recursos criados pelo JavaScript antigo. */
+.whatsapp-flutuante-icone { color: #fff; }
+.whatsapp-flutuante-icone svg { width: 32px; height: 32px; }
+.nav-links a.ativo::after { width: 100%; }
+.membro-placeholder { min-height: 220px; }
+
+@media (max-width: 640px) {
+  .container { width: auto; }
+}
+
+body.preloader-ativo { overflow: hidden; }
+.preloader { position:fixed; inset:0; z-index:10000; display:grid; place-items:center; overflow:hidden; background:var(--creme); transition:opacity .45s ease,visibility .45s ease; }
+.preloader-saindo { opacity:0; visibility:hidden; pointer-events:none; }
+.preloader-visivel { opacity:1; visibility:visible; }
+.preloader-arcos { position:absolute; inset:0; opacity:.5; background-image:radial-gradient(ellipse 75% 55% at 50% 100%,rgba(207,154,68,.14),transparent 72%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='220' viewBox='0 0 150 220'%3E%3Cpath d='M0 220V90A75 75 0 01150 90V220' fill='none' stroke='%23803e24' stroke-opacity='.1' stroke-width='2'/%3E%3C/svg%3E"); }
+.preloader-conteudo { position:relative; display:flex; flex-direction:column; align-items:center; }
+.preloader-conteudo-texto { min-width:220px; }
+.preloader-iniciais { display:flex; align-items:center; gap:14px; color:var(--terracota); font-family:var(--fonte-display); font-size:4.25rem; font-weight:600; line-height:1; letter-spacing:.04em; }
+.preloader-iniciais span { opacity:0; transform:translateY(12px); animation:preloader-letra .45s .35s ease-out forwards; }
+.preloader-iniciais span:last-child { animation-delay:.5s; }
+.preloader-iniciais i { color:var(--ouro); font-size:.9rem; font-style:normal; animation:preloader-pulso 1s ease-in-out infinite; }
+.preloader-conteudo > p { margin-top:14px; color:var(--espresso-60); font-family:var(--fonte-corpo); font-size:.72rem; font-weight:600; letter-spacing:.3em; text-transform:uppercase; }
+.preloader-linha { width:170px; height:2px; margin-top:24px; overflow:hidden; border-radius:999px; background:var(--areia-clara); }
+.preloader-linha span { display:block; width:100%; height:100%; background:linear-gradient(90deg,var(--terracota),var(--ouro)); transform:translateX(-100%); animation:preloader-carregar 2.55s .15s cubic-bezier(.65,0,.35,1) forwards; }
+@keyframes preloader-letra { to { opacity:1; transform:translateY(0); } }
+@keyframes preloader-pulso { 50% { opacity:.45; transform:scale(.8); } }
+@keyframes preloader-carregar { to { transform:translateX(0); } }
+@media (prefers-reduced-motion:reduce) {
+  .preloader-iniciais span,.preloader-iniciais i,.preloader-linha span { animation-duration:.01ms!important; animation-iteration-count:1!important; animation-delay:0ms!important; }
+}

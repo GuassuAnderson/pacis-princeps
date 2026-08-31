@@ -1,0 +1,8 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+"use client";
+import {createContext,useContext,useEffect,useState} from "react";
+type CartItem={id:string;quantity:number};
+type CartValue={items:CartItem[];count:number;ready:boolean;add:(id:string)=>void;remove:(id:string)=>void;setQuantity:(id:string,q:number)=>void;clear:()=>void};
+const CartContext=createContext<CartValue|null>(null);
+export function CartProvider({children}:{children:React.ReactNode}){const [items,setItems]=useState<CartItem[]>([]);const [ready,setReady]=useState(false);useEffect(()=>{try{const saved=JSON.parse(localStorage.getItem("pp_cart")||localStorage.getItem("pp_carrinho")||"[]") as Array<CartItem&{quantidade?:number}>;setItems(saved.map(item=>({id:item.id,quantity:item.quantity??item.quantidade??1})))}catch{}finally{setReady(true)}},[]);function save(next:CartItem[]){setItems(next);localStorage.setItem("pp_cart",JSON.stringify(next));localStorage.setItem("pp_carrinho",JSON.stringify(next.map(item=>({id:item.id,quantidade:item.quantity}))))}function add(id:string){const found=items.find(item=>item.id===id);save(found?items.map(item=>item.id===id?{...item,quantity:item.quantity+1}:item):[...items,{id,quantity:1}])}return <CartContext.Provider value={{items,count:items.reduce((sum,item)=>sum+item.quantity,0),ready,add,remove:id=>save(items.filter(item=>item.id!==id)),setQuantity:(id,q)=>save(items.map(item=>item.id===id?{...item,quantity:Math.max(1,q)}:item)),clear:()=>save([])}}>{children}</CartContext.Provider>}
+export const useCart=()=>{const value=useContext(CartContext);if(!value)throw new Error("useCart fora do provider");return value};

@@ -1,0 +1,620 @@
+/* ==========================================================================
+   PACIS PRINCEPS — Artigos Religiosos
+   Design tokens inspirados na logo: manto terracota, halo dourado,
+   arcos românicos repetidos ao fundo do emblema.
+   ========================================================================== */
+
+:root{
+  /* Paleta — derivada da marca */
+  --terracota:      #803e24;   /* cor primária da marca (manto / wordmark) */
+  --terracota-escuro:#5c2b18;  /* hover / profundidade */
+  --areia:          #d1bea0;   /* cor secundária da marca (fundo do emblema) */
+  --areia-clara:    #e7dac6;   /* tons intermediários, bordas suaves */
+  --creme:          #f7f0e4;   /* fundo geral do site */
+  --marfim:         #fffaf3;   /* cartões, superfícies elevadas */
+  --ouro:           #cf9a44;   /* halo — acento de destaque */
+  --ouro-suave:     #e4c17e;   /* acento claro, hovers dourados */
+  --espresso:       #351c11;   /* texto principal, alto contraste */
+  --espresso-60:    rgba(53,28,17,.62);
+
+  /* Tipografia */
+  --fonte-display: 'Cormorant Garamond', 'Times New Roman', serif;
+  --fonte-corpo: 'Jost', 'Segoe UI', sans-serif;
+
+  /* Layout */
+  --largura-max: 1240px;
+  --raio: 10px;
+  --raio-arco: 140px 140px 10px 10px; /* topo em arco, base reta — motivo da capela */
+  --sombra: 0 12px 30px -14px rgba(53,28,17,.28);
+  --sombra-leve: 0 4px 14px -8px rgba(53,28,17,.22);
+
+  --transicao: .28s ease;
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+body{
+  margin:0;
+  font-family: var(--fonte-corpo);
+  background: var(--creme);
+  color: var(--espresso);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+html, body{ max-width:100%; overflow-x:hidden; }
+body.menu-aberto{ overflow:hidden; }
+img{ max-width:100%; display:block; }
+a{ color: inherit; text-decoration:none; }
+ul{ list-style:none; margin:0; padding:0; }
+button{ font-family: inherit; cursor:pointer; }
+input, select, textarea{ font-family: inherit; }
+
+/* Movimento global suave e consistente */
+:where(a, button, input, select, textarea, summary, [role="button"]){
+  transition:
+    color var(--transicao),
+    background-color var(--transicao),
+    border-color var(--transicao),
+    box-shadow var(--transicao),
+    opacity var(--transicao),
+    transform var(--transicao);
+}
+body{ animation: entrada-pagina .42s ease-out both; }
+main > section, body > section{ animation: entrada-conteudo .55s ease-out both; }
+main > section:nth-child(2), body > section:nth-child(2){ animation-delay: .06s; }
+main > section:nth-child(3), body > section:nth-child(3){ animation-delay: .12s; }
+@keyframes entrada-pagina{
+  from{ opacity:0; }
+  to{ opacity:1; }
+}
+@keyframes entrada-conteudo{
+  from{ opacity:0; transform:translateY(12px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+h1,h2,h3,h4{
+  font-family: var(--fonte-display);
+  color: var(--espresso);
+  margin: 0 0 .4em;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.container{
+  max-width: var(--largura-max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.rotulo{ /* pequenas etiquetas em versalete, tipo "ARTIGOS RELIGIOSOS" da logo */
+  font-family: var(--fonte-corpo);
+  text-transform: uppercase;
+  letter-spacing: .22em;
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--terracota);
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  font-size: .92rem;
+  font-weight: 600;
+  letter-spacing:.02em;
+  transition: var(--transicao);
+  white-space: nowrap;
+}
+.btn-primario{
+  background: var(--terracota);
+  color: var(--marfim);
+}
+.btn-primario:hover{ background: var(--terracota-escuro); transform: translateY(-2px); box-shadow: var(--sombra-leve); }
+.btn-contorno{
+  background: transparent;
+  border-color: var(--terracota);
+  color: var(--terracota);
+}
+.btn-contorno:hover{ background: var(--terracota); color: var(--marfim); }
+.btn-ouro{
+  background: var(--ouro);
+  color: var(--espresso);
+}
+.btn-ouro:hover{ background: var(--ouro-suave); }
+.btn-bloco{ width:100%; }
+.btn:disabled{ opacity:.5; cursor:not-allowed; }
+
+/* ==========================================================================
+   Padrão de arcos — motivo assinatura, ecoa o fundo geométrico da logo
+   ========================================================================== */
+.textura-arcos{
+  background-image:
+    radial-gradient(circle at 50% 120%, transparent 60%, transparent 60%),
+    repeating-linear-gradient(90deg, transparent, transparent 118px, rgba(128,62,36,.05) 118px, rgba(128,62,36,.05) 120px);
+  position:relative;
+}
+.textura-arcos svg{ position:absolute; inset:0; width:100%; height:100%; opacity:.5; pointer-events:none; }
+
+/* ==========================================================================
+   Cabeçalho
+   ========================================================================== */
+.cabecalho{
+  position: sticky;
+  top:0;
+  z-index: 500;
+  background: rgba(247,240,228,.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--areia-clara);
+}
+.barra-topo{
+  background: var(--espresso);
+  color: var(--areia-clara);
+  font-size:.76rem;
+  letter-spacing:.08em;
+  text-align:center;
+  padding:7px 12px;
+}
+.nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 14px 24px;
+  gap: 20px;
+}
+.marca{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-family: var(--fonte-display);
+}
+.marca img{
+  width:auto; height:52px;
+  object-fit:contain;
+  filter: drop-shadow(0 1px 3px rgba(53,28,17,.12));
+}
+.marca-texto{ display:flex; flex-direction:column; line-height:1; }
+.marca-texto strong{ font-size:1.5rem; color:var(--terracota); font-weight:600; }
+.marca-texto span{ font-family: var(--fonte-corpo); font-size:.6rem; letter-spacing:.24em; color: var(--espresso-60); text-transform:uppercase; margin-top:3px; }
+
+.nav-links{ display:flex; gap:34px; align-items:center; }
+.nav-links a{
+  font-size:.92rem;
+  font-weight:500;
+  position:relative;
+  padding: 6px 0;
+  transition: color var(--transicao);
+}
+.nav-links a::after{
+  content:'';
+  position:absolute; left:0; bottom:0;
+  width:0; height:2px;
+  background: var(--ouro);
+  transition: width var(--transicao);
+}
+.nav-links a:hover{ color: var(--terracota); }
+.nav-links a:hover::after, .nav-links a.ativo::after{ width:100%; }
+.nav-links a.ativo{ color: var(--terracota); }
+
+.nav-acoes{ display:flex; align-items:center; gap:18px; }
+.icone-btn{
+  position:relative;
+  width:42px; height:42px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:50%;
+  border:1.5px solid var(--areia-clara);
+  transition: var(--transicao);
+  background: var(--marfim);
+}
+.icone-btn:hover{ border-color:var(--terracota); background: var(--areia-clara); }
+.icone-btn svg{ width:19px; height:19px; stroke:var(--espresso); }
+.contador-carrinho{
+  position:absolute; top:-6px; right:-6px;
+  background:var(--terracota); color:#fff;
+  font-size:.65rem; font-weight:700;
+  min-width:19px; height:19px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  padding:0 3px;
+}
+
+.menu-toggle{ display:none; width:42px; height:42px; border-radius:50%; border:1.5px solid var(--areia-clara); background:var(--marfim); align-items:center; justify-content:center; }
+.menu-toggle svg{ width:20px; height:20px; }
+
+/* ==========================================================================
+   Rodapé
+   ========================================================================== */
+.rodape{
+  background: var(--espresso);
+  color: var(--areia-clara);
+  margin-top: 90px;
+  padding: 70px 0 0;
+}
+.rodape-grade{
+  display:grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  gap: 40px;
+  padding-bottom: 50px;
+  border-bottom: 1px solid rgba(231,218,198,.15);
+}
+.rodape-marca{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.rodape-marca img{ height:42px; width:auto; max-width:140px; object-fit:contain; border-radius:0; filter:brightness(0) invert(1) opacity(.85); }
+.rodape-marca strong{ font-family: var(--fonte-display); color:var(--areia-clara); font-size:1.3rem; }
+.rodape p{ color: rgba(231,218,198,.65); font-size:.9rem; max-width: 32ch; }
+.rodape h4{ color: var(--ouro-suave); font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; margin-bottom:18px; font-family: var(--fonte-corpo); font-weight:600; }
+.rodape-links li{ margin-bottom:11px; }
+.rodape-links a{ color: rgba(231,218,198,.75); font-size:.92rem; transition: color var(--transicao); }
+.rodape-links a:hover{ color: var(--ouro-suave); }
+.rodape-baixo{
+  display:flex; justify-content:space-between; align-items:center;
+  padding: 22px 0; font-size:.8rem; color: rgba(231,218,198,.5);
+  flex-wrap:wrap; gap:10px;
+}
+.rodape-sociais{ display:flex; gap:12px; margin-top:16px; }
+.rodape-sociais a{
+  width:36px; height:36px; border-radius:50%;
+  border:1px solid rgba(231,218,198,.25);
+  display:flex; align-items:center; justify-content:center;
+  transition:background var(--transicao), border-color var(--transicao), transform var(--transicao);
+}
+.rodape-sociais a:hover{ background:var(--terracota); border-color:var(--ouro-suave); transform:translateY(-2px); }
+.rodape-sociais svg{ width:16px; height:16px; stroke:var(--areia-clara); }
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+.hero{
+  position: relative;
+  overflow:hidden;
+  padding: 76px 0 90px;
+  background: linear-gradient(160deg, var(--areia) 0%, var(--creme) 62%);
+}
+.hero-arcos{ position:absolute; inset:0; opacity:.55; pointer-events:none; }
+.hero-conteudo{
+  position:relative;
+  display:grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap:56px;
+  align-items:center;
+}
+.hero-texto .rotulo{ margin-bottom: 18px; display:inline-block; }
+.hero-texto h1{
+  font-size: clamp(2.4rem, 4.4vw, 3.7rem);
+  max-width: 12ch;
+}
+.hero-texto h1 em{ font-style:italic; color: var(--terracota); }
+.hero-texto p{
+  color: var(--espresso-60);
+  font-size: 1.08rem;
+  max-width: 46ch;
+  margin: 22px 0 34px;
+}
+.hero-acoes{ display:flex; gap:16px; flex-wrap:wrap; }
+.hero-selos{ display:flex; gap:28px; margin-top:44px; flex-wrap:wrap; }
+.hero-selo{ display:flex; align-items:center; gap:10px; font-size:.84rem; color:var(--espresso-60); }
+.hero-selo svg{ width:22px; height:22px; stroke:var(--terracota); flex-shrink:0; }
+
+.hero-visual{ position:relative; display:flex; justify-content:center; }
+.arco-moldura{
+  width: 100%; max-width: 420px;
+  aspect-ratio: 3/4;
+  border-radius: 220px 220px 24px 24px;
+  overflow:hidden;
+  box-shadow: var(--sombra);
+  border: 10px solid var(--marfim);
+  outline: 2px solid var(--areia);
+  background: var(--marfim);
+  display: flex; align-items: center; justify-content: center;
+}
+.arco-moldura img{
+  width: 100%; height: 100%;
+  object-fit: contain;   /* imagem inteira, sem corte */
+  object-position: center;
+  padding: 14px;         /* respiro interno para o texto não encostar nas bordas */
+}
+.medalhao-flutuante{
+  position:absolute;
+  bottom: -22px; left: -18px;
+  width:120px; height:120px;
+  background: var(--marfim);
+  border-radius:50%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  box-shadow: var(--sombra-leve);
+  border: 1px solid var(--areia-clara);
+}
+.medalhao-flutuante strong{ font-family:var(--fonte-display); font-size:1.5rem; color:var(--terracota); }
+.medalhao-flutuante span{ font-size:.62rem; text-transform:uppercase; letter-spacing:.12em; color:var(--espresso-60); text-align:center; }
+
+/* ==========================================================================
+   Seções gerais / cabeçalhos de seção
+   ========================================================================== */
+.secao{ padding: 90px 0; }
+.secao-cabecalho{
+  display:flex; justify-content:space-between; align-items:flex-end; gap:24px;
+  margin-bottom: 46px; flex-wrap:wrap;
+}
+.secao-cabecalho h2{ font-size: clamp(1.9rem, 3vw, 2.6rem); margin-top:10px; }
+.secao-cabecalho .rotulo{ margin-bottom:8px; display:block; }
+.secao-cabecalho p{ color: var(--espresso-60); max-width:50ch; margin-top:10px; }
+
+/* ==========================================================================
+   Categorias — cartões em arco (motivo janela de capela)
+   ========================================================================== */
+.grade-categorias{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+}
+.cartao-categoria{
+  background: var(--marfim);
+  border-radius: var(--raio-arco);
+  padding: 0 0 26px;
+  text-align:center;
+  border: 1px solid var(--areia-clara);
+  transition: var(--transicao);
+  overflow:hidden;
+}
+.cartao-categoria:hover{ transform: translateY(-8px); box-shadow: var(--sombra); border-color: var(--ouro-suave); }
+.cartao-categoria-topo{
+  height:150px;
+  background: linear-gradient(150deg, var(--areia), var(--areia-clara));
+  display:flex; align-items:center; justify-content:center;
+  border-radius: var(--raio-arco);
+  margin-bottom: 20px;
+}
+.cartao-categoria-topo svg{ width:58px; height:58px; stroke: var(--terracota); }
+.cartao-categoria h3{ font-size:1.25rem; margin-bottom:4px; }
+.cartao-categoria span{ color: var(--espresso-60); font-size:.85rem; }
+
+/* ==========================================================================
+   Produtos — cartões e grade (reutilizado em index e produtos.html)
+   ========================================================================== */
+.grade-produtos{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+.cartao-produto{
+  background: var(--marfim);
+  border-radius: var(--raio);
+  overflow:hidden;
+  border: 1px solid var(--areia-clara);
+  transition: var(--transicao);
+  display:flex; flex-direction:column;
+  position:relative;
+}
+.cartao-produto:hover{ box-shadow: var(--sombra); transform: translateY(-6px); border-color: var(--ouro-suave); }
+.cartao-produto-imagem{
+  aspect-ratio: 1/1;
+  background: var(--areia-clara);
+  position:relative;
+  overflow:hidden;
+}
+.cartao-produto-imagem img{ width:100%; height:100%; object-fit:cover; transition: transform .5s ease; }
+.cartao-produto:hover .cartao-produto-imagem img{ transform: scale(1.06); }
+.selo-produto{
+  position:absolute; top:12px; left:12px;
+  background: var(--terracota); color:#fff;
+  font-size:.68rem; font-weight:600; letter-spacing:.05em;
+  padding:5px 12px; border-radius:999px; text-transform:uppercase;
+}
+.favoritar{
+  position:absolute; top:10px; right:10px;
+  width:36px; height:36px; border-radius:50%;
+  background: rgba(255,250,243,.9);
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--areia-clara);
+}
+.favoritar svg{ width:16px; height:16px; stroke: var(--terracota); }
+.cartao-produto-corpo{ padding: 18px 20px 22px; display:flex; flex-direction:column; gap:8px; flex:1; }
+.cartao-produto-corpo .rotulo{ font-size:.62rem; }
+.cartao-produto-corpo h3{ font-size:1.08rem; font-weight:500; font-family: var(--fonte-corpo); color:var(--espresso); margin:0; }
+.cartao-produto-preco{ margin-top:auto; display:flex; align-items:baseline; gap:8px; padding-top:8px; }
+.preco-atual{ font-family: var(--fonte-display); font-size:1.4rem; font-weight:700; color: var(--terracota); }
+.preco-antigo{ font-size:.85rem; color: var(--espresso-60); text-decoration: line-through; }
+.cartao-produto-acoes{ padding: 0 20px 20px; }
+
+.ver-todos-wrap{ text-align:center; margin-top: 48px; }
+
+/* ==========================================================================
+   Faixa institucional (marca / promessa)
+   ========================================================================== */
+.faixa-promessa{
+  background: var(--terracota);
+  color: var(--marfim);
+  padding: 60px 0;
+}
+.grade-promessa{ display:grid; grid-template-columns: repeat(4,1fr); gap:30px; text-align:center; }
+.item-promessa svg{ width:34px; height:34px; stroke: var(--ouro-suave); margin-bottom:14px; }
+.item-promessa h4{ color:var(--marfim); font-size:1.05rem; margin-bottom:6px; }
+.item-promessa p{ font-size:.85rem; color: rgba(255,250,243,.72); margin:0; }
+
+/* ==========================================================================
+   Sobre / Manifesto
+   ========================================================================== */
+.manifesto{
+  display:grid; grid-template-columns: .85fr 1.15fr; gap:60px; align-items:center;
+}
+.manifesto-visual{
+  border-radius: var(--raio-arco);
+  overflow:hidden;
+  border: 10px solid var(--marfim);
+  outline: 2px solid var(--areia);
+  box-shadow: var(--sombra);
+}
+.manifesto-texto blockquote{
+  font-family: var(--fonte-display);
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  font-style: italic;
+  color: var(--espresso);
+  line-height:1.4;
+  margin: 18px 0 26px;
+  border-left: 3px solid var(--ouro);
+  padding-left: 24px;
+}
+.manifesto-texto p{ color: var(--espresso-60); margin-bottom:22px; }
+
+/* ==========================================================================
+   Newsletter
+   ========================================================================== */
+.newsletter{
+  background: var(--areia);
+  border-radius: 28px;
+  padding: 56px 60px;
+  display:flex; align-items:center; justify-content:space-between; gap:40px; flex-wrap:wrap;
+}
+.newsletter h3{ font-size:1.8rem; max-width:16ch; }
+.newsletter p{ color: var(--espresso-60); margin-top:8px; max-width:40ch; }
+.form-newsletter{ display:flex; gap:12px; flex-wrap:wrap; }
+.form-newsletter input{
+  padding: 14px 20px; border-radius:999px; border:1.5px solid transparent;
+  min-width: 260px; background: var(--marfim);
+}
+.form-newsletter input:focus{ outline:none; border-color: var(--terracota); }
+
+/* ==========================================================================
+   Utilidades responsivas
+   ========================================================================== */
+@media (max-width: 1080px){
+  .grade-categorias{ grid-template-columns: repeat(2,1fr); }
+  .grade-produtos{ grid-template-columns: repeat(3,1fr); }
+  .rodape-grade{ grid-template-columns: 1fr 1fr; }
+  .manifesto{ grid-template-columns: 1fr; }
+  .grade-promessa{ grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 860px){
+  .hero-conteudo{ grid-template-columns: 1fr; }
+  .hero-visual{ order:-1; }
+  .nav-links{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    width:100%;
+    height:calc(100dvh - 100%);
+    min-height:calc(100vh - 100%);
+    background:var(--creme);
+    flex-direction:column;
+    padding:40px 24px;
+    gap:26px;
+    z-index:400;
+    align-items:center;
+    overflow-y:auto;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transform:translateY(-8px);
+    transition:opacity .22s ease, transform .22s ease, visibility 0s linear .22s;
+    box-shadow:0 18px 28px -24px rgba(53,28,17,.35);
+  }
+  .nav-links.aberto{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:translateY(0);
+    transition-delay:0s;
+  }
+  .nav-links a{ font-size:1.1rem; }
+  .menu-toggle{ display:flex; }
+  .grade-produtos{ grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 640px){
+  .grade-categorias{ grid-template-columns: 1fr 1fr; gap:16px; }
+  .cartao-categoria-topo{ height:110px; }
+  .grade-promessa{ grid-template-columns: 1fr; }
+  .rodape-grade{ grid-template-columns: 1fr; }
+  .newsletter{ padding: 36px 26px; flex-direction:column; align-items:flex-start; }
+  .form-newsletter{ width:100%; }
+  .form-newsletter input{ flex:1; min-width:0; }
+  .secao{ padding: 56px 0; }
+}
+@media (max-width: 420px){
+  .grade-produtos{ grid-template-columns: 1fr 1fr; gap:14px; }
+  .cartao-produto-corpo{ padding: 12px 14px 16px; }
+  .marca-texto strong{ font-size:1.2rem; }
+}
+
+/* ==========================================================================
+   Override logo PNG — sem recorte circular, fundo transparente
+   ========================================================================== */
+.marca img {
+  border-radius: 0 !important;
+  object-fit: contain !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  width: 56px;
+  height: auto;
+}
+.rodape-marca img {
+  border-radius: 0 !important;
+  object-fit: contain !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  width: 48px;
+  height: auto;
+}
+
+/* Botão flutuante de atendimento pelo WhatsApp */
+.whatsapp-flutuante {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  filter: drop-shadow(0 8px 16px rgba(20, 74, 42, .28));
+}
+.whatsapp-flutuante-texto {
+  padding: 9px 13px;
+  border-radius: 999px;
+  background: var(--espresso);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.whatsapp-flutuante-icone {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border: 2px solid rgba(255,255,255,.88);
+  border-radius: 50%;
+  background: #25d366;
+  transition: transform .2s ease, background .2s ease;
+  animation: whatsapp-pulso 2.8s ease-in-out infinite;
+}
+.whatsapp-flutuante svg { width: 32px; height: 32px; }
+.whatsapp-flutuante:hover .whatsapp-flutuante-texto,
+.whatsapp-flutuante:focus-visible .whatsapp-flutuante-texto {
+  opacity: 1;
+  transform: translateX(0);
+}
+.whatsapp-flutuante:hover .whatsapp-flutuante-icone { background: #1fbd59; transform: translateY(-3px); }
+.whatsapp-flutuante:focus-visible { outline: none; }
+.whatsapp-flutuante:focus-visible .whatsapp-flutuante-icone { outline: 3px solid var(--ouro); outline-offset: 3px; }
+@keyframes whatsapp-pulso {
+  0%, 70%, 100% { box-shadow: 0 0 0 0 rgba(37,211,102,.34); }
+  85% { box-shadow: 0 0 0 12px rgba(37,211,102,0); }
+}
+@media (max-width: 640px) {
+  .whatsapp-flutuante { right: 16px; bottom: 16px; }
+  .whatsapp-flutuante-texto { display: none; }
+  .whatsapp-flutuante-icone { width: 54px; height: 54px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html{ scroll-behavior:auto; }
+  *, *::before, *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+  .whatsapp-flutuante-icone { animation: none; }
+}

@@ -1,6 +1,8 @@
 node_modules/
+.next/
+out/
 .env
-generated/
+.env.local
 *.log
 .DS_Store
 /pp/

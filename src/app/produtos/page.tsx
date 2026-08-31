@@ -1,0 +1,2 @@
+import {Catalog} from "@/components/catalog";
+export default async function Products({searchParams}:{searchParams:Promise<{categoria?:string}>}){const {categoria}=await searchParams;return <><section className="cabecalho-pagina"><div className="container"><span className="rotulo">Catálogo</span><h1>Todos os produtos</h1><p>Terços, imagens sacras, camisetas e joias — filtre por categoria e encontre a peça certa para você.</p></div></section><Catalog initialCategory={categoria}/></>}
