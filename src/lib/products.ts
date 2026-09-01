@@ -1,6 +1,19 @@
 export type Product={id:string;name:string;category:string;price:number;oldPrice?:number|null;description:string;featured:boolean;stock:number;image:string};
 export const categories=[
- {id:"tercos",name:"Terços",description:"Peças em madeira, cristal e prata"},{id:"imagens",name:"Imagens Sacras",description:"Santos e devoções em resina e madeira"},{id:"camisetas",name:"Camisetas",description:"Estampas autorais da marca"},{id:"joias",name:"Joias",description:"Prata, folheados e medalhas"},{id:"mandalas",name:"Mandalas",description:"Arte, fé e espiritualidade para seus ambientes"},{id:"crucifixos",name:"Crucifixos",description:"Símbolos de fé para o lar e para presentear"},{id:"velas",name:"Velas",description:"Luz e devoção para seus momentos de oração"},{id:"oficial-pacis",name:"Oficial PACIS",description:"Produtos exclusivos da marca PACIS"},{id:"diversos",name:"Diversos",description:"Outros artigos religiosos e presentes"}
+ {id:"tercos",name:"Terços",description:"Madeira, cristal e prata"},
+ {id:"imagens",name:"Imagens Sacras",description:"Santos e devoções"},
+ {id:"camisetas",name:"Camisetas",description:"Estampas autorais"},
+ {id:"joias",name:"Joias",description:"Prata e folheados"},
+ {id:"kids",name:"Kids",description:"A fé para os pequenos"},
+ {id:"livros",name:"Livros",description:"Leituras que inspiram"},
+ {id:"biblias",name:"Bíblias",description:"Palavra e contemplação"},
+ {id:"mandalas",name:"Mandalas",description:"Arte e espiritualidade"},
+ {id:"crucifixos",name:"Crucifixos",description:"Para o lar e para presentear"},
+ {id:"velas",name:"Velas",description:"Luz para seus momentos de oração"},
+ {id:"incensos",name:"Incensos",description:"Aromas para oração"},
+ {id:"chas",name:"Chás",description:"Pausa, cuidado e acolhimento"},
+ {id:"oficial-pacis",name:"Oficial PACIS",description:"Exclusivos da marca"},
+ {id:"diversos",name:"Diversos",description:"Artigos e presentes"}
 ];
 export const products:Product[]=[
  {id:"p001",name:"Terço de Madeira de Oliveira",category:"tercos",price:89.9,oldPrice:119.9,image:"https://placehold.co/600x600/d1bea0/803e24?text=Ter%C3%A7o",description:"Terço artesanal em madeira de oliveira legítima, vinda da Terra Santa. Contas torneadas à mão e crucifixo em metal envelhecido.",featured:true,stock:24},

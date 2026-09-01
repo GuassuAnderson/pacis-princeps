@@ -4,6 +4,7 @@ import {
   AboutPhotoCarousel,
   ScrollReveal,
 } from "@/components/about-interactions";
+import { AnimatedTitle } from "@/components/animated-title";
 
 const stories = [
   {
@@ -47,9 +48,10 @@ export default function About() {
         <div className="container sobre-hero-conteudo">
           <div className="sobre-hero-texto sobre-hero-entrada">
             <span className="rotulo">Nossa história</span>
-            <h1>
-              Uma loja nascida da <em>fé e da devoção</em>
-            </h1>
+            <AnimatedTitle parts={[
+              { text: "Uma loja nascida da " },
+              { text: "fé e da devoção", emphasis: true },
+            ]} />
             <p>
               A história da PACIS começou em janeiro de 2023, mas, antes de
               tudo, começou no coração de Deus.
@@ -83,7 +85,7 @@ export default function About() {
               >
                 <div className="historia-texto">
                   <span className="rotulo">{story.label}</span>
-                  <h2>{story.title}</h2>
+                  <AnimatedTitle as="h2" parts={[{ text: story.title }]} />
                   {story.paragraphs.map((paragraph) => (
                     <p key={paragraph}>{paragraph}</p>
                   ))}
@@ -129,7 +131,7 @@ export default function About() {
             <div className="faixa-valores">
             <div className="faixa-valores-topo">
               <span className="rotulo">O que nos move</span>
-              <h2>Nossos valores</h2>
+              <AnimatedTitle as="h2" parts={[{ text: "Nossos valores" }]} />
             </div>
             <div className="grade-valores">
               <div className="card-valor">
@@ -196,7 +198,7 @@ export default function About() {
             <div className="secao-cabecalho">
             <div>
               <span className="rotulo">Quem somos</span>
-              <h2>Nossa equipe</h2>
+              <AnimatedTitle as="h2" parts={[{ text: "Nossa equipe" }]} />
             </div>
             <p>
               Uma missão construída com fé, família, amizade e confiança na
@@ -251,7 +253,7 @@ export default function About() {
             <div className="secao-cabecalho">
             <div>
               <span className="rotulo">Nossa trajetória em imagens</span>
-              <h2>Galeria</h2>
+              <AnimatedTitle as="h2" parts={[{ text: "Galeria" }]} />
             </div>
             </div>
           </ScrollReveal>
@@ -275,7 +277,7 @@ export default function About() {
             >
               Faça parte desta história
             </span>
-            <h2>Venha caminhar conosco na fé</h2>
+            <AnimatedTitle as="h2" parts={[{ text: "Venha caminhar conosco na fé" }]} />
             <p>
               A PACIS nasceu de uma conversão, cresceu pela Providência Divina e
               continua existindo por um único motivo: dizer “sim” à missão que

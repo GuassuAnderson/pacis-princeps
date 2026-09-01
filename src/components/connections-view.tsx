@@ -11,6 +11,7 @@ import {
   ScrollReveal,
   type AboutSlide,
 } from "@/components/about-interactions";
+import { AnimatedTitle } from "@/components/animated-title";
 
 const key = "pp_conexoes";
 const slidesFor = (connection: Connection): AboutSlide[] =>
@@ -121,7 +122,7 @@ export default function ConnectionsView() {
             </div>
             <div className="card-destaque-corpo">
             <span className="rotulo">Edição em destaque</span>
-            <h2>{latest.title}</h2>
+            <AnimatedTitle as="h2" parts={[{ text: latest.title }]} />
             <span className="tema-tag">
               <Star />
               {latest.theme}
@@ -240,7 +241,7 @@ export default function ConnectionsView() {
               <span className="rotulo">
                 Edição Conexão · {formatConnectionDate(selected.date)}
               </span>
-              <h2>{selected.title}</h2>
+              <AnimatedTitle as="h2" parts={[{ text: selected.title }]} />
               <span
                 className="tema-tag"
                 style={{ display: "inline-flex", marginBottom: 6 }}

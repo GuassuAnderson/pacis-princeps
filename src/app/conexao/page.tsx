@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ConnectionsView from "@/components/connections-view";
 import { ScrollReveal } from "@/components/about-interactions";
+import { AnimatedTitle } from "@/components/animated-title";
 export default function ConnectionPage() {
   return (
     <main>
@@ -8,9 +9,10 @@ export default function ConnectionPage() {
         <div className="container">
           <div className="conexao-hero-inner conexao-hero-entrada">
             <span className="rotulo">Evento de pregação</span>
-            <h1>
-              Conexão Pacis Princeps — <em>fé que une</em>
-            </h1>
+            <AnimatedTitle parts={[
+              { text: "Conexão Pacis Princeps — " },
+              { text: "fé que une", emphasis: true },
+            ]} />
             <p>
               A Conexão PACIS é um encontro mensal de bate-papo e evangelização
               que reúne pessoas para partilhar a fé, conhecer mais sobre a
@@ -40,7 +42,7 @@ export default function ConnectionPage() {
             <div className="secao-cabecalho">
               <div>
                 <span className="rotulo">Histórico de edições</span>
-                <h2>Todas as Conexões</h2>
+                <AnimatedTitle as="h2" parts={[{ text: "Todas as Conexões" }]} />
               </div>
               <p>
                 Reviva os momentos, leia os resumos e acesse as fotos de cada

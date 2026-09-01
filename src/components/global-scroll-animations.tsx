@@ -77,7 +77,7 @@ export function GlobalScrollAnimations() {
           observer.unobserve(entry.target);
         });
       },
-      { threshold: 0.1, rootMargin: "0px 0px -7% 0px" },
+      { threshold: 0.03, rootMargin: "0px 0px -4% 0px" },
     );
 
     const frame = window.requestAnimationFrame(prepare);

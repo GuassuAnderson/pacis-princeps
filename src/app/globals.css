@@ -29,9 +29,23 @@ body.preloader-ativo { overflow: hidden; }
 .preloader-arcos { position:absolute; inset:0; opacity:.5; background-image:radial-gradient(ellipse 75% 55% at 50% 100%,rgba(207,154,68,.14),transparent 72%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='220' viewBox='0 0 150 220'%3E%3Cpath d='M0 220V90A75 75 0 01150 90V220' fill='none' stroke='%23803e24' stroke-opacity='.1' stroke-width='2'/%3E%3C/svg%3E"); }
 .preloader-conteudo { position:relative; display:flex; flex-direction:column; align-items:center; }
 .preloader-conteudo-texto { min-width:220px; }
+.preloader-ovelha-svg { width:180px; height:138px; margin-bottom:2px; overflow:visible; filter:drop-shadow(0 9px 16px rgba(128,62,36,.08)); animation:preloader-ovelha-chegada .6s .08s cubic-bezier(.22,1,.36,1) both; }
+.preloader-ovelha-traco { fill:none; stroke:var(--terracota); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:520; stroke-dashoffset:520; animation:preloader-ovelha-desenhar 1.22s .12s cubic-bezier(.65,0,.35,1) forwards; }
+.preloader-ovelha-contorno { stroke-width:2.8; }
+.preloader-ovelha-detalhe { stroke-width:1.65; stroke-dasharray:260; animation-delay:.32s; animation-duration:1.05s; }
+.preloader-ovelha-orelha { animation-delay:.24s; }
+.preloader-ovelha-focinho { animation-delay:.48s; animation-duration:.85s; }
+.preloader-ovelha-preenchimento { fill:var(--areia); opacity:0; animation:preloader-ovelha-preencher .55s .72s ease-out forwards; }
+.preloader-ovelha-rosto { fill:var(--marfim); opacity:0; animation:preloader-ovelha-preencher .45s .82s ease-out forwards; }
+.preloader-ovelha-olho { fill:var(--espresso); opacity:0; }
+.preloader-ovelha-olho-esquerdo { animation:preloader-ovelha-olho .16s 1.16s forwards; }
+.preloader-ovelha-olho-direito { animation:preloader-ovelha-olho .16s 1.16s forwards,preloader-ovelha-piscar-olho .52s 1.62s ease-in-out; }
+.preloader-ovelha-piscada { fill:none; stroke:var(--espresso); stroke-width:2.2; stroke-linecap:round; opacity:0; animation:preloader-ovelha-piscar-linha .52s 1.62s ease-in-out; }
+.preloader-patinha-aceno { transform-box:fill-box; transform-origin:20% 82%; animation:preloader-ovelha-acenar .92s 1.68s cubic-bezier(.45,0,.25,1) both; }
+.preloader-brilho-ovelha { fill:var(--ouro); opacity:0; transform-box:fill-box; transform-origin:center; animation:preloader-ovelha-brilho .58s 1.82s ease-out both; }
 .preloader-iniciais { display:flex; align-items:center; gap:14px; color:var(--terracota); font-family:var(--fonte-display); font-size:4.25rem; font-weight:600; line-height:1; letter-spacing:.04em; }
-.preloader-iniciais span { opacity:0; transform:translateY(12px); animation:preloader-letra .45s .35s ease-out forwards; }
-.preloader-iniciais span:last-child { animation-delay:.5s; }
+.preloader-iniciais span { opacity:0; transform:translateY(12px); animation:preloader-letra .45s .82s ease-out forwards; }
+.preloader-iniciais span:last-child { animation-delay:.96s; }
 .preloader-iniciais i { color:var(--ouro); font-size:.9rem; font-style:normal; animation:preloader-pulso 1s ease-in-out infinite; }
 .preloader-conteudo > p { margin-top:14px; color:var(--espresso-60); font-family:var(--fonte-corpo); font-size:.72rem; font-weight:600; letter-spacing:.3em; text-transform:uppercase; }
 .preloader-linha { width:170px; height:2px; margin-top:24px; overflow:hidden; border-radius:999px; background:var(--areia-clara); }
@@ -39,8 +53,38 @@ body.preloader-ativo { overflow: hidden; }
 @keyframes preloader-letra { to { opacity:1; transform:translateY(0); } }
 @keyframes preloader-pulso { 50% { opacity:.45; transform:scale(.8); } }
 @keyframes preloader-carregar { to { transform:translateX(0); } }
+@keyframes preloader-ovelha-chegada { from { opacity:0; transform:translateY(10px) scale(.96); } to { opacity:1; transform:translateY(0) scale(1); } }
+@keyframes preloader-ovelha-desenhar { to { stroke-dashoffset:0; } }
+@keyframes preloader-ovelha-preencher { to { opacity:.82; } }
+@keyframes preloader-ovelha-olho { to { opacity:1; } }
+@keyframes preloader-ovelha-piscar-olho { 0%,28%,76%,100% { opacity:1; } 38%,66% { opacity:0; } }
+@keyframes preloader-ovelha-piscar-linha { 0%,28%,76%,100% { opacity:0; } 38%,66% { opacity:1; } }
+@keyframes preloader-ovelha-acenar { 0%,18%,100% { transform:rotate(0); } 38% { transform:rotate(-16deg); } 58% { transform:rotate(10deg); } 76% { transform:rotate(-12deg); } 90% { transform:rotate(5deg); } }
+@keyframes preloader-ovelha-brilho { 0% { opacity:0; transform:scale(.3) rotate(-25deg); } 45% { opacity:1; transform:scale(1.15) rotate(8deg); } 100% { opacity:0; transform:scale(.7) rotate(20deg); } }
 @media (prefers-reduced-motion:reduce) {
-  .preloader-iniciais span,.preloader-iniciais i,.preloader-linha span { animation-duration:.01ms!important; animation-iteration-count:1!important; animation-delay:0ms!important; }
+  .preloader-iniciais span,.preloader-iniciais i,.preloader-linha span,.preloader-ovelha-svg,.preloader-ovelha-traco,.preloader-ovelha-preenchimento,.preloader-ovelha-rosto,.preloader-ovelha-olho,.preloader-ovelha-piscada,.preloader-patinha-aceno,.preloader-brilho-ovelha { animation-duration:.01ms!important; animation-iteration-count:1!important; animation-delay:0ms!important; }
+}
+
+/* Revelação editorial dos títulos principais, letra por letra. */
+.titulo-revelado-palavra { display:inline-block; white-space:nowrap; }
+.titulo-revelado-letra {
+  display:inline-block;
+  opacity:0;
+  transform:translateY(.72em) rotate(2deg);
+  filter:blur(5px);
+  will-change:transform,opacity,filter;
+}
+.titulo-revelado-ativo .titulo-revelado-letra {
+  animation:titulo-revelar-letra .72s cubic-bezier(.16,1,.3,1) forwards;
+}
+.preloader-ativo .titulo-revelado-letra { animation-play-state:paused; }
+@keyframes titulo-revelar-letra {
+  0% { opacity:0; transform:translateY(.72em) rotate(2deg); filter:blur(5px); }
+  62% { opacity:1; filter:blur(0); }
+  100% { opacity:1; transform:translateY(0) rotate(0); filter:blur(0); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .titulo-revelado-letra { opacity:1; transform:none; filter:none; animation:none; }
 }
 
 /* Revelação global das demais páginas; Sobre e Conexão têm direção artística própria. */
