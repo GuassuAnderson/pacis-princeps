@@ -42,3 +42,26 @@ body.preloader-ativo { overflow: hidden; }
 @media (prefers-reduced-motion:reduce) {
   .preloader-iniciais span,.preloader-iniciais i,.preloader-linha span { animation-duration:.01ms!important; animation-iteration-count:1!important; animation-delay:0ms!important; }
 }
+
+/* Revelação global das demais páginas; Sobre e Conexão têm direção artística própria. */
+.global-scroll-reveal {
+  opacity: 0;
+  transform: translate3d(0,42px,0);
+  transition: opacity .72s cubic-bezier(.22,1,.36,1),transform .82s cubic-bezier(.22,1,.36,1);
+  will-change: opacity,transform;
+}
+.global-scroll-reveal.global-scroll-visivel { opacity: 1;transform: translate3d(0,0,0); }
+.global-scroll-reveal .global-text-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .52s ease var(--global-text-delay),transform .64s cubic-bezier(.22,1,.36,1) var(--global-text-delay);
+}
+.global-scroll-reveal.global-scroll-visivel .global-text-reveal { opacity: 1;transform: translateY(0); }
+
+@media (prefers-reduced-motion:reduce) {
+  .global-scroll-reveal,.global-scroll-reveal .global-text-reveal {
+    opacity: 1!important;
+    transform: none!important;
+    transition: none!important;
+  }
+}
