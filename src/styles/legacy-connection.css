@@ -274,6 +274,84 @@
 .faixa-proxima .btn-ouro { background: var(--ouro); color: var(--espresso); border: none; }
 .faixa-proxima .btn-ouro:hover { background: var(--ouro-suave); }
 
+/* Revelação progressiva durante a rolagem */
+.conexao-hero-entrada {
+  opacity: 0;
+  animation: conexao-hero-entrada .85s .12s cubic-bezier(.22,1,.36,1) forwards;
+}
+.sobre-reveal {
+  --reveal-delay: 0ms;
+  opacity: 0;
+  transform: translateY(44px);
+  transition: opacity .75s cubic-bezier(.22,1,.36,1) var(--reveal-delay), transform .85s cubic-bezier(.22,1,.36,1) var(--reveal-delay);
+  will-change: opacity, transform;
+}
+.sobre-reveal.reveal-esquerda { transform: translate3d(-52px,32px,0); }
+.sobre-reveal.sobre-reveal-visivel { opacity: 1; transform: translate3d(0,0,0); }
+.conexao-reveal-destaque,.conexao-card-reveal { height: 100%; }
+.conexao-reveal-destaque .card-conexao-destaque { height: 100%; }
+.conexao-card-reveal .card-conexao { height: 100%; }
+
+/* Carrosséis das edições */
+.conexao-carrossel-interativo,.sobre-carrossel { width: 100%; height: 100%; }
+.sobre-carrossel {
+  position: relative;
+  min-height: 100%;
+  overflow: hidden;
+  background: var(--areia-clara);
+  isolation: isolate;
+}
+.sobre-carrossel-trilho {
+  display: flex;
+  width: 100%; height: 100%;
+  transition: transform .72s cubic-bezier(.22,1,.36,1);
+  will-change: transform;
+}
+.sobre-carrossel-slide {
+  flex: 0 0 100%;
+  min-width: 100%; min-height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.sobre-carrossel-slide img { width: 100%; height: 100%; object-fit: cover; }
+.sobre-carrossel-seta {
+  position: absolute; z-index: 4; top: 50%;
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border: 1px solid rgba(255,250,243,.7); border-radius: 50%;
+  color: var(--marfim); background: rgba(58,27,16,.64);
+  box-shadow: 0 6px 20px rgba(58,27,16,.15);
+  backdrop-filter: blur(8px);
+  transform: translateY(-50%);
+  transition: transform .25s ease, background .25s ease;
+  cursor: pointer;
+}
+.sobre-carrossel-seta:hover { background: var(--terracota); transform: translateY(-50%) scale(1.07); }
+.sobre-carrossel-seta.anterior { left: 12px; }
+.sobre-carrossel-seta.proxima { right: 12px; }
+.sobre-carrossel-seta svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sobre-carrossel-indicadores {
+  position: absolute; z-index: 4; left: 50%; bottom: 12px;
+  display: flex; align-items: center; gap: 7px;
+  padding: 7px 10px; border-radius: 999px;
+  background: rgba(58,27,16,.44); backdrop-filter: blur(7px);
+  transform: translateX(-50%);
+}
+.sobre-carrossel-indicadores button {
+  width: 7px; height: 7px; padding: 0; border: 0; border-radius: 999px;
+  background: rgba(255,250,243,.58); cursor: pointer;
+  transition: width .3s ease, background .3s ease;
+}
+.sobre-carrossel-indicadores button.ativo { width: 22px; background: var(--ouro-suave); }
+.sobre-carrossel-contador {
+  position: absolute; z-index: 4; top: 12px; right: 12px;
+  padding: 5px 9px; border-radius: 999px;
+  color: var(--marfim); background: rgba(58,27,16,.52);
+  font-size: .65rem; font-weight: 600; letter-spacing: .1em;
+  backdrop-filter: blur(7px);
+}
+.tag-mais-recente { z-index: 5; pointer-events: none; }
+.modal-conexao-fechar { z-index: 6; }
+
 /* Responsivo */
 @media (max-width: 960px) {
   .card-conexao-destaque { grid-template-columns: 1fr; }
@@ -286,5 +364,15 @@
   .galeria-modal { grid-template-columns: 1fr 1fr; }
   .faixa-proxima { padding: 36px 24px; flex-direction: column; align-items: flex-start; }
   .modal-conexao-corpo { padding: 24px 22px 32px; }
+  .sobre-carrossel-seta { width: 36px; height: 36px; }
 }
+@media (prefers-reduced-motion: reduce) {
+  .conexao-hero-entrada,.sobre-reveal { opacity: 1; transform: none; animation: none; transition: none; }
+  .sobre-carrossel-trilho { transition: none; }
+}
+}
+
+@keyframes conexao-hero-entrada {
+  from { opacity: 0; transform: translate3d(-38px,24px,0); }
+  to { opacity: 1; transform: translate3d(0,0,0); }
 }
