@@ -292,6 +292,44 @@
 .conexao-reveal-destaque .card-conexao-destaque { height: 100%; }
 .conexao-card-reveal .card-conexao { height: 100%; }
 
+/* Conteúdo textual revelado em sequência */
+.sobre-reveal .secao-cabecalho > *,
+.sobre-reveal .card-destaque-corpo > *,
+.sobre-reveal .card-conexao-corpo > *,
+.sobre-reveal .faixa-proxima-texto > *,
+.sobre-reveal .faixa-proxima > div:last-child {
+  opacity: 0;
+  transform: translateY(17px);
+  transition: opacity .55s ease, transform .66s cubic-bezier(.22,1,.36,1);
+}
+.sobre-reveal-visivel .secao-cabecalho > *,
+.sobre-reveal-visivel .card-destaque-corpo > *,
+.sobre-reveal-visivel .card-conexao-corpo > *,
+.sobre-reveal-visivel .faixa-proxima-texto > *,
+.sobre-reveal-visivel .faixa-proxima > div:last-child { opacity: 1; transform: translateY(0); }
+.sobre-reveal-visivel .secao-cabecalho > :nth-child(1),
+.sobre-reveal-visivel .card-destaque-corpo > :nth-child(1),
+.sobre-reveal-visivel .card-conexao-corpo > :nth-child(1),
+.sobre-reveal-visivel .faixa-proxima-texto > :nth-child(1) { transition-delay: .12s; }
+.sobre-reveal-visivel .secao-cabecalho > :nth-child(2),
+.sobre-reveal-visivel .card-destaque-corpo > :nth-child(2),
+.sobre-reveal-visivel .card-conexao-corpo > :nth-child(2),
+.sobre-reveal-visivel .faixa-proxima-texto > :nth-child(2) { transition-delay: .22s; }
+.sobre-reveal-visivel .card-destaque-corpo > :nth-child(3),
+.sobre-reveal-visivel .card-conexao-corpo > :nth-child(3),
+.sobre-reveal-visivel .faixa-proxima-texto > :nth-child(3) { transition-delay: .32s; }
+.sobre-reveal-visivel .card-destaque-corpo > :nth-child(4),
+.sobre-reveal-visivel .card-conexao-corpo > :nth-child(4) { transition-delay: .4s; }
+.sobre-reveal-visivel .card-destaque-corpo > :nth-child(n+5),
+.sobre-reveal-visivel .card-conexao-corpo > :nth-child(n+5),
+.sobre-reveal-visivel .faixa-proxima > div:last-child { transition-delay: .48s; }
+
+.conexao-hero-entrada > * { opacity: 0; animation: conexao-texto-item .62s cubic-bezier(.22,1,.36,1) forwards; }
+.conexao-hero-entrada > :nth-child(1) { animation-delay: .22s; }
+.conexao-hero-entrada > :nth-child(2) { animation-delay: .34s; }
+.conexao-hero-entrada > :nth-child(3) { animation-delay: .46s; }
+.conexao-hero-entrada > :nth-child(4) { animation-delay: .58s; }
+
 /* Carrosséis das edições */
 .conexao-carrossel-interativo,.sobre-carrossel { width: 100%; height: 100%; }
 .sobre-carrossel {
@@ -369,10 +407,17 @@
 @media (prefers-reduced-motion: reduce) {
   .conexao-hero-entrada,.sobre-reveal { opacity: 1; transform: none; animation: none; transition: none; }
   .sobre-carrossel-trilho { transition: none; }
+  .sobre-reveal .secao-cabecalho > *, .sobre-reveal .card-destaque-corpo > *, .sobre-reveal .card-conexao-corpo > *, .sobre-reveal .faixa-proxima-texto > *, .sobre-reveal .faixa-proxima > div:last-child, .conexao-hero-entrada > * {
+    opacity: 1; transform: none; animation: none; transition: none;
+  }
 }
 }
 
 @keyframes conexao-hero-entrada {
   from { opacity: 0; transform: translate3d(-38px,24px,0); }
   to { opacity: 1; transform: translate3d(0,0,0); }
+}
+@keyframes conexao-texto-item {
+  from { opacity: 0; transform: translateY(17px); }
+  to { opacity: 1; transform: translateY(0); }
 }
