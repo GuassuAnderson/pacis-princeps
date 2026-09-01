@@ -268,7 +268,7 @@ h1,h2,h3,h4{
 .hero{
   position: relative;
   overflow:hidden;
-  padding: 76px 0 90px;
+  padding: 42px 0 50px;
   background: linear-gradient(160deg, var(--areia) 0%, var(--creme) 62%);
 }
 .hero-arcos{ position:absolute; inset:0; opacity:.55; pointer-events:none; }
@@ -276,29 +276,29 @@ h1,h2,h3,h4{
   position:relative;
   display:grid;
   grid-template-columns: 1.05fr .95fr;
-  gap:56px;
+  gap:48px;
   align-items:center;
 }
-.hero-texto .rotulo{ margin-bottom: 18px; display:inline-block; }
+.hero-texto .rotulo{ margin-bottom: 12px; display:inline-block; }
 .hero-texto h1{
-  font-size: clamp(2.4rem, 4.4vw, 3.7rem);
-  max-width: 12ch;
+  font-size: clamp(2.3rem, 3.8vw, 3.25rem);
+  max-width: 13ch;
 }
 .hero-texto h1 em{ font-style:italic; color: var(--terracota); }
 .hero-texto p{
   color: var(--espresso-60);
-  font-size: 1.08rem;
-  max-width: 46ch;
-  margin: 22px 0 34px;
+  font-size: 1rem;
+  max-width: 50ch;
+  margin: 16px 0 24px;
 }
 .hero-acoes{ display:flex; gap:16px; flex-wrap:wrap; }
-.hero-selos{ display:flex; gap:28px; margin-top:44px; flex-wrap:wrap; }
+.hero-selos{ display:flex; gap:22px; margin-top:26px; flex-wrap:wrap; }
 .hero-selo{ display:flex; align-items:center; gap:10px; font-size:.84rem; color:var(--espresso-60); }
 .hero-selo svg{ width:22px; height:22px; stroke:var(--terracota); flex-shrink:0; }
 
 .hero-visual{ position:relative; display:flex; justify-content:center; }
 .arco-moldura{
-  width: 100%; max-width: 420px;
+  width: 100%; max-width: 315px;
   aspect-ratio: 3/4;
   border-radius: 220px 220px 24px 24px;
   overflow:hidden;
@@ -316,16 +316,19 @@ h1,h2,h3,h4{
 }
 .medalhao-flutuante{
   position:absolute;
-  bottom: -22px; left: -18px;
-  width:120px; height:120px;
+  bottom: -14px; left: 16px;
+  width:92px; height:92px;
   background: var(--marfim);
   border-radius:50%;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   box-shadow: var(--sombra-leve);
   border: 1px solid var(--areia-clara);
 }
-.medalhao-flutuante strong{ font-family:var(--fonte-display); font-size:1.5rem; color:var(--terracota); }
-.medalhao-flutuante span{ font-size:.62rem; text-transform:uppercase; letter-spacing:.12em; color:var(--espresso-60); text-align:center; }
+.medalhao-flutuante strong{ font-family:var(--fonte-display); font-size:1.25rem; color:var(--terracota); }
+.medalhao-flutuante span{ font-size:.52rem; text-transform:uppercase; letter-spacing:.1em; color:var(--espresso-60); text-align:center; }
+
+/* Mantém o início da vitrine visível já na primeira dobra da página. */
+.hero + .secao{ padding-top: 52px; }
 
 /* ==========================================================================
    Seções gerais / cabeçalhos de seção
@@ -487,6 +490,11 @@ h1,h2,h3,h4{
 @media (max-width: 860px){
   .hero-conteudo{ grid-template-columns: 1fr; }
   .hero-visual{ order:-1; }
+  .hero{ padding:36px 0 46px; }
+  .arco-moldura{ max-width:260px; }
+  .hero-conteudo{ gap:34px; }
+  .hero-texto h1{ font-size:clamp(2.2rem,8vw,3rem); }
+  .hero-selos{ margin-top:24px; }
   .nav-links{
     position:absolute;
     top:100%;
@@ -521,6 +529,10 @@ h1,h2,h3,h4{
   .grade-produtos{ grid-template-columns: repeat(2,1fr); }
 }
 @media (max-width: 640px){
+  .hero{ padding:28px 0 38px; }
+  .arco-moldura{ max-width:220px; }
+  .medalhao-flutuante{ width:76px; height:76px; left:8px; }
+  .hero + .secao{ padding-top:42px; }
   .grade-categorias{ grid-template-columns: 1fr 1fr; gap:16px; }
   .cartao-categoria-topo{ height:110px; }
   .grade-promessa{ grid-template-columns: 1fr; }
