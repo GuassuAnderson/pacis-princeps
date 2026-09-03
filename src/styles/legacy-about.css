@@ -11,15 +11,27 @@
   overflow: hidden;
 }
 .sobre-hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image: repeating-linear-gradient(
-    90deg, transparent, transparent 118px,
-    rgba(128,62,36,.05) 118px, rgba(128,62,36,.05) 120px
-  );
+  content: none;
+}
+.sobre-hero-linhas {
+  position:absolute;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+  pointer-events:none;
+}
+.sobre-hero-linhas span {
+  position:absolute;
+  top:0;
+  height:0;
+  width:2px;
+  background:rgba(128,62,36,.065);
+  animation:sobre-linha-desenhar 1.25s cubic-bezier(.65,0,.35,1) forwards;
+  will-change:height;
 }
 .sobre-hero-conteudo {
   position: relative;
+  z-index:1;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;
@@ -100,23 +112,39 @@
 
 /* Foto nos blocos — SUBSTITUIR SRC PELO CAMINHO REAL */
 .historia-foto {
+  position: relative;
   border-radius: var(--raio);
-  overflow: hidden;
-  border: 1px solid var(--areia-clara);
-  box-shadow: var(--sombra-leve);
+  overflow: visible;
+  border: 2px solid rgba(209,190,160,.9);
+  outline: 1px solid rgba(128,62,36,.08);
+  outline-offset: 4px;
+  box-shadow: 0 16px 34px -22px rgba(53,28,17,.42), 0 5px 12px rgba(53,28,17,.07);
   aspect-ratio: 4/3;
   background: var(--areia-clara);
   display: flex; align-items: center; justify-content: center;
+  transition: transform .55s cubic-bezier(.22,1,.36,1), border-color .4s ease, box-shadow .55s ease, outline-color .4s ease;
 }
+.historia-foto > .sobre-carrossel { overflow: hidden; border-radius: inherit; }
+.historia-foto:hover {
+  z-index: 3;
+  transform: translateY(-6px) scale(1.008);
+  border-color: var(--ouro-suave);
+  outline-color: rgba(128,62,36,.2);
+  box-shadow: 0 28px 52px -24px rgba(53,28,17,.5), 0 12px 24px rgba(128,62,36,.13);
+}
+.historia-foto:hover .sobre-carrossel-slide img,
+.galeria-sobre-carrossel:hover .sobre-carrossel-slide img { transform: scale(1.025); }
 .historia-foto img { width: 100%; height: 100%; object-fit: cover; }
 
 /* Faixa de valores */
 .faixa-valores {
+  position: relative;
   background: var(--terracota);
   border-radius: 24px;
   padding: 60px 50px;
   margin: 60px 0;
 }
+
 .faixa-valores-topo { text-align: center; margin-bottom: 44px; }
 .faixa-valores-topo .rotulo { color: var(--ouro-suave); margin-bottom: 12px; display: block; }
 .faixa-valores-topo h2 { color: var(--marfim); font-size: clamp(1.8rem, 3vw, 2.4rem); }
@@ -293,6 +321,7 @@
   height: 100%;
   object-fit: cover;
   animation: sobre-foto-aproxima 5s ease-out both;
+  transition: transform .9s cubic-bezier(.22,1,.36,1), filter .6s ease;
 }
 .sobre-carrossel-seta {
   position: absolute;
@@ -356,12 +385,24 @@
   backdrop-filter: blur(7px);
 }
 .galeria-sobre-carrossel {
+  position: relative;
   height: clamp(360px,52vw,620px);
   margin-top: 40px;
-  overflow: hidden;
-  border: 1px solid var(--areia-clara);
+  overflow: visible;
+  border: 2px solid rgba(209,190,160,.9);
+  outline: 1px solid rgba(128,62,36,.08);
+  outline-offset: 4px;
   border-radius: 24px;
-  box-shadow: var(--sombra-leve);
+  box-shadow: 0 20px 42px -24px rgba(53,28,17,.5), 0 7px 16px rgba(53,28,17,.08);
+  transition: transform .55s cubic-bezier(.22,1,.36,1), border-color .4s ease, box-shadow .55s ease, outline-color .4s ease;
+}
+.galeria-sobre-carrossel > .sobre-carrossel { overflow:hidden; border-radius:inherit; }
+.sobre-reveal-visivel.galeria-sobre-carrossel:hover {
+  z-index: 3;
+  transform: translateY(-7px) scale(1.006);
+  border-color: var(--ouro-suave);
+  outline-color: rgba(128,62,36,.2);
+  box-shadow: 0 34px 64px -28px rgba(53,28,17,.55), 0 14px 28px rgba(128,62,36,.14);
 }
 
 /* Responsivo */
@@ -386,6 +427,7 @@
   .galeria-sobre-carrossel { height: 380px; border-radius: var(--raio); }
 }
 @media (prefers-reduced-motion: reduce) {
+  .sobre-hero-linhas span { height:100%; animation:none; }
   .sobre-hero-entrada,.sobre-foto-entrada,.sobre-reveal {
     opacity: 1;
     transform: none;
@@ -397,6 +439,11 @@
   }
   .sobre-carrossel-trilho,.sobre-carrossel-slide img { transition: none; animation: none; }
 }
+}
+
+@keyframes sobre-linha-desenhar {
+  from { height:0; }
+  to { height:100%; }
 }
 
 @keyframes sobre-hero-texto {

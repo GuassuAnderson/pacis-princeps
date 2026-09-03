@@ -2,10 +2,23 @@ import Link from "next/link";
 import ConnectionsView from "@/components/connections-view";
 import { ScrollReveal } from "@/components/about-interactions";
 import { AnimatedTitle } from "@/components/animated-title";
+import { ConnectionNetwork } from "@/components/connection-network";
 export default function ConnectionPage() {
   return (
     <main>
       <section className="conexao-hero">
+        <div className="conexao-hero-linhas" aria-hidden="true">
+          {Array.from({ length: 24 }, (_, index) => (
+            <span
+              key={index}
+              style={{
+                left: `${118 + index * 120}px`,
+                animationDelay: `${index * 160}ms`,
+              }}
+            />
+          ))}
+        </div>
+        <ConnectionNetwork />
         <div className="container">
           <div className="conexao-hero-inner conexao-hero-entrada">
             <span className="rotulo">Evento de pregação</span>

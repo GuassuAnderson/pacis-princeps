@@ -78,6 +78,9 @@ body.preloader-ativo { overflow: hidden; }
   animation:titulo-revelar-letra .72s cubic-bezier(.16,1,.3,1) forwards;
 }
 .preloader-ativo .titulo-revelado-letra { animation-play-state:paused; }
+body.preloader-ativo .about-route .sobre-hero-linhas span { animation-play-state:paused; }
+body.preloader-ativo .connection-route .conexao-hero-linhas span { animation-play-state:paused; }
+body.preloader-ativo .connection-route .conexao-rede * { animation-play-state:paused; }
 @keyframes titulo-revelar-letra {
   0% { opacity:0; transform:translateY(.72em) rotate(2deg); filter:blur(5px); }
   62% { opacity:1; filter:blur(0); }

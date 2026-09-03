@@ -87,7 +87,8 @@ export default function Home() {
             </div>
             <div className="medalhao-flutuante">
               <svg className="medalhao-ovelha" viewBox="0 0 124 112" aria-hidden="true">
-                <path d="M31 32C24 24 28 13 38 13 42 3 55 3 62 11 69 3 82 6 86 16 96 13 105 21 102 31 113 25 122 32 120 43 114 50 106 51 98 47v22c-1 23-17 39-36 39S27 92 26 69V47c-8 4-17 3-22-4-2-11 8-18 19-12 2 1 5 2 8 1Z" />
+                <path className="medalhao-ovelha-silhueta" d="M26 34C19 29 10 31 6 38c-4 7 2 14 12 14 3 0 6-1 9-3v23c0 22 15 36 35 36s35-14 35-36V49c3 2 6 3 9 3 10 0 16-7 12-14-4-7-13-9-20-4-2-6-6-10-12-11 1-8-6-13-13-11-4-7-18-7-22 0-7-2-14 3-13 11-6 1-10 5-12 11Z" />
+                <path className="medalhao-ovelha-detalhe" d="M27 39c-6-5-13-4-17 1 3 6 10 7 17 3m70-4c6-5 13-4 17 1-3 6-10 7-17 3M39 24c4 5 9 6 14 2 5 5 13 5 18 0 5 4 10 3 14-2" />
               </svg>
               <strong>+8mil</strong>
               <span>Famílias atendidas</span>

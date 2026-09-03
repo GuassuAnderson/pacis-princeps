@@ -45,6 +45,17 @@ export default function About() {
   return (
     <>
       <section className="sobre-hero">
+        <div className="sobre-hero-linhas" aria-hidden="true">
+          {Array.from({ length: 24 }, (_, index) => (
+            <span
+              key={index}
+              style={{
+                left: `${118 + index * 120}px`,
+                animationDelay: `${index * 250}ms`,
+              }}
+            />
+          ))}
+        </div>
         <div className="container sobre-hero-conteudo">
           <div className="sobre-hero-texto sobre-hero-entrada">
             <span className="rotulo">Nossa história</span>

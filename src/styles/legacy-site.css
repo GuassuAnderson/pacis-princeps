@@ -395,7 +395,9 @@ h1,h2,h3,h4{
   filter:drop-shadow(0 8px 10px rgba(53,28,17,.1));
 }
 .medalhao-ovelha{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
-.medalhao-ovelha path{ fill:var(--marfim); stroke:var(--areia); stroke-width:1.35; stroke-linecap:round; stroke-linejoin:round; }
+.medalhao-ovelha path{ stroke:var(--areia); stroke-width:1.35; stroke-linecap:round; stroke-linejoin:round; }
+.medalhao-ovelha-silhueta{ fill:var(--marfim); }
+.medalhao-ovelha .medalhao-ovelha-detalhe{ fill:none; stroke-width:1.05; opacity:.9; }
 .medalhao-flutuante strong{ position:relative; z-index:1; margin-top:6px; font-family:var(--fonte-display); font-size:1.25rem; color:var(--terracota); }
 .medalhao-flutuante span{ position:relative; z-index:1; width:70px; font-size:.49rem; line-height:1.45; text-transform:uppercase; letter-spacing:.1em; color:var(--espresso-60); text-align:center; }
 
@@ -908,9 +910,13 @@ h1,h2,h3,h4{
   .newsletter-rebanho-ativo .newsletter-ovelha-braco{ animation-name:newsletter-ovelha-apontar-mobile; }
 }
 @media (max-width: 640px){
-  .hero{ padding:22px 0 20px; }
+  .hero{ max-width:100%; padding:22px 0 20px; overflow:hidden; }
+  .hero .container{ padding-inline:16px; }
+  .hero-conteudo,.hero-texto{ width:100%; min-width:0; max-width:100%; }
   .hero-visual{ display:none; }
   .hero + .secao{ padding-top:28px; }
+  .hero-acoes{ width:100%; flex-direction:column; gap:10px; }
+  .hero-acoes .btn{ width:100%; max-width:100%; padding-inline:18px; text-align:center; }
   .hero-texto-carrossel{ max-width:100%; font-size:.82rem; }
   .secao-texto-carrossel{ width:100%; font-size:.84rem; }
   .grade-categorias{ grid-template-columns: 1fr 1fr; gap:12px; }
@@ -918,13 +924,36 @@ h1,h2,h3,h4{
   .cartao-categoria-topo{ height:96px; margin-bottom:12px; }
   .cartao-categoria h3{ font-size:.95rem; }
   .cartao-categoria span{ font-size:.66rem; }
-  .grade-promessa{ grid-template-columns: 1fr; }
+  .grade-promessa{ grid-template-columns:1fr; gap:26px; text-align:left; }
+  .item-promessa{
+    display:grid;
+    grid-template-columns:34px minmax(0,1fr);
+    grid-template-rows:auto auto;
+    column-gap:14px;
+    align-items:start;
+  }
+  .item-promessa svg{
+    grid-column:1;
+    grid-row:1 / span 2;
+    width:28px;
+    height:28px;
+    margin:1px 0 0;
+    justify-self:center;
+  }
+  .item-promessa h4{ grid-column:2; margin:0 0 5px; line-height:1.25; }
+  .item-promessa p{ grid-column:2; line-height:1.5; }
   .rodape-grade{ grid-template-columns: 1fr; }
   .newsletter{ padding:36px 26px; }
   .newsletter h3{ font-size:1.25rem; }
   .newsletter-rebanho{ min-width:0; height:118px; }
-  .form-newsletter{ width:100%; }
-  .form-newsletter input{ flex:1; min-width:0; }
+  .form-newsletter{ width:100%; display:flex; flex-direction:column; gap:10px; }
+  .form-newsletter input,
+  .form-newsletter .btn{
+    width:100%;
+    min-width:0;
+    max-width:none;
+    box-sizing:border-box;
+  }
   .secao{ padding: 56px 0; }
   .secao-manifesto-animada{ padding-top:82px; }
   .ovelha-surpresa-posicao{ top:2px; width:96px; height:66px; }
