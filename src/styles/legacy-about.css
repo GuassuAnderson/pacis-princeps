@@ -90,6 +90,65 @@
 .ornamento-divisor svg { width: 28px; height: 28px; stroke: var(--ouro); flex-shrink: 0; }
 
 /* Seção de história — blocos alternados */
+.sobre-pagina-rede {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.sobre-pagina-rede > .secao {
+  position: relative;
+  z-index: 1;
+}
+.sobre-historias-conteudo {
+  position: relative;
+}
+.sobre-rede-fe {
+  position: absolute;
+  inset: 18px 0 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.sobre-rede-fe-tracos { width: 100%; height: 100%; }
+.sobre-rede-fe-linhas {
+  fill: none;
+  stroke: rgba(128,62,36,.12);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.sobre-rede-fe-pontos {
+  fill: rgba(207,154,68,.42);
+  stroke: rgba(255,250,243,.92);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+.sobre-rede-fe-simbolo {
+  position: absolute;
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid rgba(207,154,68,.62);
+  border-radius: 50%;
+  background: rgba(255,250,243,.97);
+  box-shadow: 0 5px 18px rgba(128,62,36,.06);
+}
+.sobre-rede-fe-simbolo svg {
+  width: 72%;
+  height: 72%;
+  fill: none;
+  stroke: rgba(128,62,36,.78);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sobre-rede-fe-maos { top: 4%; left: max(14px, calc((100% - 1280px) / 2)); }
+.sobre-rede-fe-ovelha { top: 24%; right: max(14px, calc((100% - 1280px) / 2)); }
+.sobre-rede-fe-crucifixo { top: 57%; left: max(14px, calc((100% - 1280px) / 2)); }
+.sobre-rede-fe-rosario { top: 80%; right: max(14px, calc((100% - 1280px) / 2)); }
+.sobre-rede-fe-ovelha svg circle { fill: rgba(128,62,36,.78); stroke: none; }
+.sobre-rede-fe-rosario svg { stroke-width: 3; }
 .historia-bloco {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -407,6 +466,8 @@
 
 /* Responsivo */
 @media (max-width: 900px) {
+  .sobre-rede-fe-tracos { width: 138%; margin-left: -19%; opacity: .72; }
+  .sobre-rede-fe-simbolo { display: none; }
   .sobre-hero-conteudo { grid-template-columns: 1fr; }
   .foto-hero { order: -1; max-width: 360px; margin: 0 auto; }
   .historia-bloco { grid-template-columns: 1fr; gap: 32px; }
@@ -417,6 +478,7 @@
   .galeria-sobre .foto-g { grid-row: span 1; aspect-ratio: 4/3; height: auto; }
 }
 @media (max-width: 600px) {
+  .sobre-rede-fe-tracos { width: 190%; margin-left: -45%; opacity: .55; }
   .faixa-valores { padding: 40px 22px; }
   .cta-sobre { padding: 40px 22px; }
   .grade-equipe { grid-template-columns: 1fr; }

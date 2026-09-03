@@ -5,6 +5,7 @@ import {
   ScrollReveal,
 } from "@/components/about-interactions";
 import { AnimatedTitle } from "@/components/animated-title";
+import { AboutFaithNetwork } from "@/components/about-faith-network";
 
 const stories = [
   {
@@ -84,8 +85,10 @@ export default function About() {
           </div>
         </div>
       </section>
-      <section className="secao">
-        <div className="container">
+      <div className="sobre-pagina-rede">
+        <AboutFaithNetwork />
+      <section className="secao sobre-historias-secao">
+        <div className="container sobre-historias-conteudo">
           {stories.map((story, index) => (
             <ScrollReveal
               key={story.title}
@@ -309,6 +312,7 @@ export default function About() {
           </ScrollReveal>
         </div>
       </section>
+      </div>
     </>
   );
 }
