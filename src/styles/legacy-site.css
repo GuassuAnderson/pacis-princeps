@@ -366,10 +366,88 @@ h1,h2,h3,h4{
   position:relative;
   display:flex;
   justify-content:center;
-  width:min(100%,280px);
+  width:min(100%,540px);
   margin-inline:auto;
   margin-top:10px;
 }
+.hero-produtos-carrossel{
+  position:relative;
+  width:100%;
+  height:370px;
+  display:grid;
+  place-items:center;
+}
+.hero-produtos-palco{
+  position:relative;
+  width:100%;
+  height:340px;
+  perspective:1100px;
+}
+.hero-produto-moldura{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:230px;
+  height:300px;
+  overflow:hidden;
+  border:8px solid var(--marfim);
+  border-radius:118px 118px 22px 22px;
+  outline:1px solid rgba(128,62,36,.2);
+  background:var(--marfim);
+  box-shadow:0 18px 38px rgba(53,28,17,.18);
+  transform-origin:center;
+  transition:transform .8s cubic-bezier(.22,1,.36,1),opacity .55s ease,filter .55s ease;
+  will-change:transform,opacity;
+}
+.hero-produto-moldura img{ object-fit:cover; }
+.hero-produto-moldura > span{
+  position:absolute;
+  z-index:2;
+  right:8px;
+  bottom:8px;
+  left:8px;
+  padding:9px 11px;
+  overflow:hidden;
+  border:1px solid rgba(255,250,243,.42);
+  border-radius:12px;
+  background:rgba(53,28,17,.78);
+  color:var(--marfim);
+  font-size:.7rem;
+  font-weight:600;
+  line-height:1.25;
+  text-align:center;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  backdrop-filter:blur(7px);
+}
+.hero-produto-centro{ z-index:5; transform:translate(-50%,-50%) scale(1); opacity:1; }
+.hero-produto-esquerda-1{ z-index:4; transform:translate(-105%,-50%) scale(.78) rotateY(10deg); opacity:.92; filter:saturate(.88); }
+.hero-produto-direita-1{ z-index:4; transform:translate(5%,-50%) scale(.78) rotateY(-10deg); opacity:.92; filter:saturate(.88); }
+.hero-produto-esquerda-2{ z-index:3; transform:translate(-150%,-50%) scale(.58) rotateY(18deg); opacity:.62; filter:saturate(.68); }
+.hero-produto-direita-2{ z-index:3; transform:translate(50%,-50%) scale(.58) rotateY(-18deg); opacity:.62; filter:saturate(.68); }
+.hero-carrossel-seta{
+  position:absolute;
+  z-index:8;
+  top:48%;
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(128,62,36,.2);
+  border-radius:50%;
+  background:rgba(255,250,243,.94);
+  color:var(--terracota);
+  box-shadow:0 7px 18px rgba(53,28,17,.12);
+  cursor:pointer;
+  transform:translateY(-50%);
+}
+.hero-carrossel-seta:hover{ background:var(--terracota); color:var(--marfim); }
+.hero-carrossel-seta svg{ width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.hero-carrossel-anterior{ left:3px; }
+.hero-carrossel-proximo{ right:3px; }
+.hero-carrossel-pontos{ position:absolute; z-index:8; bottom:0; display:flex; gap:7px; }
+.hero-carrossel-pontos button{ width:7px; height:7px; padding:0; border:0; border-radius:50%; background:rgba(128,62,36,.25); cursor:pointer; transition:width .3s ease,background .3s ease; }
+.hero-carrossel-pontos button.ativo{ width:24px; border-radius:999px; background:var(--terracota); }
 .arco-moldura{
   width: 100%; max-width: 280px;
   aspect-ratio: 3/4;
@@ -816,7 +894,10 @@ h1,h2,h3,h4{
   .hero-visual{ order:-1; }
   .hero{ padding:28px 0 38px; }
   .arco-moldura{ max-width:235px; }
-  .hero-visual{ width:min(100%,235px); margin-top:0; }
+  .hero-visual{ width:min(100%,510px); margin-top:0; }
+  .hero-produtos-carrossel{ height:340px; }
+  .hero-produtos-palco{ height:310px; }
+  .hero-produto-moldura{ width:205px; height:270px; }
   .hero-conteudo{ gap:28px; }
   .hero-texto h1{ font-size:clamp(2.2rem,8vw,3rem); }
   .nav-links{
@@ -913,7 +994,16 @@ h1,h2,h3,h4{
   .hero{ max-width:100%; padding:22px 0 20px; overflow:hidden; }
   .hero .container{ padding-inline:16px; }
   .hero-conteudo,.hero-texto{ width:100%; min-width:0; max-width:100%; }
-  .hero-visual{ display:none; }
+  .hero-visual{ display:flex; width:100%; }
+  .hero-produtos-carrossel{ height:275px; }
+  .hero-produtos-palco{ height:250px; }
+  .hero-produto-moldura{ width:165px; height:220px; border-width:6px; }
+  .hero-produto-esquerda-1{ transform:translate(-102%,-50%) scale(.72) rotateY(10deg); }
+  .hero-produto-direita-1{ transform:translate(2%,-50%) scale(.72) rotateY(-10deg); }
+  .hero-produto-esquerda-2{ transform:translate(-138%,-50%) scale(.5) rotateY(18deg); }
+  .hero-produto-direita-2{ transform:translate(38%,-50%) scale(.5) rotateY(-18deg); }
+  .hero-carrossel-seta{ width:34px; height:34px; }
+  .hero-visual .medalhao-flutuante{ display:none; }
   .hero + .secao{ padding-top:28px; }
   .hero-acoes{ width:100%; flex-direction:column; gap:10px; }
   .hero-acoes .btn{ width:100%; max-width:100%; padding-inline:18px; text-align:center; }

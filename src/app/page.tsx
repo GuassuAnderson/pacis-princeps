@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CategoryIcon } from "@/components/category-icon";
 import { HomeSheepSurprise } from "@/components/home-sheep-surprise";
+import { HeroProductCarousel } from "@/components/hero-product-carousel";
 import { Newsletter } from "@/components/newsletter";
 import { NewsletterSheepFlock } from "@/components/newsletter-sheep-flock";
 import { ProductCard } from "@/components/product-card";
@@ -76,15 +77,7 @@ export default function Home() {
             </div>
           </div>
           <div className="hero-visual">
-            <div className="arco-moldura">
-              <Image
-                src="/images/logo-foto.jpeg"
-                alt="Bom Pastor — identidade Pacis Princeps"
-                width={700}
-                height={900}
-                priority
-              />
-            </div>
+            <HeroProductCarousel products={products} />
             <div className="medalhao-flutuante">
               <svg className="medalhao-ovelha" viewBox="0 0 124 112" aria-hidden="true">
                 <path className="medalhao-ovelha-silhueta" d="M26 34C19 29 10 31 6 38c-4 7 2 14 12 14 3 0 6-1 9-3v23c0 22 15 36 35 36s35-14 35-36V49c3 2 6 3 9 3 10 0 16-7 12-14-4-7-13-9-20-4-2-6-6-10-12-11 1-8-6-13-13-11-4-7-18-7-22 0-7-2-14 3-13 11-6 1-10 5-12 11Z" />

@@ -3,6 +3,7 @@ import ConnectionsView from "@/components/connections-view";
 import { ScrollReveal } from "@/components/about-interactions";
 import { AnimatedTitle } from "@/components/animated-title";
 import { ConnectionNetwork } from "@/components/connection-network";
+import { NewsletterSheepFlock } from "@/components/newsletter-sheep-flock";
 export default function ConnectionPage() {
   return (
     <main>
@@ -73,6 +74,9 @@ export default function ConnectionPage() {
                 Cada edição é única: um tema, um pregador e muita graça.
                 Siga-nos para receber o aviso da próxima.
               </p>
+            </div>
+            <div className="faixa-proxima-rebanho">
+              <NewsletterSheepFlock />
             </div>
             <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
               <Link href="/contato" className="btn btn-ouro btn-primario">

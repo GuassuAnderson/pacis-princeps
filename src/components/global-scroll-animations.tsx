@@ -35,15 +35,31 @@ const textSelector = [
   "button[type='submit']",
 ].join(",");
 
+function clearGlobalAnimations(root: ParentNode = document) {
+  if (root instanceof HTMLElement) {
+    root.classList.remove("global-scroll-reveal", "global-scroll-visivel");
+  }
+
+  root.querySelectorAll<HTMLElement>(".global-scroll-reveal").forEach((element) => {
+    element.classList.remove("global-scroll-reveal", "global-scroll-visivel");
+  });
+
+  root.querySelectorAll<HTMLElement>(".global-text-reveal").forEach((element) => {
+    element.classList.remove("global-text-reveal");
+    element.style.removeProperty("--global-text-delay");
+  });
+}
+
 export function GlobalScrollAnimations() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === "/sobre" || pathname === "/conexao") return;
+    if (pathname === "/sobre" || pathname === "/conexao") {
+      clearGlobalAnimations();
+      return;
+    }
 
-    let observer: IntersectionObserver;
-    let mutationObserver: MutationObserver;
-    const prepared = new WeakSet<Element>();
+    const prepared = new Set<HTMLElement>();
 
     const prepare = () => {
       const groups = [...document.querySelectorAll<HTMLElement>(groupSelector)];
@@ -69,7 +85,7 @@ export function GlobalScrollAnimations() {
       });
     };
 
-    observer = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
@@ -81,13 +97,14 @@ export function GlobalScrollAnimations() {
     );
 
     const frame = window.requestAnimationFrame(prepare);
-    mutationObserver = new MutationObserver(prepare);
+    const mutationObserver = new MutationObserver(prepare);
     mutationObserver.observe(document.body, { childList: true, subtree: true });
 
     return () => {
       window.cancelAnimationFrame(frame);
       observer.disconnect();
       mutationObserver.disconnect();
+      prepared.forEach((group) => clearGlobalAnimations(group));
     };
   }, [pathname]);
 

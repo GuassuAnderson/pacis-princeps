@@ -322,6 +322,18 @@
 .faixa-proxima-texto .rotulo { color: var(--ouro-suave); margin-bottom: 10px; display: block; }
 .faixa-proxima-texto h3 { color: var(--marfim); font-size: clamp(1.6rem, 2.8vw, 2.2rem); margin-bottom: 8px; }
 .faixa-proxima-texto p { color: rgba(255,250,243,.72); max-width: 46ch; }
+.faixa-proxima-rebanho {
+  flex: 1 1 250px;
+  width: min(290px,100%);
+  max-width: 290px;
+  margin: -18px auto -24px;
+}
+.faixa-proxima-rebanho .newsletter-rebanho { min-width: 0; height: 116px; }
+.faixa-proxima-rebanho .newsletter-ovelha-la { fill: var(--marfim); stroke: var(--ouro-suave); }
+.faixa-proxima-rebanho .newsletter-ovelha-rosto { fill: var(--areia); }
+.faixa-proxima-rebanho .newsletter-ovelha-traco { stroke: var(--ouro-suave); }
+.faixa-proxima-rebanho .newsletter-ovelha-olho { fill: var(--espresso); }
+.faixa-proxima-rebanho .newsletter-ovelhinha { filter: drop-shadow(0 5px 6px rgba(53,28,17,.22)); }
 .faixa-proxima .btn-ouro { background: var(--ouro); color: var(--espresso); border: none; }
 .faixa-proxima .btn-ouro:hover { background: var(--ouro-suave); }
 
@@ -452,6 +464,7 @@
   .grade-conexoes { grid-template-columns: 1fr; }
   .galeria-modal { grid-template-columns: 1fr 1fr; }
   .faixa-proxima { padding: 36px 24px; flex-direction: column; align-items: flex-start; }
+  .faixa-proxima-rebanho { align-self: center; margin: -8px auto -12px; }
   .modal-conexao-corpo { padding: 24px 22px 32px; }
   .sobre-carrossel-seta { width: 36px; height: 36px; }
 }
