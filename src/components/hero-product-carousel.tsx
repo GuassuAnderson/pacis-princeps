@@ -24,12 +24,14 @@ export function HeroProductCarousel({ products }: { products: Product[] }) {
     setCurrent((index) => (index + direction + items.length) % items.length);
   };
 
+  if (!items.length) return <div className="hero-produtos-carrossel"><Image src="/images/nossa-historia/identidade-pacis.webp" alt="Pacis Princeps — Artigos Religiosos" width={420} height={256} sizes="(max-width: 860px) 80vw, 420px" style={{ width: "100%", height: "auto", margin: "auto" }}/></div>;
+
   return (
     <div
       className="hero-produtos-carrossel"
       role="region"
       aria-roledescription="carrossel"
-      aria-label="Produtos em destaque"
+      aria-label="Carrossel de produtos do início"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
@@ -50,17 +52,17 @@ export function HeroProductCarousel({ products }: { products: Product[] }) {
               tabIndex={active ? 0 : -1}
               key={product.id}
             >
-              <Image src={product.image} alt={product.name} fill sizes="(max-width: 860px) 230px, 280px" unoptimized />
+              <Image src={product.image} alt={product.name} fill sizes="(max-width: 860px) 230px, 280px" />
               <span>{product.name}</span>
             </Link>
           );
         })}
       </div>
 
-      <button className="hero-carrossel-seta hero-carrossel-anterior" type="button" onClick={() => move(-1)} aria-label="Produto anterior">
+      <button className="hero-carrossel-seta hero-carrossel-anterior" type="button" disabled={items.length<2} onClick={() => move(-1)} aria-label="Produto anterior">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
       </button>
-      <button className="hero-carrossel-seta hero-carrossel-proximo" type="button" onClick={() => move(1)} aria-label="Próximo produto">
+      <button className="hero-carrossel-seta hero-carrossel-proximo" type="button" disabled={items.length<2} onClick={() => move(1)} aria-label="Próximo produto">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
       </button>
 

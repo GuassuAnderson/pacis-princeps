@@ -1,18 +1,29 @@
-import Image from "next/image";
 import Link from "next/link";
 import { CategoryIcon } from "@/components/category-icon";
 import { HomeSheepSurprise } from "@/components/home-sheep-surprise";
+import { HistoryBrandPhoto } from "@/components/history-brand-photo";
 import { HeroProductCarousel } from "@/components/hero-product-carousel";
 import { Newsletter } from "@/components/newsletter";
 import { NewsletterSheepFlock } from "@/components/newsletter-sheep-flock";
 import { ProductCard } from "@/components/product-card";
-import { categories, products } from "@/lib/products";
+import { categories, type Product } from "@/lib/products";
+import { listProducts } from "@/lib/server/catalog";
 
 function ScrollingNote({ text }: { text: string }) {
   return <div className="secao-texto-carrossel" aria-label={text}><div className="secao-texto-trilho"><span>{text}</span><i aria-hidden="true">✦</i><span aria-hidden="true">{text}</span><i aria-hidden="true">✦</i></div></div>;
 }
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+export default async function Home() {
+  let products: Product[] = [];
+  let unavailable = false;
+  const [featuredResult, heroResult] = await Promise.allSettled([
+    listProducts({ featured: "true", limit: 8 }),
+    listProducts({ inHero: "true", limit: 5 }),
+  ]);
+  if (featuredResult.status === "fulfilled") products = featuredResult.value.items;
+  else unavailable = true;
+  const heroProducts = heroResult.status === "fulfilled" ? heroResult.value.items : [];
   return (
     <>
       <section className="hero">
@@ -77,13 +88,13 @@ export default function Home() {
             </div>
           </div>
           <div className="hero-visual">
-            <HeroProductCarousel products={products} />
+            <HeroProductCarousel products={heroProducts} />
             <div className="medalhao-flutuante">
               <svg className="medalhao-ovelha" viewBox="0 0 124 112" aria-hidden="true">
                 <path className="medalhao-ovelha-silhueta" d="M26 34C19 29 10 31 6 38c-4 7 2 14 12 14 3 0 6-1 9-3v23c0 22 15 36 35 36s35-14 35-36V49c3 2 6 3 9 3 10 0 16-7 12-14-4-7-13-9-20-4-2-6-6-10-12-11 1-8-6-13-13-11-4-7-18-7-22 0-7-2-14 3-13 11-6 1-10 5-12 11Z" />
                 <path className="medalhao-ovelha-detalhe" d="M27 39c-6-5-13-4-17 1 3 6 10 7 17 3m70-4c6-5 13-4 17 1-3 6-10 7-17 3M39 24c4 5 9 6 14 2 5 5 13 5 18 0 5 4 10 3 14-2" />
               </svg>
-              <strong>+8mil</strong>
+              <strong>+3mil</strong>
               <span>Famílias atendidas</span>
             </div>
           </div>
@@ -105,6 +116,7 @@ export default function Home() {
                 <ProductCard key={product.id} product={product} />
               ))}
           </div>
+          {!products.length && <p role="status" style={{ textAlign: "center", padding: "24px 0", color: "var(--espresso-60)" }}>{unavailable ? "Não foi possível carregar os produtos agora. Tente novamente em instantes." : "Em breve, novidades selecionadas para você."}</p>}
           <div className="ver-todos-wrap">
             <Link href="/produtos" className="btn btn-contorno">
               Ver catálogo completo
@@ -200,14 +212,7 @@ export default function Home() {
       <section className="secao secao-manifesto-animada">
         <HomeSheepSurprise />
         <div className="container manifesto">
-          <div className="manifesto-visual">
-            <Image
-              src="/images/logo-foto.jpeg"
-              alt="Identidade Pacis Princeps"
-              width={700}
-              height={850}
-            />
-          </div>
+          <HistoryBrandPhoto />
           <div className="manifesto-texto">
             <span className="rotulo">Nossa história</span>
             <h2>Uma loja para quem quer viver a fé, não só guardá-la</h2>

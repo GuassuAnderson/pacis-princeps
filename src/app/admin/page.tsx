@@ -1,2 +1,14 @@
-import Link from "next/link";import {categoryName,money,products} from "@/lib/products";
-export default function Dashboard(){const metrics=[["Produtos cadastrados",products.length],["Em destaque",products.filter(p=>p.featured).length],["Unidades em estoque",products.reduce((s,p)=>s+p.stock,0)],["Categorias",new Set(products.map(p=>p.category)).size]];return <><div className="grade-metricas">{metrics.map(([label,value])=><div className="card-metrica" key={label}><div className="card-metrica-top"><div><div className="card-metrica-label">{label}</div><div className="card-metrica-valor">{value}</div></div><div className="card-metrica-icone"><svg viewBox="0 0 24 24" fill="none" strokeWidth="1.7"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 12h8M12 8v8"/></svg></div></div><span className="card-metrica-delta">Catálogo atualizado</span></div>)}</div><div className="painel-card" style={{marginBottom:28}}><div className="painel-card-topo"><h3>Acesso rápido — Produtos</h3><Link href="/admin/produtos" className="btn btn-primario btn-sm">Gerenciar todos</Link></div><table className="tabela-produtos"><thead><tr><th>Produto</th><th>Categoria</th><th>Preço</th><th>Estoque</th><th>Ações</th></tr></thead><tbody>{products.slice(0,5).map(p=><tr key={p.id}><td><strong>{p.name}</strong></td><td><span className="badge-cat">{categoryName(p.category)}</span></td><td>{money(p.price)}</td><td className={p.stock<10?"badge-estoque-baixo":"badge-estoque-ok"}>{p.stock} un.</td><td><Link href="/admin/produtos" className="btn-acao">Editar</Link></td></tr>)}</tbody></table></div></>}
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { currentAdmin } from "@/lib/server/auth";
+import { catalogMetrics, listProducts } from "@/lib/server/catalog";
+import { categoryName,money } from "@/lib/products";
+
+export default async function Dashboard() {
+  if (!(await currentAdmin())) redirect("/login");
+  const [metrics,products] = await Promise.all([catalogMetrics(),listProducts({limit:5},true)]);
+  const cards=[["Produtos cadastrados",metrics.total],["Em destaque",metrics.featured],["Unidades em estoque",metrics.stock],["Categorias",metrics.categories]];
+  return <><div className="grade-metricas">{cards.map(([label,value])=><div className="card-metrica" key={label}><div className="card-metrica-label">{label}</div><div className="card-metrica-valor">{value}</div><span className="card-metrica-delta">Dados do catálogo</span></div>)}</div>
+    <div className="painel-card"><div className="painel-card-topo"><h3>Produtos recentes</h3><Link href="/admin/produtos" className="btn btn-primario btn-sm">Gerenciar produtos</Link></div><div style={{overflowX:"auto"}}><table className="tabela-produtos"><thead><tr><th>Produto</th><th>Categoria</th><th>Preço</th><th>Estoque</th><th>Publicação</th></tr></thead><tbody>{products.items.map(product=><tr key={product.id}><td><strong>{product.name}</strong></td><td>{categoryName(product.category)}</td><td>{money(product.price)}</td><td>{product.stock}</td><td>{product.active ? "Publicado" : "Não publicado"}</td></tr>)}{!products.total && <tr><td colSpan={5} className="tabela-vazia">Cadastre o primeiro produto para começar.</td></tr>}</tbody></table></div></div>
+  </>;
+}

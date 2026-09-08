@@ -1,1 +1,44 @@
-{"name":"pacis-princeps","version":"2.0.0","private":true,"scripts":{"dev":"next dev","build":"next build","start":"next start","lint":"eslint ."},"dependencies":{"@tailwindcss/postcss":"latest","lucide-react":"latest","next":"latest","react":"latest","react-dom":"latest","tailwindcss":"latest"},"devDependencies":{"@netlify/plugin-nextjs":"^5.15.13","@types/node":"latest","@types/react":"latest","@types/react-dom":"latest","eslint":"latest","eslint-config-next":"latest","typescript":"latest"}}
+{
+  "name": "pacis-princeps",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "tsx --test tests/catalog.test.ts",
+    "db:check": "node scripts/check-database.mjs",
+    "db:migrate": "node scripts/migrate-database.mjs",
+    "admin:create": "node scripts/create-admin.mjs",
+    "typecheck": "tsc --noEmit --incremental false",
+    "test:e2e": "node tests/catalog-browser.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.116.0",
+    "@tailwindcss/postcss": "latest",
+    "bcryptjs": "^3.0.3",
+    "jose": "^6.2.12",
+    "lucide-react": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "sharp": "^0.35.4",
+    "tailwindcss": "latest",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "@netlify/plugin-nextjs": "^5.15.13",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "latest",
+    "@types/pg": "^8.23.1",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
+    "pg": "^8.23.0",
+    "tsx": "^4.23.13",
+    "typescript": "latest"
+  }
+}

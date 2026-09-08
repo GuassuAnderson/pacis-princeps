@@ -54,7 +54,9 @@ export function GlobalScrollAnimations() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === "/sobre" || pathname === "/conexao") {
+    // These screens stream database results or contain interactive forms.
+    // Do not mutate their HTML before React finishes hydrating each segment.
+    if (pathname === "/sobre" || pathname === "/conexao" || pathname.startsWith("/admin") || pathname.startsWith("/produto") || pathname === "/carrinho") {
       clearGlobalAnimations();
       return;
     }
