@@ -11,7 +11,7 @@ export function AboutFaithNetwork() {
   return (
     <div className="sobre-rede-fe" aria-hidden="true">
       <svg className="sobre-rede-fe-tracos" viewBox="0 0 1200 4000" preserveAspectRatio="none">
-        <g className="sobre-rede-fe-linhas">
+        <g className="sobre-rede-fe-linhas" fill="none">
           <path d="M-40 105 118 230 315 142 500 315 706 194 930 326 1110 218 1245 350" />
           <path d="M118 230 244 465 92 655 286 802 72 1012 262 1182" />
           <path d="M500 315 454 568 646 720 555 932 770 1095 686 1325 900 1510" />
