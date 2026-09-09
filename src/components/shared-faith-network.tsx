@@ -38,5 +38,5 @@ export function SharedFaithNetwork() {
     return () => { cancelAnimationFrame(frame); resize.disconnect(); mutation.disconnect(); };
   }, []);
 
-  return <div ref={ref} className="shared-faith-network" aria-hidden="true" style={{ top: top ?? 0, visibility: top === null ? 'hidden' : 'visible' }}><AboutFaithNetwork /></div>;
+  return <div ref={ref} className="shared-faith-network" aria-hidden="true" style={{ top: top ?? 0, visibility: top === null ? 'hidden' : 'visible' }}><AboutFaithNetwork tiled /></div>;
 }

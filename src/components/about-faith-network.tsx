@@ -1,4 +1,7 @@
-export function AboutFaithNetwork() {
+import { useId } from 'react';
+
+export function AboutFaithNetwork({ tiled = false }: { tiled?: boolean }) {
+  const patternId = useId();
   const points = [
     [315,142],[500,315],[706,194],[930,326],[244,465],[454,568],[646,720],[957,710],
     [286,802],[555,932],[770,1095],[1010,1120],[262,1182],[686,1325],[470,1430],
@@ -8,9 +11,7 @@ export function AboutFaithNetwork() {
     [245,3650],[950,3820],[1135,3710],
   ];
 
-  return (
-    <div className="sobre-rede-fe" aria-hidden="true">
-      <svg className="sobre-rede-fe-tracos" viewBox="0 0 1200 4000" preserveAspectRatio="none">
+  const drawing = <>
         <g className="sobre-rede-fe-linhas" fill="none">
           <path d="M-40 105 118 230 315 142 500 315 706 194 930 326 1110 218 1245 350" />
           <path d="M118 230 244 465 92 655 286 802 72 1012 262 1182" />
@@ -26,6 +27,12 @@ export function AboutFaithNetwork() {
         <g className="sobre-rede-fe-pontos">
           {points.map(([x,y]) => <circle key={`${x}-${y}`} cx={x} cy={y} r="4" />)}
         </g>
+  </>;
+
+  return (
+    <div className="sobre-rede-fe" aria-hidden="true">
+      <svg className="sobre-rede-fe-tracos" viewBox={tiled ? undefined : "0 0 1200 4000"} preserveAspectRatio={tiled ? "xMidYMin meet" : "none"}>
+        {tiled ? <><defs><pattern id={patternId} width="1200" height="4000" patternUnits="userSpaceOnUse" x="50%" patternTransform="translate(-600 0)">{drawing}</pattern></defs><rect width="100%" height="100%" fill={`url(#${patternId})`} /></> : drawing}
       </svg>
 
       <div className="sobre-rede-fe-simbolo sobre-rede-fe-maos">

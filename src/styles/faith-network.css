@@ -54,3 +54,12 @@
 @media (max-width: 600px) {
   .sobre-rede-fe-tracos { width: 190%; margin-left: -45%; opacity: .55; }
 }
+
+/* Shared pages repeat the drawing in pixel units instead of stretching its viewBox.
+   Only the visible area changes with page height; lines and dots keep their shape. */
+.shared-faith-network .sobre-rede-fe-tracos {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin-left: 0;
+}
