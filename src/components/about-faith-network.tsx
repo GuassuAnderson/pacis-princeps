@@ -1,7 +1,11 @@
-import { useId } from 'react';
+"use client";
+import { useId, useRef } from 'react';
+import { useFaithSymbolPositions } from './use-faith-symbol-positions';
 
 export function AboutFaithNetwork({ tiled = false }: { tiled?: boolean }) {
   const patternId = useId();
+  const network = useRef<HTMLDivElement>(null);
+  const symbolStyle = useFaithSymbolPositions(network);
   const points = [
     [315,142],[500,315],[706,194],[930,326],[244,465],[454,568],[646,720],[957,710],
     [286,802],[555,932],[770,1095],[1010,1120],[262,1182],[686,1325],[470,1430],
@@ -30,19 +34,23 @@ export function AboutFaithNetwork({ tiled = false }: { tiled?: boolean }) {
   </>;
 
   return (
-    <div className="sobre-rede-fe" aria-hidden="true">
+    <div ref={network} className="sobre-rede-fe" aria-hidden="true">
       <svg className="sobre-rede-fe-tracos" viewBox={tiled ? undefined : "0 0 1200 4000"} preserveAspectRatio={tiled ? "xMidYMin meet" : "none"}>
         {tiled ? <><defs><pattern id={patternId} width="1200" height="4000" patternUnits="userSpaceOnUse" x="50%" patternTransform="translate(-600 0)">{drawing}</pattern></defs><rect width="100%" height="100%" fill={`url(#${patternId})`} /></> : drawing}
       </svg>
 
-      <div className="sobre-rede-fe-simbolo sobre-rede-fe-maos">
+      <div className="sobre-rede-fe-simbolo sobre-rede-fe-maos" style={symbolStyle(0)}>
         <svg viewBox="0 0 100 100">
-          <path d="M46 67 38 59l-3-29c-.4-4 2.2-7.5 5.8-7.8 3.8-.3 6.8 2.8 6.8 6.8v31M54 67l8-8 3-29c.4-4-2.2-7.5-5.8-7.8-3.8-.3-6.8 2.8-6.8 6.8v31M40.7 50v10M59.3 50v10" />
-          <path d="m38 59-13-10L7 64l18 23 19-15-6-13ZM62 59l13-10 18 15-18 23-19-15 6-13ZM21 55l10 12M79 55 69 67M50 15V2M29 19 20 7M71 19 80 7M19 34 5 26M81 34l14-8" />
+          {/* Halo, veil and flowing mantle; open strokes match the other symbols. */}
+          <path d="M31 28a20 20 0 1 1 38 0" />
+          <path d="M18 87c9-16 10-32 13-48 2-15 8-24 19-24s17 9 19 24c3 16 4 32 13 48-19 8-45 8-64 0Z" />
+          <path d="M39 34c0-8 4-13 11-13s11 5 11 13v6c0 9-5 15-11 15s-11-6-11-15v-6Z" />
+          <path d="M40 32c4-1 8-4 10-8 2 4 6 7 10 8M43 41l3 1M54 42l3-1M47 49q3 2 6 0" />
+          <path d="M34 53 29 80M66 53l5 27M35 63l10 10M65 63 55 73M45 73V63c0-4 2-7 5-9 3 2 5 5 5 9v10M50 56v20M45 79l-5 9M55 79l5 9" />
         </svg>
       </div>
 
-      <div className="sobre-rede-fe-simbolo sobre-rede-fe-ovelha">
+      <div className="sobre-rede-fe-simbolo sobre-rede-fe-ovelha" style={symbolStyle(1)}>
         <svg viewBox="0 0 100 100">
           <path d="M24 68c-10-1-16-9-14-18-5-8 1-18 11-18 0-10 11-16 20-11 6-9 20-9 27 0 9-5 20 2 20 12 9 2 12 13 6 20 3 10-5 18-15 17H27" />
           <path d="M34 39c2-12 8-18 16-18s14 6 16 18v18c0 13-7 22-16 22s-16-9-16-22V39ZM35 42c-11-7-20-2-20 7 6 5 13 5 20 0M65 42c11-7 20-2 20 7-6 5-13 5-20 0" />
@@ -51,11 +59,11 @@ export function AboutFaithNetwork({ tiled = false }: { tiled?: boolean }) {
         </svg>
       </div>
 
-      <div className="sobre-rede-fe-simbolo sobre-rede-fe-crucifixo">
+      <div className="sobre-rede-fe-simbolo sobre-rede-fe-crucifixo" style={symbolStyle(2)}>
         <svg viewBox="0 0 100 100"><path d="M43 8h14v24h24v14H57v46H43V46H19V32h24V8ZM35 92h30" /></svg>
       </div>
 
-      <div className="sobre-rede-fe-simbolo sobre-rede-fe-rosario">
+      <div className="sobre-rede-fe-simbolo sobre-rede-fe-rosario" style={symbolStyle(3)}>
         <svg viewBox="0 0 100 100">
           <ellipse cx="50" cy="40" rx="29" ry="34" strokeDasharray="1 10" strokeLinecap="round" />
           <path d="M50 74v18M41 82h18" /><circle cx="50" cy="74" r="3" />
