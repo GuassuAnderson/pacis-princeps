@@ -14,6 +14,8 @@ export async function testConnections({page,context,origin,photos,output}) {
   const edition='https://www.instagram.com/reel/edicao_teste/';
   await page.getByLabel('Instagram do pregador',{exact:true}).fill(profile);
   await page.getByLabel('Link da edição no Instagram',{exact:true}).fill(edition);
+  await page.getByLabel('Texto do link do pregador',{exact:true}).fill('Siga o Marcelo');
+  await page.getByLabel('Texto do link da edição',{exact:true}).fill('Veja no Instagram');
   await page.getByLabel('Resumo *',{exact:true}).fill('Resumo da edição cadastrada no teste completo.');
   await page.getByLabel('Conteúdo completo da pregação',{exact:true}).fill('Primeiro parágrafo.\nSegundo parágrafo. <img src=x onerror=alert(1)>');
   await page.getByLabel('Fotos do evento',{exact:true}).setInputFiles(photos);
@@ -27,9 +29,13 @@ export async function testConnections({page,context,origin,photos,output}) {
   assert.equal(list.items[0].images.length,2);
   assert.equal(list.items[0].preacherInstagram,profile);
   assert.equal(list.items[0].editionInstagram,edition);
+  assert.equal(list.items[0].preacherInstagramLabel,'Siga o Marcelo');
+  assert.equal(list.items[0].editionInstagramLabel,'Veja no Instagram');
   const first=list.items[0].images[0].id;
   await page.getByRole('button',{name:'Editar',exact:true}).click();
   assert.equal(await page.getByLabel('Instagram do pregador',{exact:true}).inputValue(),profile);
+  assert.equal(await page.getByLabel('Texto do link do pregador',{exact:true}).inputValue(),'Siga o Marcelo');
+  assert.equal(await page.getByLabel('Texto do link da edição',{exact:true}).inputValue(),'Veja no Instagram');
   assert.equal(await page.getByLabel('Link da edição no Instagram',{exact:true}).inputValue(),edition);
   await page.getByRole('button',{name:'Mover foto 2 para antes',exact:true}).click();
   await page.getByLabel('Publicar esta edição',{exact:true}).check();
@@ -64,9 +70,11 @@ export async function testConnections({page,context,origin,photos,output}) {
   assert.equal(await modal.evaluate(el=>el.matches(':modal')),true);
   assert.ok(Math.abs(await customer.evaluate(()=>scrollY)-scrollBefore)<2);
   assert.ok((await modal.boundingBox()).y>=0);
-  assert.equal(await modal.getByRole('link',{name:'Instagram do pregador',exact:true}).getAttribute('href'),profile);
-  assert.equal(await modal.getByRole('link',{name:'Edição no Instagram',exact:true}).getAttribute('href'),edition);
-  assert.equal(await modal.getByRole('link',{name:'Edição no Instagram',exact:true}).getAttribute('target'),'_blank');
+  assert.equal(await modal.getByRole('link',{name:'Siga o Marcelo',exact:true}).getAttribute('href'),profile);
+  assert.equal(await modal.getByRole('link',{name:'Veja no Instagram',exact:true}).getAttribute('href'),edition);
+  assert.equal(await modal.getByRole('link',{name:'Veja no Instagram',exact:true}).getAttribute('target'),'_blank');
+  assert.equal(await modal.locator('.conexao-instagram-emblema').evaluate(el=>getComputedStyle(el).width),'44px');
+  assert.equal(await modal.locator('.conexao-instagram-emblema svg').evaluate(el=>getComputedStyle(el).width),'20px');
   await customer.screenshot({path:`${output}/connection-modal-desktop.png`,animations:'disabled'});
   assert.equal(await customer.locator('.conteudo-pregacao img').count(),0);
   assert.ok((await customer.locator('.conteudo-pregacao').textContent()).includes('<img src=x'));

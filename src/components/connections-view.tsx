@@ -61,9 +61,9 @@ function PreacherInfo({ connection }: { connection: Connection }) {
     <div className="pregador-texto">
       <strong>{connection.preacher}</strong>
       <span>{connection.role || 'Pregador convidado'}</span>
-      {profile && <a className="conexao-instagram" href={profile} target="_blank" rel="noopener noreferrer"><Instagram/>Instagram do pregador</a>}
+      {profile && <a className="conexao-instagram" href={profile} target="_blank" rel="noopener noreferrer"><Instagram/>{connection.preacherInstagramLabel || 'Instagram do pregador'}</a>}
     </div>
-    {edition && <a className="conexao-instagram conexao-instagram-edicao" href={edition} target="_blank" rel="noopener noreferrer"><Instagram/>Edição no Instagram</a>}
+    {edition && <a className="conexao-instagram conexao-instagram-edicao" href={edition} target="_blank" rel="noopener noreferrer"><span className="conexao-instagram-emblema"><Instagram/></span>{connection.editionInstagramLabel || 'Edição no Instagram'}</a>}
   </div>;
 }
 

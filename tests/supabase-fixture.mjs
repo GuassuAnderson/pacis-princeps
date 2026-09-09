@@ -9,7 +9,7 @@ import bcrypt from 'bcryptjs';
 export async function startFixture() {
   const db=new PGlite();
   await db.exec('create role anon;create role authenticated;create role service_role bypassrls;create schema storage;create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);');
-  await db.exec(await Promise.all(['202609080001_catalog.sql','202609080002_hero_products.sql','202609080003_connections.sql','202609090001_connection_featured.sql','202609090002_connection_links.sql'].map(file=>readFile(`supabase/migrations/${file}`,'utf8'))).then(parts=>parts.join('\n')));
+  await db.exec(await Promise.all(['202609080001_catalog.sql','202609080002_hero_products.sql','202609080003_connections.sql','202609090001_connection_featured.sql','202609090002_connection_links.sql','202609090003_connection_link_labels.sql'].map(file=>readFile(`supabase/migrations/${file}`,'utf8'))).then(parts=>parts.join('\n')));
   const admin=randomUUID(),key=randomUUID(),password=randomUUID();
   await db.query("insert into users(id,name,email,password_hash,role) values($1,'Admin local','admin@example.test',$2,'ADMIN')",[admin,await bcrypt.hash(password,12)]);
   const files=new Map();

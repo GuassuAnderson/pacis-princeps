@@ -1,5 +1,7 @@
 # Conexão: edições e fotos
 
+Textos dos links: aplique `supabase/migrations/202609090003_connection_link_labels.sql`. Os campos **Texto do link do pregador** e **Texto do link da edição** aceitam até 80 caracteres (por exemplo, “Siga o Marcelo” e “Veja no Instagram”). Deixá-los vazios mantém as chamadas padrão. Os textos aparecem tanto no destaque quanto no modal. O Instagram da edição usa um emblema de 44 px com ícone de 20 px, nas mesmas dimensões do avatar de pessoa.
+
 Links do Instagram: aplique também `supabase/migrations/202609090002_connection_links.sql` antes de publicar este código. O cadastro aceita dois campos opcionais: **Instagram do pregador** e **Link da edição no Instagram** (publicação ou reel). Use endereços completos HTTPS do Instagram. Os links aparecem nas informações do convidado, no destaque e no modal, e abrem em uma nova aba. Campos vazios não exibem links; edições existentes são preservadas. A gravação continua na mesma transação das fotos e do conteúdo.
 
 As chamadas **Ver pregação completa** e **Ler mais** são botões acessíveis pelo teclado. O modal usa o diálogo nativo na camada superior do navegador, sem reposicionar a página. Fecha pelo botão, Escape ou fundo, com animação de saída e retorno do foco ao botão de origem; respeita a preferência por movimento reduzido.

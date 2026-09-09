@@ -8,10 +8,10 @@ import { PRODUCT_PLACEHOLDER } from '../products';
 export const CONNECTION_BUCKET = 'connection-images';
 type Row = {
   id: string; title: string; theme: string; event_date: string; preacher: string;
-  preacher_title: string | null; preacher_instagram: string | null; edition_instagram: string | null; summary: string; content: string | null; published: boolean; featured: boolean; updated_at: string;
+  preacher_title: string | null; preacher_instagram: string | null; edition_instagram: string | null; preacher_instagram_label: string | null; edition_instagram_label: string | null; summary: string; content: string | null; published: boolean; featured: boolean; updated_at: string;
   images: { id: string; storage_path: string | null; external_url: string | null; alt: string; width: number | null; height: number | null; position: number; active: boolean }[];
 };
-const select = 'id,title,theme,event_date,preacher,preacher_title,preacher_instagram,edition_instagram,summary,content,published,featured,updated_at,images:connection_assets(id,storage_path,external_url,alt,width,height,position,active)';
+const select = 'id,title,theme,event_date,preacher,preacher_title,preacher_instagram,edition_instagram,preacher_instagram_label,edition_instagram_label,summary,content,published,featured,updated_at,images:connection_assets(id,storage_path,external_url,alt,width,height,position,active)';
 function legacyPhoto(url: string | null) {
   try { const parsed = new URL(url || ''); return parsed.protocol === 'https:' ? parsed.href : PRODUCT_PLACEHOLDER; }
   catch { return PRODUCT_PLACEHOLDER; }
@@ -21,7 +21,7 @@ function map(row: Row): Connection {
     id:image.id, url:image.storage_path ? database().storage.from(CONNECTION_BUCKET).getPublicUrl(image.storage_path).data.publicUrl : legacyPhoto(image.external_url),
     alt:image.alt || row.title, width:image.width || 1000, height:image.height || 1000,
   }));
-  return { id:row.id,title:row.title,theme:row.theme,date:row.event_date,preacher:row.preacher,role:row.preacher_title || '',preacherInstagram:row.preacher_instagram || '',editionInstagram:row.edition_instagram || '',
+  return { id:row.id,title:row.title,theme:row.theme,date:row.event_date,preacher:row.preacher,role:row.preacher_title || '',preacherInstagram:row.preacher_instagram || '',editionInstagram:row.edition_instagram || '',preacherInstagramLabel:row.preacher_instagram_label || '',editionInstagramLabel:row.edition_instagram_label || '',
     summary:row.summary,content:row.content || '',published:row.published,featured:row.featured,updatedAt:row.updated_at,images,photos:images.map(image => image.url) };
 }
 export async function listConnections(input: unknown = {}, admin = false): Promise<ConnectionList> {

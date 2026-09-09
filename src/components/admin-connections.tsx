@@ -33,12 +33,12 @@ export default function AdminConnections() {
   useEffect(()=>{if(editing)dialog.current?.showModal();else dialog.current?.close();},[editing]);
   function open(item?:Connection){
     setFormError('');setToast('');
-    setEditing(item ? {...item} : {id:crypto.randomUUID(),title:'',theme:'',date:'',preacher:'',role:'',preacherInstagram:'',editionInstagram:'',summary:'',content:'',published:false,featured:false,photos:[],images:[],updatedAt:null});
+    setEditing(item ? {...item} : {id:crypto.randomUUID(),title:'',theme:'',date:'',preacher:'',role:'',preacherInstagram:'',editionInstagram:'',preacherInstagramLabel:'',editionInstagramLabel:'',summary:'',content:'',published:false,featured:false,photos:[],images:[],updatedAt:null});
   }
   async function save(event:FormEvent<HTMLFormElement>){
     event.preventDefault();if(!editing || busy)return;
     const form=new FormData(event.currentTarget);
-    const candidate={id:editing.id,title:form.get('title'),theme:form.get('theme'),date:form.get('date'),preacher:form.get('preacher'),role:form.get('role'),preacherInstagram:form.get('preacherInstagram'),editionInstagram:form.get('editionInstagram'),summary:form.get('summary'),content:form.get('content'),published:form.get('published')==='on',imageIds:editing.images.map(image=>image.id),updatedAt:editing.updatedAt};
+    const candidate={id:editing.id,title:form.get('title'),theme:form.get('theme'),date:form.get('date'),preacher:form.get('preacher'),role:form.get('role'),preacherInstagram:form.get('preacherInstagram'),editionInstagram:form.get('editionInstagram'),preacherInstagramLabel:form.get('preacherInstagramLabel'),editionInstagramLabel:form.get('editionInstagramLabel'),summary:form.get('summary'),content:form.get('content'),published:form.get('published')==='on',imageIds:editing.images.map(image=>image.id),updatedAt:editing.updatedAt};
     const result=connectionInput.safeParse(candidate);
     if(!result.success){setFormError(result.error.issues[0].message);return;}
     setBusy(true);setFormError('');
@@ -96,6 +96,11 @@ export default function AdminConnections() {
             <label>Link da edição no Instagram<input name="editionInstagram" type="url" defaultValue={editing.editionInstagram} placeholder="https://www.instagram.com/p/..." maxLength={2048}/></label>
           </div>
           <p className={styles.hint}>Links opcionais. Cole o endereço completo do perfil e da publicação ou reel da pregação.</p>
+          <div className={styles.twoColumns}>
+            <label>Texto do link do pregador<input name="preacherInstagramLabel" defaultValue={editing.preacherInstagramLabel} placeholder="Siga o Marcelo" maxLength={80}/></label>
+            <label>Texto do link da edição<input name="editionInstagramLabel" defaultValue={editing.editionInstagramLabel} placeholder="Assista à pregação" maxLength={80}/></label>
+          </div>
+          <p className={styles.hint}>Personalize as chamadas dos links. Se deixar vazio, será usado o texto padrão.</p>
           <label>Resumo *<textarea name="summary" defaultValue={editing.summary} rows={3} minLength={10} maxLength={600} required/></label>
           <label>Conteúdo completo da pregação<textarea name="content" defaultValue={editing.content} rows={9} maxLength={20000}/></label>
           <p className={styles.hint}>Escreva em texto; as quebras de linha serão preservadas.</p>

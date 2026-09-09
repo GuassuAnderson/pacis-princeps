@@ -207,6 +207,12 @@
   cursor: pointer;
 }
 .conexao-instagram svg { width: 16px; height: 16px; flex-shrink: 0; }
+.conexao-instagram { max-width: 100%; overflow-wrap: anywhere; }
+.conexao-instagram-emblema {
+  width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%;
+  display: grid; place-items: center; background: var(--areia-clara);
+}
+.conexao-instagram-emblema svg { width: 20px; height: 20px; }
 .conexao-instagram-edicao { margin: 0 0 0 auto; }
 .conexao-instagram:hover { color: var(--espresso); }
 .conexao-ler-mais {

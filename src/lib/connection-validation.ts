@@ -9,6 +9,8 @@ export const connectionInput = z.object({
   role: z.string().trim().max(160),
   preacherInstagram: instagramLink,
   editionInstagram: instagramLink,
+  preacherInstagramLabel: z.string().trim().max(80).default(''),
+  editionInstagramLabel: z.string().trim().max(80).default(''),
   date: z.iso.date('Informe uma data válida.'),
   summary: z.string().trim().min(10, 'Escreva um resumo com pelo menos 10 caracteres.').max(600),
   content: z.string().trim().max(20000),

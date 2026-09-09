@@ -19,12 +19,16 @@ test('Connection editions: legacy preservation, drafts, photos, versions and acc
     await db.exec(await readFile('supabase/migrations/202609090001_connection_featured.sql','utf8'));
     const linksMigration=await readFile('supabase/migrations/202609090002_connection_links.sql','utf8');
     await db.exec(linksMigration);await db.exec(linksMigration);
+    const labelsMigration=await readFile('supabase/migrations/202609090003_connection_link_labels.sql','utf8');
+    await db.exec(labelsMigration);await db.exec(labelsMigration);
+    assert.equal((await db.query('select preacher_instagram_label from connections where id=$1',[old])).rows[0].preacher_instagram_label,'');
     assert.equal((await db.query('select preacher_instagram from connections where id=$1',[old])).rows[0].preacher_instagram,'');
     assert.equal((await db.query('select * from connection_assets')).rows.length,1);
     await db.query("insert into users(id,name,email,password_hash,role) values($1,'Admin','a@example.test','test','ADMIN'),($2,'Other','b@example.test','test','ADMIN')",[admin,other]);
     await db.query("insert into connection_assets(id,uploaded_by,storage_path) values($1,$3,'photo.webp'),($2,$4,'foreign.webp')",[photo,foreign,admin,other]);
     const draft={id:randomUUID(),title:'Encontro de teste',theme:'A paz',date:'2026-09-08',preacher:'Pregador',role:'Convidado',preacherInstagram:'https://www.instagram.com/pregador/',editionInstagram:'https://www.instagram.com/reel/teste/',summary:'Resumo completo do encontro',content:'Texto da pregação',published:false,updatedAt:null as string|null,imageIds:[photo]};
     assert.equal(connectionInput.safeParse(draft).success,true);
+    assert.equal(connectionInput.safeParse({...draft,preacherInstagramLabel:'x'.repeat(81)}).success,false);
     assert.equal(connectionInput.safeParse({...draft,date:'2026-02-30'}).success,false);
     assert.equal(connectionInput.safeParse({...draft,imageIds:[photo,photo]}).success,false);
     for(const url of ['javascript:alert(1)','https://instagram.com.evil.test/profile','https://instagram.com@evil.test/profile','http://instagram.com/profile']) {
@@ -34,6 +38,9 @@ test('Connection editions: legacy preservation, drafts, photos, versions and acc
     assert.equal(connectionInput.safeParse({...draft,preacherInstagram:'',editionInstagram:''}).success,true);
     const save=(value:typeof draft)=>db.query('select save_connection($1::jsonb,$2::uuid[],$3::uuid)',[JSON.stringify(value),value.imageIds,admin]);
     await save(draft);
+    const labelVersion=(await db.query<{value:string}>('select updated_at::text as value from connections where id=$1',[draft.id])).rows[0].value;
+    await db.query('select save_connection($1::jsonb,$2::uuid[],$3::uuid)',[JSON.stringify({...draft,updatedAt:labelVersion,preacherInstagramLabel:'Siga o Marcelo',editionInstagramLabel:'Veja no Instagram'}),draft.imageIds,admin]);
+    assert.deepEqual((await db.query('select preacher_instagram_label,edition_instagram_label from connections where id=$1',[draft.id])).rows[0],{preacher_instagram_label:'Siga o Marcelo',edition_instagram_label:'Veja no Instagram'});
     assert.deepEqual((await db.query('select preacher_instagram,edition_instagram from connections where id=$1',[draft.id])).rows[0],{preacher_instagram:draft.preacherInstagram,edition_instagram:draft.editionInstagram});
     assert.equal((await db.query('select id from connections where published')).rows.length,0);
     const version=async()=>(await db.query<{value:string}>('select updated_at::text as value from connections where id=$1',[draft.id])).rows[0].value;
