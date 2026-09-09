@@ -94,6 +94,6 @@
 @media(max-width:640px){
   .card-edicao { grid-template-columns:1fr; }
   .card-edicao-foto { width:100%; aspect-ratio:16/7; }
-  .card-edicao-acoes { flex-direction:row; border-left:none; border-top:1px solid var(--areia-clara); }
+  .card-edicao-acoes { flex-direction:row; flex-wrap:wrap; border-left:none; border-top:1px solid var(--areia-clara); }
   .fotos-lista { grid-template-columns:repeat(3,1fr); }
 }

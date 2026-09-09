@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { type MouseEvent, useEffect, useMemo, useRef, useState } from "react";
+import { instagramUrl } from '@/lib/instagram-url';
 import {
   Connection,
   type ConnectionList,
@@ -49,10 +50,41 @@ const Calendar = () => (
   </svg>
 );
 
+function Instagram() {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/></svg>;
+}
+function PreacherInfo({ connection }: { connection: Connection }) {
+  const profile = instagramUrl(connection.preacherInstagram);
+  const edition = instagramUrl(connection.editionInstagram);
+  return <div className="pregador-info">
+    <Person />
+    <div className="pregador-texto">
+      <strong>{connection.preacher}</strong>
+      <span>{connection.role || 'Pregador convidado'}</span>
+      {profile && <a className="conexao-instagram" href={profile} target="_blank" rel="noopener noreferrer"><Instagram/>Instagram do pregador</a>}
+    </div>
+    {edition && <a className="conexao-instagram conexao-instagram-edicao" href={edition} target="_blank" rel="noopener noreferrer"><Instagram/>Edição no Instagram</a>}
+  </div>;
+}
+
 export default function ConnectionsView() {
   const [all, setAll] = useState<Connection[]>([]);
   const [year, setYear] = useState("todas");
   const [selected, setSelected] = useState<Connection | null>(null);
+  const [closing, setClosing] = useState(false);
+  const modal = useRef<HTMLDialogElement>(null);
+  const opener = useRef<HTMLButtonElement | null>(null);
+  function openEdition(connection: Connection, button: HTMLButtonElement) {
+    opener.current = button;
+    setClosing(false);
+    setSelected(connection);
+  }
+  function closeEdition() { setClosing(true); }
+  function openCard(connection: Connection, event: MouseEvent<HTMLElement>) {
+    if ((event.target as Element).closest('a, button')) return;
+    const button = event.currentTarget.querySelector<HTMLButtonElement>('[aria-haspopup="dialog"]');
+    if (button) openEdition(connection, button);
+  }
   const [page,setPage] = useState(1);
   const [total,setTotal] = useState(0);
   const [loading,setLoading] = useState(true);
@@ -73,19 +105,28 @@ export default function ConnectionsView() {
     return()=>{clearTimeout(timer);controller.abort();};
   },[year,page,revision]);
   useEffect(() => {
-    document.body.style.overflow = selected ? "hidden" : "";
-    const fn = (e: KeyboardEvent) => e.key === "Escape" && setSelected(null);
-    document.addEventListener("keydown", fn);
+    const dialog = modal.current;
+    if (!selected || !dialog) return;
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    dialog.showModal();
+    dialog.scrollTop = 0;
     return () => {
-      document.body.style.overflow = "";
-      document.removeEventListener("keydown", fn);
+      dialog.close();
+      document.body.style.overflow = overflow;
+      opener.current?.focus({ preventScroll: true });
     };
   }, [selected]);
+  useEffect(() => {
+    if (!closing) return;
+    const timer = setTimeout(() => setSelected(null), window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 240);
+    return () => clearTimeout(timer);
+  }, [closing]);
   const published = useMemo(
     () =>
       all
         .filter((c) => c.published)
-        .sort((a, b) => b.date.localeCompare(a.date)),
+        .sort((a, b) => Number(b.featured) - Number(a.featured) || b.date.localeCompare(a.date)),
     [all],
   );
 
@@ -117,13 +158,10 @@ export default function ConnectionsView() {
         <ScrollReveal className="conexao-reveal-destaque reveal-esquerda">
           <article
             className="card-conexao-destaque"
-            role="button"
-            tabIndex={0}
-            onClick={() => setSelected(latest)}
-            onKeyDown={(e) => e.currentTarget === e.target && (e.key === "Enter" || e.key === " ") && setSelected(latest)}
+            onClick={event => openCard(latest, event)}
           >
             <div className="card-destaque-foto">
-              <span className="tag-mais-recente">Mais recente</span>
+              <span className="tag-mais-recente">{latest.featured ? "Em destaque" : "Mais recente"}</span>
               <div className="conexao-carrossel-interativo" onClick={(e) => e.stopPropagation()}>
                 <AboutPhotoCarousel label={`Fotos — ${latest.title}`} slides={slidesFor(latest)} />
               </div>
@@ -135,13 +173,7 @@ export default function ConnectionsView() {
               <Star />
               {latest.theme}
             </span>
-            <div className="pregador-info">
-              <Person />
-              <div className="pregador-texto">
-                <strong>{latest.preacher}</strong>
-                <span>{latest.role || "Pregador convidado"}</span>
-              </div>
-            </div>
+            <PreacherInfo connection={latest}/>
             <p>{latest.summary}</p>
             <div className="card-meta">
               <span>
@@ -152,12 +184,15 @@ export default function ConnectionsView() {
                 <span>{latest.photos.length} fotos</span>
               )}
             </div>
-            <span
+            <button
+              type="button"
+              onClick={event => openEdition(latest, event.currentTarget)}
+              aria-haspopup="dialog"
               className="btn btn-primario"
               style={{ alignSelf: "flex-start" }}
             >
               Ver pregação completa
-            </span>
+            </button>
             </div>
           </article>
         </ScrollReveal>
@@ -167,10 +202,7 @@ export default function ConnectionsView() {
           <ScrollReveal className="conexao-card-reveal" delay={index * 100} key={c.id}>
             <article
               className="card-conexao"
-              role="button"
-              tabIndex={0}
-              onClick={() => setSelected(c)}
-              onKeyDown={(e) => e.currentTarget === e.target && (e.key === "Enter" || e.key === " ") && setSelected(c)}
+              onClick={event => openCard(c, event)}
             >
               <div className="card-conexao-foto">
                 <div className="conexao-carrossel-interativo" onClick={(e) => e.stopPropagation()}>
@@ -192,15 +224,14 @@ export default function ConnectionsView() {
                     {formatConnectionDate(c.date)}
                   </span>
                 </div>
-                <span
-                  style={{
-                    fontSize: ".82rem",
-                    color: "var(--terracota)",
-                    fontWeight: 600,
-                  }}
+                <button
+                  type="button"
+                  className="conexao-ler-mais"
+                  onClick={event => openEdition(c, event.currentTarget)}
+                  aria-haspopup="dialog"
                 >
                   Ler mais →
-                </span>
+                </button>
               </div>
               </div>
             </article>
@@ -223,9 +254,12 @@ export default function ConnectionsView() {
         </div>
       )}
       {!loading && !error && total>12 && <nav aria-label="Páginas das edições" style={{display:'flex',justifyContent:'center',gap:16,marginTop:24}}><button className="btn btn-contorno" disabled={page===1} onClick={()=>setPage(page-1)}>Anterior</button><span>{page} / {Math.ceil(total/12)}</span><button className="btn btn-contorno" disabled={page*12>=total} onClick={()=>setPage(page+1)}>Próxima</button></nav>}
-      <div
-        className={`modal-conexao-overlay ${selected ? "" : "oculto"}`}
-        onClick={(e) => e.currentTarget === e.target && setSelected(null)}
+      <dialog
+        ref={modal}
+        className={`modal-conexao-overlay ${closing ? "fechando" : ""}`}
+        aria-label={selected?.title || 'Edição Conexão'}
+        onCancel={event => { event.preventDefault(); closeEdition(); }}
+        onClick={event => { if (event.currentTarget === event.target) closeEdition(); }}
       >
         {selected && (
           <div className="modal-conexao">
@@ -233,7 +267,8 @@ export default function ConnectionsView() {
               <AboutPhotoCarousel label={`Galeria — ${selected.title}`} slides={slidesFor(selected)} />
               <button
                 className="modal-conexao-fechar"
-                onClick={() => setSelected(null)}
+                type="button"
+                onClick={closeEdition}
                 aria-label="Fechar"
               >
                 <svg
@@ -258,13 +293,7 @@ export default function ConnectionsView() {
                 <Star />
                 {selected.theme}
               </span>
-              <div className="pregador-info">
-                <Person />
-                <div className="pregador-texto">
-                  <strong>{selected.preacher}</strong>
-                  <span>{selected.role || "Pregador convidado"}</span>
-                </div>
-              </div>
+              <PreacherInfo connection={selected}/>
               <div
                 className="conteudo-pregacao"
                 style={{whiteSpace:"pre-wrap"}}
@@ -272,7 +301,7 @@ export default function ConnectionsView() {
             </div>
           </div>
         )}
-      </div>
+      </dialog>
     </>
   );
 }

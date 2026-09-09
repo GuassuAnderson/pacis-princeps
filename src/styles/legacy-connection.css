@@ -198,6 +198,27 @@
 .pregador-avatar svg { width: 20px; height: 20px; stroke: var(--espresso-60); }
 .pregador-texto strong { display: block; font-size: .92rem; }
 .pregador-texto span { font-size: .78rem; color: var(--espresso-60); }
+.pregador-info { flex-wrap: wrap; }
+.pregador-texto { min-width: 0; flex: 1 1 130px; }
+.conexao-instagram {
+  display: flex; align-items: center; gap: 7px; width: fit-content;
+  margin-top: 8px; color: var(--terracota); font-size: .78rem;
+  font-weight: 600; text-decoration: underline; text-underline-offset: 3px;
+  cursor: pointer;
+}
+.conexao-instagram svg { width: 16px; height: 16px; flex-shrink: 0; }
+.conexao-instagram-edicao { margin: 0 0 0 auto; }
+.conexao-instagram:hover { color: var(--espresso); }
+.conexao-ler-mais {
+  background: transparent; border: 0; padding: 8px 0 8px 12px;
+  color: var(--terracota); font-size: .82rem; font-weight: 600;
+  flex-shrink: 0; cursor: pointer;
+}
+.conexao-ler-mais:hover { text-decoration: underline; text-underline-offset: 4px; }
+.card-destaque-corpo > button, .card-conexao-destaque, .card-conexao { cursor: pointer; }
+.conexao-ler-mais:focus-visible, .conexao-instagram:focus-visible, .modal-conexao-fechar:focus-visible {
+  outline: 2px solid var(--terracota); outline-offset: 4px;
+}
 .card-destaque-corpo p {
   color: var(--espresso-60); font-size: .94rem;
   line-height: 1.7; margin-bottom: 22px;
@@ -251,18 +272,25 @@
 /* Modal de edição completa */
 .modal-conexao-overlay {
   position: fixed; inset: 0; z-index: 800;
-  background: rgba(53,28,17,.6);
-  backdrop-filter: blur(5px);
-  display: flex; align-items: flex-start; justify-content: center;
-  padding: 40px 24px; overflow-y: auto;
+  width: 100%; max-width: none; height: 100dvh; max-height: none;
+  margin: 0; border: 0; color: var(--espresso); background: transparent;
+  padding: 40px 24px; overflow-y: auto; overscroll-behavior: contain;
 }
-.modal-conexao-overlay.oculto { display: none; }
+.modal-conexao-overlay[open] { display: flex; align-items: flex-start; justify-content: center; }
+.modal-conexao-overlay::backdrop {
+  background: rgba(53,28,17,.6); backdrop-filter: blur(5px);
+  animation: conexao-modal-fundo-abrir .28s ease both;
+}
+.modal-conexao-overlay[open] .modal-conexao { animation: conexao-modal-abrir .32s cubic-bezier(.22,1,.36,1) both; }
+.modal-conexao-overlay.fechando .modal-conexao { animation: conexao-modal-fechar .24s ease both; }
+.modal-conexao-overlay.fechando::backdrop { animation: conexao-modal-fundo-fechar .24s ease both; }
 .modal-conexao {
   background: var(--creme);
   border-radius: 20px;
   width: 100%; max-width: 800px;
   box-shadow: 0 32px 80px -20px rgba(0,0,0,.4);
   overflow: hidden;
+  flex-shrink: 0;
 }
 .modal-conexao-foto {
   width: 100%; aspect-ratio: 16/6;
@@ -452,6 +480,7 @@
 }
 .tag-mais-recente { z-index: 5; pointer-events: none; }
 .modal-conexao-fechar { z-index: 6; }
+.modal-conexao-foto .sobre-carrossel-contador { right: 64px; top: 20px; }
 
 /* Responsivo */
 @media (max-width: 960px) {
@@ -461,6 +490,8 @@
   .grade-conexoes { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 640px) {
+  .modal-conexao-overlay { padding: 16px 12px; }
+  .conexao-instagram-edicao { margin-left: 56px; }
   .grade-conexoes { grid-template-columns: 1fr; }
   .galeria-modal { grid-template-columns: 1fr 1fr; }
   .faixa-proxima { padding: 36px 24px; flex-direction: column; align-items: flex-start; }
@@ -469,6 +500,7 @@
   .sobre-carrossel-seta { width: 36px; height: 36px; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .modal-conexao-overlay[open] .modal-conexao, .modal-conexao-overlay::backdrop { animation: none; }
   .conexao-hero-linhas span { height:100%; animation:none; }
   .conexao-rede-fio { stroke-dashoffset:0; animation:none; }
   .conexao-rede-ponto { opacity:1; transform:none; animation:none; }
@@ -480,6 +512,17 @@
   }
 }
 }
+
+@keyframes conexao-modal-abrir {
+  from { opacity: 0; transform: translateY(22px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes conexao-modal-fechar {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(14px) scale(.985); }
+}
+@keyframes conexao-modal-fundo-abrir { from { opacity: 0; } to { opacity: 1; } }
+@keyframes conexao-modal-fundo-fechar { from { opacity: 1; } to { opacity: 0; } }
 
 @keyframes conexao-linha-desenhar {
   from { height:0; }

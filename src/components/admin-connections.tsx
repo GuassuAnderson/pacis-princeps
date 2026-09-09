@@ -33,12 +33,12 @@ export default function AdminConnections() {
   useEffect(()=>{if(editing)dialog.current?.showModal();else dialog.current?.close();},[editing]);
   function open(item?:Connection){
     setFormError('');setToast('');
-    setEditing(item ? {...item} : {id:crypto.randomUUID(),title:'',theme:'',date:'',preacher:'',role:'',summary:'',content:'',published:false,photos:[],images:[],updatedAt:null});
+    setEditing(item ? {...item} : {id:crypto.randomUUID(),title:'',theme:'',date:'',preacher:'',role:'',preacherInstagram:'',editionInstagram:'',summary:'',content:'',published:false,featured:false,photos:[],images:[],updatedAt:null});
   }
   async function save(event:FormEvent<HTMLFormElement>){
     event.preventDefault();if(!editing || busy)return;
     const form=new FormData(event.currentTarget);
-    const candidate={id:editing.id,title:form.get('title'),theme:form.get('theme'),date:form.get('date'),preacher:form.get('preacher'),role:form.get('role'),summary:form.get('summary'),content:form.get('content'),published:form.get('published')==='on',imageIds:editing.images.map(image=>image.id),updatedAt:editing.updatedAt};
+    const candidate={id:editing.id,title:form.get('title'),theme:form.get('theme'),date:form.get('date'),preacher:form.get('preacher'),role:form.get('role'),preacherInstagram:form.get('preacherInstagram'),editionInstagram:form.get('editionInstagram'),summary:form.get('summary'),content:form.get('content'),published:form.get('published')==='on',imageIds:editing.images.map(image=>image.id),updatedAt:editing.updatedAt};
     const result=connectionInput.safeParse(candidate);
     if(!result.success){setFormError(result.error.issues[0].message);return;}
     setBusy(true);setFormError('');
@@ -59,6 +59,15 @@ export default function AdminConnections() {
     if(!editing)return;
     const images=[...editing.images];[images[index],images[index+direction]]=[images[index+direction],images[index]];setEditing({...editing,images});
   }
+  async function feature(item:Connection){
+    if(busy)return;
+    setBusy(true);setError('');setToast('');
+    try{
+      await api('/api/admin/connections/featured',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({id:item.id,featured:!item.featured,updatedAt:item.updatedAt})});
+      setToast(item.featured?'Destaque removido. A edição mais recente será exibida.':'Edição definida como destaque.');
+      setRevision(value=>value+1);router.refresh();
+    }catch(error){setError(describe(error));}finally{setBusy(false);}
+  }
   async function archive(item:Connection){
     if(!confirm(`Arquivar “${item.title}”? A edição sairá do site; os dados e fotos serão preservados no banco.`))return;
     setBusy(true);setError('');setToast('');
@@ -71,8 +80,8 @@ export default function AdminConnections() {
     {error && <div role="alert" className={styles.error}>{error} <button onClick={()=>setRevision(value=>value+1)}>Tentar novamente</button></div>}
     {loading ? <p role="status">Carregando edições…</p> : !error && !list.items.length ? <p>Nenhuma edição cadastrada ainda.</p> : !error && list.items.map(item=><article className="card-edicao" key={item.id}>
       <div className="card-edicao-foto">{item.images[0] ? <Image src={item.images[0].url} alt={item.title} width={180} height={140} unoptimized={!item.images[0].url.includes('/storage/v1/object/public/connection-images/')}/> : <span>Sem foto</span>}</div>
-      <div className="card-edicao-corpo"><span className={`badge-publicado ${item.published?'badge-pub-sim':'badge-pub-nao'}`}>{item.published?'Publicado':'Rascunho'}</span><h4>{item.title}</h4><span className="tema">{item.theme}</span><div className="meta"><span>{formatConnectionDate(item.date)}</span><span>{item.preacher}</span></div></div>
-      <div className="card-edicao-acoes"><button className="btn-tabela btn-editar" disabled={busy} onClick={()=>open(item)}>Editar</button><button className="btn-tabela btn-excluir" disabled={busy} onClick={()=>archive(item)}>Arquivar</button></div>
+      <div className="card-edicao-corpo"><span className={`badge-publicado ${item.published?'badge-pub-sim':'badge-pub-nao'}`}>{item.published?'Publicado':'Rascunho'}</span>{item.featured && <span className="badge-publicado badge-pub-sim">Em destaque</span>}<h4>{item.title}</h4><span className="tema">{item.theme}</span><div className="meta"><span>{formatConnectionDate(item.date)}</span><span>{item.preacher}</span></div></div>
+      <div className="card-edicao-acoes"><button className="btn-tabela btn-editar" disabled={busy || !item.published} title={!item.published?"Publique a edição para destacá-la":undefined} onClick={()=>feature(item)}>{item.featured?"Remover destaque":"Definir como destaque"}</button><button className="btn-tabela btn-editar" disabled={busy} onClick={()=>open(item)}>Editar</button><button className="btn-tabela btn-excluir" disabled={busy} onClick={()=>archive(item)}>Arquivar</button></div>
     </article>)}
     {!error && list.total>12 && <div className={styles.pagination}><button disabled={loading || busy || page===1} onClick={()=>setPage(page-1)}>Anterior</button><span>Página {page} de {Math.ceil(list.total/12)}</span><button disabled={loading || busy || page*12>=list.total} onClick={()=>setPage(page+1)}>Próxima</button></div>}
     <dialog ref={dialog} className={styles.dialog} onCancel={event=>{event.preventDefault();if(!busy)setEditing(null);}} onClose={()=>{if(!busy)setEditing(null);}} aria-labelledby="connection-editor-title">
@@ -82,6 +91,11 @@ export default function AdminConnections() {
           <label>Título da edição *<input name="title" defaultValue={editing.title} maxLength={180} required/></label>
           <div className={styles.twoColumns}><label>Tema *<input name="theme" defaultValue={editing.theme} maxLength={160} required/></label><label>Data do evento *<input name="date" type="date" defaultValue={editing.date} required/></label></div>
           <div className={styles.twoColumns}><label>Pregador convidado *<input name="preacher" defaultValue={editing.preacher} maxLength={160} required/></label><label>Cargo / título<input name="role" defaultValue={editing.role} maxLength={160}/></label></div>
+          <div className={styles.twoColumns}>
+            <label>Instagram do pregador<input name="preacherInstagram" type="url" defaultValue={editing.preacherInstagram} placeholder="https://www.instagram.com/pregador/" maxLength={2048}/></label>
+            <label>Link da edição no Instagram<input name="editionInstagram" type="url" defaultValue={editing.editionInstagram} placeholder="https://www.instagram.com/p/..." maxLength={2048}/></label>
+          </div>
+          <p className={styles.hint}>Links opcionais. Cole o endereço completo do perfil e da publicação ou reel da pregação.</p>
           <label>Resumo *<textarea name="summary" defaultValue={editing.summary} rows={3} minLength={10} maxLength={600} required/></label>
           <label>Conteúdo completo da pregação<textarea name="content" defaultValue={editing.content} rows={9} maxLength={20000}/></label>
           <p className={styles.hint}>Escreva em texto; as quebras de linha serão preservadas.</p>

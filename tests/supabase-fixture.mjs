@@ -9,7 +9,7 @@ import bcrypt from 'bcryptjs';
 export async function startFixture() {
   const db=new PGlite();
   await db.exec('create role anon;create role authenticated;create role service_role bypassrls;create schema storage;create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);');
-  await db.exec(await Promise.all(['202609080001_catalog.sql','202609080002_hero_products.sql','202609080003_connections.sql'].map(file=>readFile(`supabase/migrations/${file}`,'utf8'))).then(parts=>parts.join('\n')));
+  await db.exec(await Promise.all(['202609080001_catalog.sql','202609080002_hero_products.sql','202609080003_connections.sql','202609090001_connection_featured.sql','202609090002_connection_links.sql'].map(file=>readFile(`supabase/migrations/${file}`,'utf8'))).then(parts=>parts.join('\n')));
   const admin=randomUUID(),key=randomUUID(),password=randomUUID();
   await db.query("insert into users(id,name,email,password_hash,role) values($1,'Admin local','admin@example.test',$2,'ADMIN')",[admin,await bcrypt.hash(password,12)]);
   const files=new Map();
@@ -40,6 +40,7 @@ export async function startFixture() {
         let result;
         if(name==='save_catalog_product')result=await db.query('select save_catalog_product($1::jsonb,$2::uuid[],$3::uuid) as value',[JSON.stringify(body.payload),body.image_ids,body.actor_id]);
         else if(name==='save_connection')result=await db.query('select save_connection($1::jsonb,$2::uuid[],$3::uuid) as value',[JSON.stringify(body.payload),body.image_ids,body.actor_id]);
+        else if(name==='set_connection_featured')result=await db.query('select set_connection_featured($1,$2,$3,$4) as value',[body.target,body.selected,body.expected,body.actor_id]);
         else if(name==='consume_admin_login_attempt')result=await db.query('select consume_admin_login_attempt($1) as value',[body.attempt_key]);
         else if(name==='catalog_metrics')result=await db.query('select catalog_metrics() as value');
         else return send(404,{code:'PGRST202'});

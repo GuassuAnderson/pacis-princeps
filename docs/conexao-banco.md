@@ -1,5 +1,9 @@
 # Conexão: edições e fotos
 
+Links do Instagram: aplique também `supabase/migrations/202609090002_connection_links.sql` antes de publicar este código. O cadastro aceita dois campos opcionais: **Instagram do pregador** e **Link da edição no Instagram** (publicação ou reel). Use endereços completos HTTPS do Instagram. Os links aparecem nas informações do convidado, no destaque e no modal, e abrem em uma nova aba. Campos vazios não exibem links; edições existentes são preservadas. A gravação continua na mesma transação das fotos e do conteúdo.
+
+As chamadas **Ver pregação completa** e **Ler mais** são botões acessíveis pelo teclado. O modal usa o diálogo nativo na camada superior do navegador, sem reposicionar a página. Fecha pelo botão, Escape ou fundo, com animação de saída e retorno do foco ao botão de origem; respeita a preferência por movimento reduzido.
+
 Execute `supabase/migrations/202609080003_connections.sql` no SQL Editor do mesmo projeto usado pelo catálogo. Depois publique as alterações na Netlify. As variáveis e o login administrativo são os mesmos dos produtos. Com `DATABASE_URL` local configurada, `npm run db:migrate` aplica todas as migrações em ordem.
 
 Em `/admin/conexao`, **Nova edição** permite preencher título, tema, data, pregador, cargo, resumo e conteúdo em texto. As quebras de linha são preservadas. Envie até 8 fotos JPG, PNG ou WebP de até 4 MB cada; as setas alteram a ordem e a primeira foto é a capa. Marque **Publicar esta edição** para exibir em `/conexao`. Desmarque para guardar como rascunho.
@@ -13,3 +17,5 @@ A migração preserva edições e fotos do schema legado. O conteúdo é exibido
 A lista pública é paginada e pode ser filtrada por ano. Somente edições ativas e publicadas são consultadas. O aviso fixo de próxima edição e os textos institucionais da página não são alterados por este cadastro.
 
 Verificação local: `npm test`, `npm run test:e2e`, `npm run typecheck` e `npm run build`. Os testes usam PostgreSQL local isolado e Storage simulado; não gravam no projeto real.
+
+Destaque manual: aplique também `supabase/migrations/202609090001_connection_featured.sql`. No admin, use **Definir como destaque** em uma edição publicada. A seleção substitui a anterior e aparece primeiro na lista pública, inclusive se for antiga. **Remover destaque**, salvar como rascunho ou arquivar libera a seleção. Sem destaque no ano filtrado, o site exibe a edição mais recente daquela página. Só uma edição pode ser selecionada; o filtro de ano continua sendo respeitado.
