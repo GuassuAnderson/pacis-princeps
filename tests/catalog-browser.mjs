@@ -5,6 +5,7 @@ import { randomBytes } from 'node:crypto';
 import { chromium } from '@playwright/test';
 import sharp from 'sharp';
 import { startFixture } from './supabase-fixture.mjs';
+import { testConnections } from './connections-browser.mjs';
 
 const fixture=await startFixture();
 const origin='http://localhost:3107';
@@ -118,6 +119,7 @@ try {
   await page.getByText('Produto despublicado.',{exact:true}).waitFor();
   assert.equal((await (await fetch(`${origin}/api/products`)).json()).total,0);
   assert.equal((await fetch(`${origin}/api/products/${id}`)).status,404);
+  await testConnections({page,context,origin,photos,output});
   await page.setViewportSize({width:1440,height:1000});
   await page.getByRole('button',{name:'Sair',exact:true}).focus();
   await page.getByRole('button',{name:'Sair',exact:true}).press('Enter');

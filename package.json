@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "test": "tsx --test tests/catalog.test.ts",
+    "test": "tsx --test tests/catalog.test.ts tests/connections.test.ts",
     "db:check": "node scripts/check-database.mjs",
     "db:migrate": "node scripts/migrate-database.mjs",
     "admin:create": "node scripts/create-admin.mjs",

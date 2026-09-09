@@ -1,5 +1,102 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
-import {FormEvent,useEffect,useState} from "react";import {Connection,connectionSeed,formatConnectionDate} from "@/lib/connections";
-const key="pp_conexoes";const empty:Connection={id:"",title:"",theme:"",preacher:"",role:"",date:"",summary:"",content:"",photos:[],published:false};
-export default function AdminConnections(){const [items,setItems]=useState(connectionSeed),[editing,setEditing]=useState<Connection|null>(null),[preview,setPreview]=useState(false),[toast,setToast]=useState("");useEffect(()=>{try{const raw=localStorage.getItem(key);if(raw)setItems(JSON.parse(raw));else localStorage.setItem(key,JSON.stringify(connectionSeed))}catch{}},[]);function persist(x:Connection[]){setItems(x);localStorage.setItem(key,JSON.stringify(x))}function flash(t:string){setToast(t);setTimeout(()=>setToast(""),2500)}function save(e:FormEvent<HTMLFormElement>){e.preventDefault();const f=new FormData(e.currentTarget),c:Connection={...editing!,id:editing?.id||`c${Date.now()}`,title:String(f.get("title")),theme:String(f.get("theme")),date:String(f.get("date")),preacher:String(f.get("preacher")),role:String(f.get("role")),summary:String(f.get("summary")),content:String(f.get("content")),published:f.get("published")==="on"};persist(editing?.id?items.map(x=>x.id===c.id?c:x):[c,...items]);setEditing(null);flash("Edição salva com sucesso.")}function remove(id:string){if(confirm("Excluir esta edição?")){persist(items.filter(x=>x.id!==id));flash("Edição excluída.")}}return <><div className="editor-topo"><div><h2>Edições do Conexão</h2><p style={{color:"var(--espresso-60)",fontSize:".88rem",margin:"4px 0 0"}}>Crie, edite e publique cada edição do evento de pregação.</p></div><button className="btn btn-primario" onClick={()=>setEditing({...empty})}><svg viewBox="0 0 24 24" fill="none" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>Nova edição</button></div>{items.sort((a,b)=>b.date.localeCompare(a.date)).map(c=><div className="card-edicao" key={c.id}><div className="card-edicao-foto">{c.photos[0]?<img src={c.photos[0]} alt=""/>:<svg viewBox="0 0 24 24" fill="none" strokeWidth="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>}</div><div className="card-edicao-corpo"><div><span className={`badge-publicado ${c.published?"badge-pub-sim":"badge-pub-nao"}`}>{c.published?"Publicado":"Rascunho"}</span></div><h4>{c.title}</h4><span className="tema">{c.theme}</span><div className="meta"><span>{formatConnectionDate(c.date)}</span><span>{c.preacher}</span></div></div><div className="card-edicao-acoes"><button className="btn-tabela btn-editar" onClick={()=>{setEditing({...c});setPreview(false)}}>Editar</button><button className="btn-tabela btn-excluir" onClick={()=>remove(c.id)}>Excluir</button></div></div>)}{!items.length&&<div style={{textAlign:"center",padding:"60px 0",color:"var(--espresso-60)"}}><p>Nenhuma edição cadastrada ainda.</p><button className="btn btn-primario" style={{marginTop:14}} onClick={()=>setEditing({...empty})}>Criar primeira edição</button></div>}<div className={`modal-overlay ${editing?"":"oculto"}`} onClick={e=>e.currentTarget===e.target&&setEditing(null)}>{editing&&<div className="modal"><div className="modal-topo"><h3>{editing.id?"Editar edição":"Nova edição do Conexão"}</h3><button className="modal-fechar" onClick={()=>setEditing(null)}><svg viewBox="0 0 24 24" fill="none" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div><form className="modal-form" onSubmit={save}><div className="modal-corpo" style={{display:"flex",flexDirection:"column",gap:18}}><div className="campo-grupo-modal"><label>Título da edição *</label><input name="title" defaultValue={editing.title} placeholder="Ex: Conexão #3 — A misericórdia de Deus" required/></div><div className="campo-duplo"><div className="campo-grupo-modal"><label>Tema *</label><input name="theme" defaultValue={editing.theme} required/></div><div className="campo-grupo-modal"><label>Data do evento *</label><input name="date" type="date" defaultValue={editing.date} required/></div></div><div className="campo-duplo"><div className="campo-grupo-modal"><label>Pregador convidado *</label><input name="preacher" defaultValue={editing.preacher} required/></div><div className="campo-grupo-modal"><label>Cargo / título</label><input name="role" defaultValue={editing.role}/></div></div><div className="campo-grupo-modal"><label>Resumo (aparece nos cards) *</label><textarea name="summary" rows={3} defaultValue={editing.summary} required/><p className="hint">Máximo ~200 caracteres para melhor exibição nos cards.</p></div><div className="campo-grupo-modal"><label>Conteúdo completo da pregação</label><div className="editor-toolbar"><button type="button" onClick={()=>setPreview(!preview)}>👁 Preview</button></div><textarea className="editor-conteudo" name="content" defaultValue={editing.content}/>{preview&&<div className="preview-wrap" dangerouslySetInnerHTML={{__html:editing.content}}/>}</div><div className="campo-grupo-modal"><label>Fotos do evento</label><p className="hint">Anexe até 8 imagens. A primeira foto será usada como capa do card.</p><div className="fotos-lista">{editing.photos.map((p,i)=><div className="foto-miniatura" key={i}><img src={p} alt=""/><button type="button" className="remover-foto" onClick={()=>setEditing({...editing,photos:editing.photos.filter((_,j)=>j!==i)})}>×</button></div>)}</div><label className="campo-upload campo-upload-evento"><span className="campo-upload-titulo">Selecionar fotos</span><span className="campo-upload-hint">JPG, PNG ou WebP · até 5 MB por imagem</span><input className="input-arquivo" type="file" multiple accept="image/*" onChange={e=>{[...(e.target.files||[])].slice(0,8-editing.photos.length).forEach(file=>{const reader=new FileReader();reader.onload=()=>setEditing(current=>current?{...current,photos:[...current.photos,String(reader.result)]}:current);reader.readAsDataURL(file)})}}/></label></div><label style={{display:"flex",alignItems:"center",gap:10,fontSize:".9rem",cursor:"pointer",padding:"12px 14px",background:"var(--creme)",borderRadius:"var(--raio)",border:"1.5px solid var(--areia-clara)"}}><input name="published" type="checkbox" defaultChecked={editing.published}/><span><strong>Publicar esta edição</strong><br/><span style={{fontSize:".78rem",color:"var(--espresso-60)"}}>Se desmarcado, a edição fica salva como rascunho e não aparece no site.</span></span></label></div><div className="modal-rodape"><button type="button" className="btn btn-contorno" onClick={()=>setEditing(null)}>Cancelar</button><button className="btn btn-primario" type="submit">Salvar edição</button></div></form></div>}</div><div className={`toast ${toast?"visivel":""}`}>{toast}</div></>}
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { type FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { type Connection, type ConnectionList, formatConnectionDate } from '@/lib/connections';
+import type { ProductImage } from '@/lib/products';
+import { connectionInput } from '@/lib/connection-validation';
+import { api, ApiError } from '@/lib/client-api';
+import styles from './admin-products.module.css';
+
+type Draft = Omit<Connection,'updatedAt'> & {updatedAt:string|null};
+export default function AdminConnections() {
+  const router=useRouter();
+  const [list,setList]=useState<ConnectionList>({items:[],total:0,page:1,limit:12});
+  const [page,setPage]=useState(1),[revision,setRevision]=useState(0),[loading,setLoading]=useState(true);
+  const [editing,setEditing]=useState<Draft|null>(null),[error,setError]=useState(''),[formError,setFormError]=useState(''),[toast,setToast]=useState('');
+  const [busy,setBusy]=useState(false);
+  const dialog=useRef<HTMLDialogElement>(null);
+  const describe=useCallback((error:unknown)=>{
+    if(error instanceof ApiError && error.status===401){router.replace('/login');router.refresh();}
+    return error instanceof Error ? error.message : 'Não foi possível concluir a operação.';
+  },[router]);
+  useEffect(()=>{
+    const controller=new AbortController();
+    const timer=setTimeout(async()=>{
+      setLoading(true);setError('');
+      try { const result=await api<ConnectionList>(`/api/admin/connections?page=${page}`,{signal:controller.signal});if(!controller.signal.aborted)setList(result); }
+      catch(error){if(!controller.signal.aborted)setError(describe(error));}
+      finally{if(!controller.signal.aborted)setLoading(false);}
+    },0);
+    return()=>{clearTimeout(timer);controller.abort();};
+  },[page,revision,describe]);
+  useEffect(()=>{if(editing)dialog.current?.showModal();else dialog.current?.close();},[editing]);
+  function open(item?:Connection){
+    setFormError('');setToast('');
+    setEditing(item ? {...item} : {id:crypto.randomUUID(),title:'',theme:'',date:'',preacher:'',role:'',summary:'',content:'',published:false,photos:[],images:[],updatedAt:null});
+  }
+  async function save(event:FormEvent<HTMLFormElement>){
+    event.preventDefault();if(!editing || busy)return;
+    const form=new FormData(event.currentTarget);
+    const candidate={id:editing.id,title:form.get('title'),theme:form.get('theme'),date:form.get('date'),preacher:form.get('preacher'),role:form.get('role'),summary:form.get('summary'),content:form.get('content'),published:form.get('published')==='on',imageIds:editing.images.map(image=>image.id),updatedAt:editing.updatedAt};
+    const result=connectionInput.safeParse(candidate);
+    if(!result.success){setFormError(result.error.issues[0].message);return;}
+    setBusy(true);setFormError('');
+    try{await api('/api/admin/connections',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(result.data)});setEditing(null);setToast('Edição salva no banco de dados.');setRevision(value=>value+1);router.refresh();}
+    catch(error){setFormError(describe(error));}
+    finally{setBusy(false);}
+  }
+  async function upload(files:File[]){
+    if(!editing || busy || !files.length)return;
+    if(editing.images.length+files.length>8){setFormError('Use até 8 fotos por edição.');return;}
+    if(files.some(file=>file.size>4*1024*1024)){setFormError('Cada foto pode ter até 4 MB.');return;}
+    setBusy(true);setFormError('');
+    try{for(const file of files){const form=new FormData();form.set('file',file);const image=await api<ProductImage>('/api/admin/connections/uploads',{method:'POST',body:form});setEditing(current=>current ? {...current,images:[...current.images,image]} : current);}}
+    catch(error){setFormError(describe(error));}
+    finally{setBusy(false);}
+  }
+  function move(index:number,direction:number){
+    if(!editing)return;
+    const images=[...editing.images];[images[index],images[index+direction]]=[images[index+direction],images[index]];setEditing({...editing,images});
+  }
+  async function archive(item:Connection){
+    if(!confirm(`Arquivar “${item.title}”? A edição sairá do site; os dados e fotos serão preservados no banco.`))return;
+    setBusy(true);setError('');setToast('');
+    try{await api(`/api/admin/connections/${item.id}`,{method:'DELETE',headers:{'content-type':'application/json'},body:JSON.stringify({updatedAt:item.updatedAt})});setToast('Edição arquivada.');if(list.items.length===1 && page>1)setPage(page-1);else setRevision(value=>value+1);router.refresh();}
+    catch(error){setError(describe(error));}finally{setBusy(false);}
+  }
+  return <>
+    <div className="editor-topo"><div><h2>Edições do Conexão</h2><p>Cadastre o encontro, adicione fotos e publique quando estiver pronto.</p></div><button className="btn btn-primario" disabled={busy} onClick={()=>open()}>Nova edição</button></div>
+    {toast && <p role="status" className={styles.success}>{toast}</p>}
+    {error && <div role="alert" className={styles.error}>{error} <button onClick={()=>setRevision(value=>value+1)}>Tentar novamente</button></div>}
+    {loading ? <p role="status">Carregando edições…</p> : !error && !list.items.length ? <p>Nenhuma edição cadastrada ainda.</p> : !error && list.items.map(item=><article className="card-edicao" key={item.id}>
+      <div className="card-edicao-foto">{item.images[0] ? <Image src={item.images[0].url} alt={item.title} width={180} height={140} unoptimized={!item.images[0].url.includes('/storage/v1/object/public/connection-images/')}/> : <span>Sem foto</span>}</div>
+      <div className="card-edicao-corpo"><span className={`badge-publicado ${item.published?'badge-pub-sim':'badge-pub-nao'}`}>{item.published?'Publicado':'Rascunho'}</span><h4>{item.title}</h4><span className="tema">{item.theme}</span><div className="meta"><span>{formatConnectionDate(item.date)}</span><span>{item.preacher}</span></div></div>
+      <div className="card-edicao-acoes"><button className="btn-tabela btn-editar" disabled={busy} onClick={()=>open(item)}>Editar</button><button className="btn-tabela btn-excluir" disabled={busy} onClick={()=>archive(item)}>Arquivar</button></div>
+    </article>)}
+    {!error && list.total>12 && <div className={styles.pagination}><button disabled={loading || busy || page===1} onClick={()=>setPage(page-1)}>Anterior</button><span>Página {page} de {Math.ceil(list.total/12)}</span><button disabled={loading || busy || page*12>=list.total} onClick={()=>setPage(page+1)}>Próxima</button></div>}
+    <dialog ref={dialog} className={styles.dialog} onCancel={event=>{event.preventDefault();if(!busy)setEditing(null);}} onClose={()=>{if(!busy)setEditing(null);}} aria-labelledby="connection-editor-title">
+      {editing && <form onSubmit={save} key={editing.id}>
+        <div className="modal-topo"><h3 id="connection-editor-title">{editing.updatedAt?'Editar edição':'Nova edição do Conexão'}</h3><button type="button" aria-label="Fechar editor" disabled={busy} onClick={()=>setEditing(null)}>×</button></div>
+        <fieldset className={styles.fields} disabled={busy}>
+          <label>Título da edição *<input name="title" defaultValue={editing.title} maxLength={180} required/></label>
+          <div className={styles.twoColumns}><label>Tema *<input name="theme" defaultValue={editing.theme} maxLength={160} required/></label><label>Data do evento *<input name="date" type="date" defaultValue={editing.date} required/></label></div>
+          <div className={styles.twoColumns}><label>Pregador convidado *<input name="preacher" defaultValue={editing.preacher} maxLength={160} required/></label><label>Cargo / título<input name="role" defaultValue={editing.role} maxLength={160}/></label></div>
+          <label>Resumo *<textarea name="summary" defaultValue={editing.summary} rows={3} minLength={10} maxLength={600} required/></label>
+          <label>Conteúdo completo da pregação<textarea name="content" defaultValue={editing.content} rows={9} maxLength={20000}/></label>
+          <p className={styles.hint}>Escreva em texto; as quebras de linha serão preservadas.</p>
+          <label className={styles.upload}>Fotos do evento<input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={event=>{const files=Array.from(event.target.files || []);event.target.value='';void upload(files);}}/></label>
+          <p className={styles.hint}>Até 8 fotos JPG, PNG ou WebP, de até 4 MB cada. A primeira será a capa.</p>
+          <div className={styles.images}>{editing.images.map((image,index)=><div className={styles.imageItem} key={image.id}>
+            <Image src={image.url} alt={`Foto ${index+1}`} width={160} height={120} unoptimized={!image.url.includes('/storage/v1/object/public/connection-images/')}/><strong>{index===0?'Capa':`Foto ${index+1}`}</strong>
+            <div><button type="button" aria-label={`Mover foto ${index+1} para antes`} disabled={index===0} onClick={()=>move(index,-1)}>←</button><button type="button" aria-label={`Mover foto ${index+1} para depois`} disabled={index===editing.images.length-1} onClick={()=>move(index,1)}>→</button><button type="button" aria-label={`Remover foto ${index+1}`} onClick={()=>setEditing({...editing,images:editing.images.filter(item=>item.id!==image.id)})}>Remover</button></div>
+          </div>)}</div>
+          <label className={styles.checkbox}><input name="published" type="checkbox" defaultChecked={editing.published}/>Publicar esta edição</label>
+          <p className={styles.hint}>Desmarque para salvar como rascunho e retirar a edição da página pública.</p>
+        </fieldset>
+        {formError && <p role="alert" className={styles.error}>{formError}</p>}
+        <div className="modal-rodape"><button type="button" className="btn btn-contorno" disabled={busy} onClick={()=>setEditing(null)}>Cancelar</button><button type="submit" className="btn btn-primario" disabled={busy}>{busy?'Aguarde…':'Salvar edição'}</button></div>
+      </form>}
+    </dialog>
+  </>;
+}

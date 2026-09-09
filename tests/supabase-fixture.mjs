@@ -9,16 +9,17 @@ import bcrypt from 'bcryptjs';
 export async function startFixture() {
   const db=new PGlite();
   await db.exec('create role anon;create role authenticated;create role service_role bypassrls;create schema storage;create table storage.buckets(id text primary key,name text,public boolean,file_size_limit bigint,allowed_mime_types text[]);');
-  await db.exec(await Promise.all(['202609080001_catalog.sql','202609080002_hero_products.sql'].map(file=>readFile(`supabase/migrations/${file}`,'utf8'))).then(parts=>parts.join('\n')));
+  await db.exec(await Promise.all(['202609080001_catalog.sql','202609080002_hero_products.sql','202609080003_connections.sql'].map(file=>readFile(`supabase/migrations/${file}`,'utf8'))).then(parts=>parts.join('\n')));
   const admin=randomUUID(),key=randomUUID(),password=randomUUID();
   await db.query("insert into users(id,name,email,password_hash,role) values($1,'Admin local','admin@example.test',$2,'ADMIN')",[admin,await bcrypt.hash(password,12)]);
   const files=new Map();
-  const tables=new Set(['users','categories','products','product_images','admin_sessions','admin_login_attempts']);
+  const tables=new Set(['users','categories','products','product_images','admin_sessions','admin_login_attempts','connections','connection_assets']);
   const server=createServer(async(req,res)=>{
     const url=new URL(req.url,'http://localhost');
     const send=(status,data,headers={})=>{res.writeHead(status,{'content-type':'application/json',...headers});res.end(req.method==='HEAD'?undefined:JSON.stringify(data));};
     try {
-      const publicPrefix='/storage/v1/object/public/product-images/';
+      const bucket=url.pathname.includes('connection-images')?'connection-images':'product-images';
+      const publicPrefix=`/storage/v1/object/public/${bucket}/`;
       if(url.pathname.startsWith(publicPrefix)) {
         const file=files.get(decodeURIComponent(url.pathname.slice(publicPrefix.length)));
         if(!file)return send(404,{message:'Missing image'});
@@ -27,17 +28,18 @@ export async function startFixture() {
       if(req.headers.apikey!==key)return send(401,{message:'Wrong test key'});
       const chunks=[];for await(const chunk of req)chunks.push(chunk);
       const bytes=Buffer.concat(chunks);
-      if(url.pathname.startsWith('/storage/v1/object/product-images/')&&req.method==='POST') {
-        const path=decodeURIComponent(url.pathname.slice('/storage/v1/object/product-images/'.length));
+      if(url.pathname.startsWith(`/storage/v1/object/${bucket}/`)&&req.method==='POST') {
+        const path=decodeURIComponent(url.pathname.slice(`/storage/v1/object/${bucket}/`.length));
         files.set(path,bytes);return send(200,{Key:`product-images/${path}`,Id:randomUUID()});
       }
       const body=bytes.length?JSON.parse(bytes.toString()):null;
-      if(url.pathname==='/storage/v1/object/product-images'&&req.method==='DELETE') {for(const path of body.prefixes)files.delete(path);return send(200,[]);}
+      if(url.pathname===`/storage/v1/object/${bucket}`&&req.method==='DELETE') {for(const path of body.prefixes)files.delete(path);return send(200,[]);}
       if(url.pathname==='/storage/v1/bucket/product-images')return send(200,{id:'product-images',name:'product-images',public:true});
       if(url.pathname.startsWith('/rest/v1/rpc/')) {
         const name=url.pathname.split('/').at(-1);
         let result;
         if(name==='save_catalog_product')result=await db.query('select save_catalog_product($1::jsonb,$2::uuid[],$3::uuid) as value',[JSON.stringify(body.payload),body.image_ids,body.actor_id]);
+        else if(name==='save_connection')result=await db.query('select save_connection($1::jsonb,$2::uuid[],$3::uuid) as value',[JSON.stringify(body.payload),body.image_ids,body.actor_id]);
         else if(name==='consume_admin_login_attempt')result=await db.query('select consume_admin_login_attempt($1) as value',[body.attempt_key]);
         else if(name==='catalog_metrics')result=await db.query('select catalog_metrics() as value');
         else return send(404,{code:'PGRST202'});
@@ -55,6 +57,8 @@ export async function startFixture() {
         const dot=filter.indexOf('.'),op=filter.slice(0,dot),value=filter.slice(dot+1);
         if(op==='eq')conditions.push(`${column}=${bind(value)}`);
         else if(op==='gt')conditions.push(`${column}>${bind(value)}`);
+        else if(op==='gte')conditions.push(`${column}>=${bind(value)}`);
+        else if(op==='lte')conditions.push(`${column}<=${bind(value)}`);
         else if(op==='ilike')conditions.push(`${column} ilike ${bind(value)}`);
         else if(op==='in')conditions.push(`${column}=any(${bind(value.slice(1,-1).split(','))}::uuid[])`);
         else throw new Error(`Unexpected filter operation: ${op}`);
@@ -64,9 +68,9 @@ export async function startFixture() {
       if(req.method==='GET'||req.method==='HEAD') {
         const from=product?'products p join categories c on c.id=p.category_id':table;
         count=Number((await db.query(`select count(*) as total from ${from}${where}`,params)).rows[0].total);
-        const columns=product?`p.*,to_char(p.updated_at at time zone 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') as updated_at,json_build_object('slug',c.slug) as category,coalesce((select json_agg(i) from product_images i where i.product_id=p.id),'[]'::json) as images`:'*';
+        const columns=product?`p.*,to_char(p.updated_at at time zone 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') as updated_at,json_build_object('slug',c.slug) as category,coalesce((select json_agg(i) from product_images i where i.product_id=p.id),'[]'::json) as images`:table==='connections'?`connections.*,to_char(updated_at at time zone 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') as updated_at,to_char(event_date,'YYYY-MM-DD') as event_date,coalesce((select json_agg(i) from connection_assets i where i.connection_id=connections.id),'[]'::json) as images`:'*';
         const order=url.searchParams.get('order');
-        const ordering=order?` order by ${order.split(',').map(item=>{const [field,direction]=item.split('.');if(!/^[a-z_]+$/.test(field)||!['asc','desc'].includes(direction))throw new Error('Invalid order');return `${product?'p.':''}${field} ${direction}`;}).join(',')}`:'';
+        const ordering=order?` order by ${order.split(',').map(item=>{const [field,direction]=item.split('.');if(!/^[a-z_]+$/.test(field)||!['asc','desc'].includes(direction))throw new Error('Invalid order');return `${product?'p.':table==='connections'?'connections.':''}${field} ${direction}`;}).join(',')}`:'';
         const limit=Math.min(1000,Number(url.searchParams.get('limit')||1000));
         const offset=Number(url.searchParams.get('offset')||0);
         rows=(await db.query(`select ${columns} from ${from}${where}${ordering} limit ${limit} offset ${offset}`,params)).rows;

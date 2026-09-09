@@ -91,7 +91,7 @@ export function AboutPhotoCarousel({ slides, label }: { slides: AboutSlide[]; la
           >
             {slide.src ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={slide.src} alt={slide.alt ?? slide.title} />
+              <img src={slide.src} alt={slide.alt ?? slide.title} loading="lazy" decoding="async" />
             ) : (
               <PhotoPlaceholder title={slide.title} subtitle={slide.subtitle} />
             )}

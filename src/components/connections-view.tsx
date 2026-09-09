@@ -1,9 +1,8 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import {
   Connection,
-  connectionSeed,
+  type ConnectionList,
   formatConnectionDate,
 } from "@/lib/connections";
 import {
@@ -13,7 +12,7 @@ import {
 } from "@/components/about-interactions";
 import { AnimatedTitle } from "@/components/animated-title";
 
-const key = "pp_conexoes";
+import { api } from '@/lib/client-api';
 const slidesFor = (connection: Connection): AboutSlide[] =>
   connection.photos.length
     ? connection.photos.map((src, index) => ({
@@ -51,16 +50,28 @@ const Calendar = () => (
 );
 
 export default function ConnectionsView() {
-  const [all, setAll] = useState<Connection[]>(connectionSeed);
+  const [all, setAll] = useState<Connection[]>([]);
   const [year, setYear] = useState("todas");
   const [selected, setSelected] = useState<Connection | null>(null);
+  const [page,setPage] = useState(1);
+  const [total,setTotal] = useState(0);
+  const [loading,setLoading] = useState(true);
+  const [error,setError] = useState('');
+  const [revision,setRevision] = useState(0);
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(key);
-      if (raw) setAll(JSON.parse(raw));
-      else localStorage.setItem(key, JSON.stringify(connectionSeed));
-    } catch {}
-  }, []);
+    const controller=new AbortController();
+    const timer=setTimeout(async()=>{
+      setLoading(true);setError('');
+      try {
+        const query=new URLSearchParams({page:String(page)});
+        if(year!=='todas')query.set('year',year);
+        const result=await api<ConnectionList>('/api/connections?'+query,{signal:controller.signal});
+        if(!controller.signal.aborted){setAll(result.items);setTotal(result.total);}
+      } catch(error){if(!controller.signal.aborted)setError(error instanceof Error?error.message:'Falha ao carregar edições.');}
+      finally{if(!controller.signal.aborted)setLoading(false);}
+    },0);
+    return()=>{clearTimeout(timer);controller.abort();};
+  },[year,page,revision]);
   useEffect(() => {
     document.body.style.overflow = selected ? "hidden" : "";
     const fn = (e: KeyboardEvent) => e.key === "Escape" && setSelected(null);
@@ -77,7 +88,7 @@ export default function ConnectionsView() {
         .sort((a, b) => b.date.localeCompare(a.date)),
     [all],
   );
-  const years = [...new Set(published.map((c) => c.date.slice(0, 4)))];
+
   const shown =
     year === "todas"
       ? published
@@ -90,22 +101,19 @@ export default function ConnectionsView() {
         <span>Filtrar:</span>
         <button
           className={`btn-filtro ${year === "todas" ? "ativo" : ""}`}
-          onClick={() => setYear("todas")}
+          onClick={() => {setYear("todas");setPage(1);}}
         >
           Todas
         </button>
-        {years.map((y) => (
-          <button
-            key={y}
-            className={`btn-filtro ${year === y ? "ativo" : ""}`}
-            onClick={() => setYear(y)}
-          >
-            {y}
-          </button>
-        ))}
+        <form onSubmit={event=>{event.preventDefault();const value=String(new FormData(event.currentTarget).get('year'));if(/^\d{4}$/.test(value)){setYear(value);setPage(1);}}} style={{display:'flex',gap:8,alignItems:'center'}}>
+          <label htmlFor="connection-year">Ano</label><input id="connection-year" name="year" type="number" min="1000" max="9999" placeholder="2026" required style={{width:90,padding:8}}/>
+          <button className="btn-filtro" type="submit">Filtrar ano</button>
+        </form>
         </div>
       </ScrollReveal>
-      {latest && (
+      {loading && <p role="status">Carregando edições…</p>}
+      {error && <p role="alert">{error} <button className="btn btn-contorno" onClick={()=>setRevision(value=>value+1)}>Tentar novamente</button></p>}
+      {!loading && !error && latest && (
         <ScrollReveal className="conexao-reveal-destaque reveal-esquerda">
           <article
             className="card-conexao-destaque"
@@ -155,7 +163,7 @@ export default function ConnectionsView() {
         </ScrollReveal>
       )}
       <div className="grade-conexoes">
-        {shown.slice(1).map((c, index) => (
+        {!loading && !error && shown.slice(1).map((c, index) => (
           <ScrollReveal className="conexao-card-reveal" delay={index * 100} key={c.id}>
             <article
               className="card-conexao"
@@ -199,7 +207,7 @@ export default function ConnectionsView() {
           </ScrollReveal>
         ))}
       </div>
-      {!shown.length && (
+      {!loading && !error && !shown.length && (
         <div
           style={{
             textAlign: "center",
@@ -214,6 +222,7 @@ export default function ConnectionsView() {
           </p>
         </div>
       )}
+      {!loading && !error && total>12 && <nav aria-label="Páginas das edições" style={{display:'flex',justifyContent:'center',gap:16,marginTop:24}}><button className="btn btn-contorno" disabled={page===1} onClick={()=>setPage(page-1)}>Anterior</button><span>{page} / {Math.ceil(total/12)}</span><button className="btn btn-contorno" disabled={page*12>=total} onClick={()=>setPage(page+1)}>Próxima</button></nav>}
       <div
         className={`modal-conexao-overlay ${selected ? "" : "oculto"}`}
         onClick={(e) => e.currentTarget === e.target && setSelected(null)}
@@ -258,8 +267,8 @@ export default function ConnectionsView() {
               </div>
               <div
                 className="conteudo-pregacao"
-                dangerouslySetInnerHTML={{ __html: selected.content }}
-              />
+                style={{whiteSpace:"pre-wrap"}}
+              >{selected.content}</div>
             </div>
           </div>
         )}

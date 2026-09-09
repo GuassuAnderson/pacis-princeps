@@ -18,7 +18,7 @@ npm run db:migrate
 npm run db:check
 ```
 
-Sem `DATABASE_URL`, execute o arquivo `supabase/migrations/202609080001_catalog.sql` no SQL Editor do Supabase. Veja [configuração, cadastro e validação](docs/catalogo-banco.md).
+Sem `DATABASE_URL`, execute os arquivos de `supabase/migrations` em ordem no SQL Editor do Supabase. Veja [configuração do catálogo](docs/catalogo-banco.md) e [cadastro das edições de Conexão](docs/conexao-banco.md).
 
 ```bash
 npm run test
