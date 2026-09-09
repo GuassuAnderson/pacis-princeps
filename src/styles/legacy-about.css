@@ -175,9 +175,10 @@
 /* Equipe */
 .grade-equipe {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 28px;
-  margin-top: 40px;
+  max-width: 1000px;
+  margin: 40px auto 0;
 }
 .card-membro {
   background: var(--marfim);
@@ -188,9 +189,9 @@
   transition: var(--transicao);
 }
 .card-membro:hover { box-shadow: var(--sombra); transform: translateY(-4px); }
-/* Foto do membro — SUBSTITUIR SRC PELO CAMINHO REAL */
+/* Fotos dos fundadores e da equipe */
 .membro-foto {
-  aspect-ratio: 1/1;
+  aspect-ratio: 4/5;
   background: var(--areia-clara);
   display: flex; align-items: center; justify-content: center;
   overflow: hidden;

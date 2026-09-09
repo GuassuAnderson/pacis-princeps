@@ -107,7 +107,38 @@ export default function About() {
                 <div className="historia-foto">
                   <AboutPhotoCarousel
                     label={`Fotos — ${story.label}`}
-                    slides={[
+                    slides={index === 1 ? [
+                      {
+                        src: "/images/nossa-historia/nosso-proposito/proposito-1.jpg",
+                        title: "Comunidade PACIS reunida",
+                        alt: "Comunidade PACIS reunida em uma confraternização",
+                      },
+                      {
+                        src: "/images/nossa-historia/nosso-proposito/proposito-2.jpg",
+                        title: "Encontro e evangelização",
+                        alt: "Representante da PACIS ao lado de um sacerdote em um evento católico",
+                      },
+                      {
+                        src: "/images/nossa-historia/nosso-proposito/proposito-3.jpg",
+                        title: "Amigos unidos pela missão",
+                        alt: "Grupo de amigos da PACIS reunido em um encontro",
+                      },
+                      {
+                        src: "/images/nossa-historia/nosso-proposito/proposito-4.jpg",
+                        title: "Alegria em comunidade",
+                        alt: "Comunidade PACIS celebrando junta em um momento descontraído",
+                      },
+                      {
+                        src: "/images/nossa-historia/nosso-proposito/proposito-5.jpg",
+                        title: "Caminhada compartilhada",
+                        alt: "Integrantes da comunidade PACIS reunidos na loja",
+                      },
+                      {
+                        src: "/images/nossa-historia/nosso-proposito/proposito-6.jpg",
+                        title: "Devoção a Nossa Senhora",
+                        alt: "Representante da PACIS diante da imagem de Nossa Senhora de Fátima",
+                      },
+                    ] : [
                       { title: story.photo, subtitle: story.hint },
                       {
                         title: `${story.label} — foto 2`,
@@ -223,19 +254,23 @@ export default function About() {
           <div className="grade-equipe">
             {[
               {
-                name: "Fundadora da PACIS",
-                role: "Fundadora & Missionária",
-                bio: "Após viver um profundo encontro com Jesus no retiro RENASCER, respondeu ao chamado de Deus e transformou o sonho de evangelizar por meio dos artigos religiosos na missão da PACIS.",
+                name: "Fundadores da PACIS",
+                role: "Casal de Fundadores",
+                bio: "Um casal unido pela fé e pelo desejo de servir. Entre a vida em família, a oração e a confiança na Providência Divina, acolhe a missão de fazer da PACIS um lugar de encontro com Cristo. Cada passo dessa história é um sim dado juntos, com amor e dedicação.",
+                photos: [
+                  { src: "/images/equipe/fundadores-1.webp", title: "Fundadores — na PACIS", alt: "Casal de fundadores sentado no espaço da PACIS" },
+                  { src: "/images/equipe/fundadores-2.webp", title: "Fundadores — devoção compartilhada", alt: "Fundadores juntos com uma imagem de Padre Pio" },
+                  { src: "/images/equipe/fundadores-3.webp", title: "Fundadores — nossa caminhada", alt: "Casal de fundadores diante da parede de tijolos da PACIS" },
+                ],
               },
               {
-                name: "Nome do Membro",
-                role: "Atendimento & Logística",
-                bio: "Informações sobre este membro da equipe serão adicionadas em breve.",
-              },
-              {
-                name: "Nome do Membro",
-                role: "Comunicação & Design",
-                bio: "Informações sobre este membro da equipe serão adicionadas em breve.",
+                name: "Time PACIS",
+                role: "Amigos conectados pela missão",
+                bio: "Somos amigos que encontraram na fé um motivo para caminhar juntos. Partilhamos a alegria de servir, acolher e anunciar Jesus e Maria, colocando nossos dons a serviço de cada encontro. Na PACIS, a amizade se torna missão e cada pessoa faz parte dessa família.",
+                photos: [
+                  { src: "/images/equipe/time-pacis-1.webp", title: "Time PACIS — alegria de estar juntos", alt: "Time PACIS reunido em um momento descontraído na loja" },
+                  { src: "/images/equipe/time-pacis-2.webp", title: "Time PACIS — amizade e missão", alt: "Amigos do Time PACIS reunidos com suas famílias" },
+                ],
               },
             ].map((member, index) => (
               <ScrollReveal className="card-membro-reveal" delay={index * 110} key={index}>
@@ -243,11 +278,7 @@ export default function About() {
                 <div className="membro-foto">
                   <AboutPhotoCarousel
                     label={`Fotos — ${member.name}`}
-                    slides={[
-                      { title: `Foto — Membro ${index + 1}`, subtitle: "Retrato principal" },
-                      { title: `Foto — Membro ${index + 1} · 2`, subtitle: "Momento com a equipe" },
-                      { title: `Foto — Membro ${index + 1} · 3`, subtitle: "Vivendo a missão PACIS" },
-                    ]}
+                    slides={member.photos}
                   />
                 </div>
                 <div className="membro-info">
