@@ -49,23 +49,206 @@
   line-height: 1.75;
 }
 
-/* Foto principal do hero — SUBSTITUIR PELO CAMINHO REAL */
+/* Vitral cinematográfico da história */
 .foto-hero {
+  --vitral-arco: 50% 50% 24px 24px / 28% 28% 24px 24px;
   position: relative;
+  padding: 8px;
+  overflow: hidden;
+  overflow: clip;
+  border-radius: var(--vitral-arco);
+  clip-path: inset(0 round var(--vitral-arco));
+  isolation: isolate;
 }
 .foto-hero-moldura {
-  border-radius: 220px 220px 24px 24px;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  border-radius: var(--vitral-arco);
   overflow: hidden;
-  border: 10px solid var(--marfim);
-  outline: 2px solid var(--areia);
-  box-shadow: var(--sombra);
+  overflow: clip;
+  clip-path: inset(0 round var(--vitral-arco));
+  border: 8px solid var(--marfim);
+  outline: 1px solid rgba(128,62,36,.18);
+  box-shadow: 0 30px 70px -34px rgba(53,28,17,.62), 0 10px 28px rgba(128,62,36,.12);
   aspect-ratio: 3/4;
-  background: var(--areia-clara);
+  background: var(--marfim);
   display: flex; align-items: center; justify-content: center;
+  contain: paint;
 }
-.foto-hero-moldura img {
-  width: 100%; height: 100%; object-fit: cover;
+.foto-hero::before,
+.foto-hero::after {
+  content: '';
+  position: absolute;
+  z-index: 4;
+  pointer-events: none;
+  border-radius: var(--vitral-arco);
 }
+.foto-hero::before {
+  inset: 0;
+  border: 1px solid rgba(207,154,68,.52);
+}
+.foto-hero::after {
+  inset: 15px;
+  border: 1px solid rgba(255,250,243,.44);
+  box-shadow: inset 0 0 0 1px rgba(53,28,17,.1);
+}
+.historia-vitrais {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overflow: clip;
+  border-radius: inherit;
+  clip-path: inset(0 round var(--vitral-arco));
+  isolation: isolate;
+  background: var(--espresso);
+  contain: strict;
+}
+.historia-vitrais-filme,
+.historia-vitrais-luz,
+.historia-vitrais-marca { position: absolute; inset: 0; overflow: hidden; }
+.historia-vitrais-filme,
+.historia-vitrais-luz,
+.historia-vitrais-marca {
+  border-radius: inherit;
+  clip-path: inset(0 round var(--vitral-arco));
+}
+.historia-vitrais-cena {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  overflow: hidden;
+  overflow: clip;
+  border-radius: inherit;
+  clip-path: inset(0 round var(--vitral-arco));
+  animation: vitral-cena 4.7s var(--cena-atraso) cubic-bezier(.4,0,.2,1) both;
+}
+.historia-vitrais-cena img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+  filter: saturate(.84) sepia(.07) contrast(1.04);
+}
+.historia-vitrais-cena::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,rgba(53,28,17,.03) 42%,rgba(53,28,17,.42) 100%);
+}
+.historia-vitrais-luz {
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 15%,rgba(255,250,243,.2),transparent 36%), linear-gradient(115deg,transparent 35%,rgba(231,218,198,.14) 48%,transparent 62%);
+  mix-blend-mode: screen;
+  animation: vitral-luz 7s ease-in-out 2;
+}
+.historia-vitrais-marca {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  opacity: 0;
+  background: radial-gradient(circle at 50% 30%,#fffaf3 0%,#f3e7d4 72%,#e7dac6 100%);
+  animation: vitral-marca 1.8s 14.15s cubic-bezier(.16,1,.3,1) forwards;
+}
+.historia-vitrais-marca img {
+  position: relative;
+  z-index: 2;
+  width: 92%;
+  max-width: 100%;
+  max-height: 68%;
+  height: auto;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+.historia-vitrais-marca p {
+  position: relative;
+  z-index: 2;
+  margin-top: -3%;
+  color: var(--terracota);
+  font-size: clamp(.58rem,1vw,.76rem);
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.historia-vitrais-estrelas {
+  position: absolute;
+  inset: 7%;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.historia-vitrais-estrelas span {
+  position: absolute;
+  color: var(--ouro);
+  font-size: 1rem;
+  opacity: .42;
+  animation: vitral-estrela 2.4s 15s ease-in-out infinite;
+}
+.historia-vitrais-estrelas span:nth-child(1) { top:7%; left:47%; font-size:1.15rem; }
+.historia-vitrais-estrelas span:nth-child(2) { top:18%; left:14%; font-size:.62rem; animation-delay:15.35s; }
+.historia-vitrais-estrelas span:nth-child(3) { top:20%; right:12%; font-size:.8rem; animation-delay:15.8s; }
+.historia-vitrais-estrelas span:nth-child(4) { top:40%; left:7%; font-size:.95rem; animation-delay:16.1s; }
+.historia-vitrais-estrelas span:nth-child(5) { top:43%; right:6%; font-size:.56rem; animation-delay:15.2s; }
+.historia-vitrais-estrelas span:nth-child(6) { top:62%; left:13%; font-size:.58rem; animation-delay:16.5s; }
+.historia-vitrais-estrelas span:nth-child(7) { top:64%; right:12%; font-size:1rem; animation-delay:15.65s; }
+.historia-vitrais-estrelas span:nth-child(8) { bottom:9%; left:29%; font-size:.7rem; animation-delay:16.2s; }
+.historia-vitrais-estrelas span:nth-child(9) { bottom:7%; right:25%; font-size:.54rem; animation-delay:15.45s; }
+.historia-vitrais-estrelas span:nth-child(10) { top:31%; left:27%; font-size:.48rem; animation-delay:16.7s; }
+.historia-vitrais-estrelas span:nth-child(11) { top:32%; right:26%; font-size:.52rem; animation-delay:16.35s; }
+.historia-vitrais-tracery {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+  overflow: clip;
+  clip-path: inset(0 round var(--vitral-arco));
+  box-shadow: inset 0 0 0 1px rgba(255,250,243,.26), inset 0 -70px 90px -75px rgba(53,28,17,.8);
+  animation: vitral-tracery-saida .8s 14s ease forwards;
+}
+.historia-vitrais-tracery::before,
+.historia-vitrais-tracery::after,
+.historia-vitrais-tracery span {
+  content: '';
+  position: absolute;
+  background: linear-gradient(90deg,rgba(82,43,27,.72),rgba(207,154,68,.48),rgba(82,43,27,.72));
+  box-shadow: 0 0 0 1px rgba(255,250,243,.14);
+}
+.historia-vitrais-tracery::before { top: 0; bottom: 0; left: 50%; width: 3px; transform: translateX(-50%); }
+.historia-vitrais-tracery::after { top: 39%; left: 0; right: 0; height: 3px; }
+.historia-vitrais-tracery span { top: 0; left: 50%; width: 3px; height: 43%; transform-origin: 50% 100%; }
+.historia-vitrais-tracery span:first-child { transform: translateX(-50%) rotate(-32deg); }
+.historia-vitrais-tracery span:nth-child(2) { transform: translateX(-50%) rotate(32deg); }
+.historia-vitrais-tracery span:last-child { display: none; }
+.historia-vitrais-selo {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  bottom: 18px;
+  padding: 7px 13px;
+  border: 1px solid rgba(255,250,243,.42);
+  border-radius: 999px;
+  color: var(--marfim);
+  background: rgba(53,28,17,.46);
+  backdrop-filter: blur(9px);
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+  animation: vitral-selo-saida .7s 14.1s ease forwards;
+}
+
 /* Placeholder visual enquanto não há foto real */
 .foto-placeholder {
   display: flex; flex-direction: column;
@@ -454,8 +637,35 @@
     opacity: 1; transform: none; animation: none; transition: none;
   }
   .sobre-carrossel-trilho,.sobre-carrossel-slide img { transition: none; animation: none; }
+  .historia-vitrais-cena,
+  .historia-vitrais-luz,
+  .historia-vitrais-tracery,
+  .historia-vitrais-selo { display:none; animation:none; }
+  .historia-vitrais-marca { opacity:1; transform:none; filter:none; animation:none; }
+  .historia-vitrais-estrelas span { animation:none; }
 }
 }
+
+@keyframes vitral-cena {
+  0% { opacity:0; transform:scale(.88); filter:blur(5px); }
+  16% { opacity:1; transform:scale(.94); filter:blur(0); }
+  68% { opacity:1; transform:scale(1.055); filter:blur(0); }
+  100% { opacity:0; transform:scale(1.16); filter:blur(2px); }
+}
+@keyframes vitral-marca {
+  0% { opacity:0; transform:scale(1.1); filter:blur(7px); }
+  100% { opacity:1; transform:scale(1); filter:blur(0); }
+}
+@keyframes vitral-luz {
+  0%,100% { opacity:.24; transform:translateX(-20%); }
+  50% { opacity:.78; transform:translateX(20%); }
+}
+@keyframes vitral-estrela {
+  0%,100% { opacity:.48; transform:scale(.8) rotate(0); }
+  50% { opacity:1; transform:scale(1.08) rotate(45deg); }
+}
+@keyframes vitral-tracery-saida { to { opacity:0; } }
+@keyframes vitral-selo-saida { to { opacity:0; transform:translate(-50%,8px); } }
 
 @keyframes sobre-linha-desenhar {
   from { height:0; }

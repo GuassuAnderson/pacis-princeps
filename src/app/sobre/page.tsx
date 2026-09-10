@@ -6,6 +6,7 @@ import {
 } from "@/components/about-interactions";
 import { AnimatedTitle } from "@/components/animated-title";
 import { AboutFaithNetwork } from "@/components/about-faith-network";
+import { AboutStoryWindow } from "@/components/about-story-window";
 
 const stories = [
   {
@@ -77,10 +78,7 @@ export default function About() {
           </div>
           <div className="foto-hero sobre-foto-entrada">
             <div className="foto-hero-moldura">
-              <PhotoPlaceholder
-                title="Foto principal"
-                subtitle="Substituir por foto real da loja ou dos fundadores"
-              />
+              <AboutStoryWindow />
             </div>
           </div>
         </div>
