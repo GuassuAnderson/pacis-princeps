@@ -906,8 +906,8 @@ h1,h2,h3,h4{
     left:0;
     right:0;
     width:100%;
-    height:calc(100dvh - 100%);
-    min-height:calc(100vh - 100%);
+    height:auto;
+    max-height:calc(100dvh - 100%);
     background:var(--creme);
     flex-direction:column;
     padding:40px 24px;
@@ -977,6 +977,11 @@ h1,h2,h3,h4{
     visibility:visible;
     pointer-events:auto;
     transition-delay:0s;
+  }
+  .nav-produtos:hover .submenu-produtos,
+  .nav-produtos:focus-within .submenu-produtos,
+  .submenu-produtos.aberto{
+    transform:none;
   }
   .submenu-produtos-topo{ display:none; }
   .submenu-produtos-grade{ grid-template-columns:repeat(2,1fr); }

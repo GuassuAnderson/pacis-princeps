@@ -606,8 +606,16 @@
 
 
   .sobre-hero-conteudo { grid-template-columns: 1fr; }
-  .foto-hero { order: -1; max-width: 360px; margin: 0 auto; }
-  .historia-bloco { grid-template-columns: 1fr; gap: 32px; }
+  .foto-hero { order: -1; width: 100%; max-width: 360px; margin: 0 auto; }
+  .historia-bloco { grid-template-columns: minmax(0,1fr); gap: 32px; }
+  .historia-bloco > *,
+  .historia-foto,
+  .sobre-carrossel,
+  .sobre-carrossel-trilho,
+  .sobre-carrossel-slide { min-width: 0; max-width: 100%; }
+  .sobre-reveal.reveal-esquerda,
+  .sobre-reveal.reveal-direita { transform: translateY(32px); }
+  .sobre-reveal.sobre-reveal-visivel { transform: translateY(0); }
   .historia-bloco.invertido { direction: ltr; }
   .grade-valores { grid-template-columns: 1fr; gap: 18px; }
   .grade-equipe { grid-template-columns: 1fr 1fr; }
@@ -624,6 +632,8 @@
   .sobre-carrossel-seta.anterior { left: 9px; }
   .sobre-carrossel-seta.proxima { right: 9px; }
   .galeria-sobre-carrossel { height: 380px; border-radius: var(--raio); }
+  .foto-placeholder strong,
+  .foto-placeholder span { max-width: 100%; overflow-wrap: anywhere; }
 }
 @media (prefers-reduced-motion: reduce) {
   .sobre-hero-linhas span { height:100%; animation:none; }

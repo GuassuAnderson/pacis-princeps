@@ -215,7 +215,7 @@ export default async function Home() {
           <HistoryBrandPhoto />
           <div className="manifesto-texto">
             <span className="rotulo">Nossa história</span>
-            <h2>Uma loja para quem quer viver a fé, não só guardá-la</h2>
+            <h2>Uma loja para quem quer viver a fé.</h2>
             <blockquote>
               “O Pacis Princeps é o Príncipe da Paz — e cada peça que vendemos
               carrega esse desejo: paz para dentro de casa, para o trabalho,
